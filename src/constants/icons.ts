@@ -1,0 +1,46 @@
+export const SHOPPING_ICONS = [
+  // Food
+  { name: 'cart', label: 'Cart' },
+  { name: 'food-apple', label: 'Apple' },
+  { name: 'carrot', label: 'Carrot' },
+  { name: 'cheese', label: 'Cheese' },
+  { name: 'bread-slice', label: 'Bread' },
+  { name: 'fruit-watermelon', label: 'Watermelon' },
+  { name: 'food-drumstick', label: 'Meat' },
+  { name: 'fish', label: 'Fish' },
+  { name: 'egg-easter', label: 'Eggs' },
+  { name: 'cup', label: 'Cup' },
+  { name: 'bottle-wine', label: 'Wine' },
+  { name: 'coffee', label: 'Coffee' },
+  { name: 'water', label: 'Water' },
+  { name: 'ice-cream', label: 'Ice Cream' },
+  // Household
+  { name: 'broom', label: 'Broom' },
+  { name: 'soap', label: 'Soap' },
+  { name: 'toilet-paper', label: 'Toilet Paper' },
+  { name: 'toothbrush', label: 'Toothbrush' },
+  { name: 'lightbulb', label: 'Lightbulb' },
+  { name: 'shower', label: 'Shower' },
+  // General
+  { name: 'package-variant', label: 'Package' },
+  { name: 'toolbox', label: 'Tools' },
+  { name: 'medication', label: 'Medicine' },
+  { name: 'bottle-tonic', label: 'Tonic' },
+  { name: 'silverware', label: 'Silverware' },
+  { name: 'pot', label: 'Pot' },
+  { name: 'fridge', label: 'Fridge' },
+  { name: 'shopping', label: 'Shopping' },
+  { name: 'basket', label: 'Basket' },
+  { name: 'clipboard-list', label: 'List' },
+];
+
+export const CATEGORIES = [
+  'Refrigerated',
+  'Vegetables',
+  'Dry Goods',
+  'Meat',
+  'Dairy',
+  'Household',
+  'Beverages',
+  'Other',
+];
