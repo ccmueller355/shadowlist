@@ -16,21 +16,29 @@ import { useStore } from '../store/useStore';
 import { ListCard } from '../components/ListCard';
 import { EmptyPlaceholder } from '../components/EmptyPlaceholder';
 import { CyberpunkCard } from '../components/CyberpunkCard';
+import { SettingsModal } from '../components/SettingsModal';
 import { generateId } from '../utils/uuid';
 import { cyberpunkTheme } from '../theme/cyberpunkTheme';
+import { useAppTheme } from '../theme/useTheme';
 import Toast from 'react-native-toast-message';
 
 type Props = NativeStackScreenProps<any, 'Home'>;
 
 export function HomeScreen({ navigation }: Props) {
+  const cyberpunkTheme = useAppTheme();
   const lists = useStore((s) => s.lists);
   const items = useStore((s) => s.items);
   const addList = useStore((s) => s.addList);
   const deleteList = useStore((s) => s.deleteList);
   const hydrated = useStore((s) => s.hydrated);
   const addDemoData = useStore((s) => s.addDemoData);
+  const settings = useStore((s) => s.settings);
+  const setTheme = useStore((s) => s.setTheme);
+  const setSortByCategory = useStore((s) => s.setSortByCategory);
+  const clearAll = useStore((s) => s.clearAll);
 
   const [showNewListInput, setShowNewListInput] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
   const [newListName, setNewListName] = useState('');
   const inputRef = useRef<TextInput>(null);
 
@@ -90,7 +98,9 @@ export function HomeScreen({ navigation }: Props) {
       <View style={styles.header}>
         <MaterialCommunityIcons name="cart-outline" size={28} color={cyberpunkTheme.colors.headerText} />
         <Text style={styles.headerTitle}>ShadowList</Text>
-        <Text style={styles.headerSubtitle}>{lists.length} lists</Text>
+        <TouchableOpacity onPress={() => setShowSettings(true)}>
+          <MaterialCommunityIcons name="cog" size={24} color={cyberpunkTheme.colors.headerText} />
+        </TouchableOpacity>
       </View>
 
       {/* New list input inline */}
@@ -148,6 +158,18 @@ export function HomeScreen({ navigation }: Props) {
       >
         <MaterialCommunityIcons name="plus" size={28} color="#0a0a0a" />
       </TouchableOpacity>
+
+      <SettingsModal
+        visible={showSettings}
+        currentTheme={settings.theme}
+        sortByCategory={settings.sortByCategory}
+        hasDemoData={false}
+        onThemeChange={setTheme}
+        onToggleCategory={setSortByCategory}
+        onLoadDemo={addDemoData}
+        onClearAll={clearAll}
+        onClose={() => setShowSettings(false)}
+      />
     </KeyboardAvoidingView>
   );
 }

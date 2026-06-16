@@ -48,7 +48,7 @@ export async function loadAllData(): Promise<{
     lists,
     items,
     settings: settings || {
-      theme: 'light',
+      theme: 'fixer',
       sortByCategory: false,
       defaultIcon: 'cart',
     },

@@ -3,6 +3,7 @@ import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { SHOPPING_ICONS } from '../constants/icons';
 import { cyberpunkTheme } from '../theme/cyberpunkTheme';
+import { useAppTheme } from '../theme/useTheme';
 
 interface Props {
   selected: string;
@@ -10,6 +11,7 @@ interface Props {
 }
 
 export function IconPickerGrid({ selected, onSelect }: Props) {
+  const cyberpunkTheme = useAppTheme();
   return (
     <View style={styles.grid}>
       {SHOPPING_ICONS.map((icon) => {

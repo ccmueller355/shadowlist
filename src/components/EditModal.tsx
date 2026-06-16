@@ -9,25 +9,39 @@ import {
   StyleSheet,
   KeyboardAvoidingView,
   Platform,
+  BackHandler,
 } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ShoppingItem } from '../types';
 import { IconPickerGrid } from './IconPickerGrid';
 import { CATEGORIES } from '../constants/icons';
 import { cyberpunkTheme } from '../theme/cyberpunkTheme';
+import { useAppTheme } from '../theme/useTheme';
 
 interface Props {
   visible: boolean;
   item: ShoppingItem | null;
   onSave: (id: string, updates: Partial<ShoppingItem>) => void;
+  onDelete: (id: string) => void;
   onClose: () => void;
 }
 
-export function EditModal({ visible, item, onSave, onClose }: Props) {
+export function EditModal({ visible, item, onSave, onDelete, onClose }: Props) {
+  const cyberpunkTheme = useAppTheme();
   const [description, setDescription] = useState('');
   const [qualifier, setQualifier] = useState('');
   const [icon, setIcon] = useState('cart');
   const [category, setCategory] = useState<string | null>(null);
+  const insets = useSafeAreaInsets();
+
+  // Back button → close modal
+  useEffect(() => {
+    if (!visible) return;
+    const handler = () => { onClose(); return true; };
+    const sub = BackHandler.addEventListener('hardwareBackPress', handler);
+    return () => sub.remove();
+  }, [visible, onClose]);
 
   useEffect(() => {
     if (item) {
@@ -52,13 +66,13 @@ export function EditModal({ visible, item, onSave, onClose }: Props) {
   if (!item) return null;
 
   return (
-    <Modal visible={visible} transparent animationType="slide">
+    <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.overlay}
       >
         <View style={styles.container}>
-          <ScrollView showsVerticalScrollIndicator={false}>
+          <ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="always" style={styles.scrollBody}>
             <Text style={styles.title}>Edit Item</Text>
 
             {/* Icon Picker */}
@@ -110,9 +124,21 @@ export function EditModal({ visible, item, onSave, onClose }: Props) {
                 </TouchableOpacity>
               ))}
             </ScrollView>
+          </ScrollView>
 
-            {/* Buttons */}
+          {/* Fixed footer with buttons */}
+          <View style={[styles.footer, { paddingBottom: insets.bottom + 8 }]}>
             <View style={styles.buttonRow}>
+              <TouchableOpacity
+                style={styles.deleteButton}
+                onPress={() => {
+                  if (item) onDelete(item.id);
+                  onClose();
+                }}
+              >
+                <Text style={styles.deleteText}>Delete</Text>
+              </TouchableOpacity>
+              <View style={styles.buttonSpacer} />
               <TouchableOpacity style={styles.cancelButton} onPress={onClose}>
                 <Text style={styles.cancelText}>Cancel</Text>
               </TouchableOpacity>
@@ -121,7 +147,7 @@ export function EditModal({ visible, item, onSave, onClose }: Props) {
                 <Text style={styles.saveText}>Save</Text>
               </TouchableOpacity>
             </View>
-          </ScrollView>
+          </View>
         </View>
       </KeyboardAvoidingView>
     </Modal>
@@ -135,11 +161,20 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   container: {
+    flex: 1,
     backgroundColor: cyberpunkTheme.colors.surface,
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
-    padding: cyberpunkTheme.spacing.lg,
-    maxHeight: '85%',
+    paddingTop: cyberpunkTheme.spacing.lg,
+    paddingHorizontal: cyberpunkTheme.spacing.lg,
+  },
+  scrollBody: {
+    flex: 1,
+  },
+  footer: {
+    paddingTop: cyberpunkTheme.spacing.sm,
+    borderTopWidth: 1,
+    borderTopColor: cyberpunkTheme.colors.border,
   },
   title: {
     fontFamily: cyberpunkTheme.fontFamily,
@@ -194,10 +229,25 @@ const styles = StyleSheet.create({
   },
   buttonRow: {
     flexDirection: 'row',
-    justifyContent: 'flex-end',
+    justifyContent: 'space-between',
     gap: cyberpunkTheme.spacing.sm,
     marginTop: cyberpunkTheme.spacing.lg,
     paddingBottom: cyberpunkTheme.spacing.md,
+  },
+  buttonSpacer: {
+    flex: 1,
+  },
+  deleteButton: {
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    borderRadius: cyberpunkTheme.borderRadius,
+    borderWidth: 1,
+    borderColor: cyberpunkTheme.colors.danger,
+  },
+  deleteText: {
+    fontFamily: cyberpunkTheme.fontFamily,
+    color: cyberpunkTheme.colors.danger,
+    fontWeight: 'bold',
   },
   cancelButton: {
     paddingHorizontal: 20,

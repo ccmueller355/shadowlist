@@ -27,6 +27,7 @@ interface ShoppingState {
   reorderItems: (listId: string, orderedIds: string[]) => void;
 
   // Settings
+  setTheme: (theme: AppSettings['theme']) => void;
   setSortByCategory: (value: boolean) => void;
   setDefaultIcon: (icon: string) => void;
 
@@ -36,7 +37,7 @@ interface ShoppingState {
 }
 
 const DEFAULT_SETTINGS: AppSettings = {
-  theme: 'light',
+  theme: 'fixer',
   sortByCategory: false,
   defaultIcon: 'cart',
 };
@@ -170,6 +171,12 @@ export const useStore = create<ShoppingState>((set, get) => ({
     saveItems(items);
   },
 
+  setTheme: (theme: AppSettings['theme']) => {
+    const settings = { ...get().settings, theme };
+    set({ settings });
+    saveSettings(settings);
+  },
+
   setSortByCategory: (value: boolean) => {
     const settings = { ...get().settings, sortByCategory: value };
     set({ settings });
@@ -183,8 +190,12 @@ export const useStore = create<ShoppingState>((set, get) => ({
   },
 
   addDemoData: () => {
-    const lists = [...get().lists, ...DEMO_LISTS];
-    const items = [...get().items, ...DEMO_ITEMS];
+    const existingIds = new Set(get().lists.map((l) => l.id));
+    const newLists = DEMO_LISTS.filter((l) => !existingIds.has(l.id));
+    const newItems = DEMO_ITEMS.filter((i) => !get().items.some((x) => x.id === i.id));
+    if (newLists.length === 0 && newItems.length === 0) return;
+    const lists = [...get().lists, ...newLists];
+    const items = [...get().items, ...newItems];
     set({ lists, items });
     saveLists(lists);
     saveItems(items);

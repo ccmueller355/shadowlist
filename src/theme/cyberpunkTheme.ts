@@ -1,26 +1,3 @@
-export const cyberpunkTheme = {
-  colors: {
-    primary: '#00ff9d',
-    secondary: '#ff00ff',
-    background: '#f0f0f0',
-    surface: '#ffffff',
-    textPrimary: '#0a0a0a',
-    textSecondary: '#555555',
-    border: '#cccccc',
-    shadow: 'rgba(0, 255, 157, 0.2)',
-    danger: '#ff4444',
-    headerBg: '#0a0a0a',
-    headerText: '#00ff9d',
-    checkedBg: '#e6fff0',
-    sectionHeader: '#00cc7a',
-  },
-  spacing: {
-    xs: 4,
-    sm: 8,
-    md: 16,
-    lg: 24,
-    xl: 32,
-  },
-  borderRadius: 8,
-  fontFamily: 'monospace' as const,
-};
+// Re-export for components that still use cyberpunkTheme at module level (StyleSheet)
+// Dynamic theming should use useAppTheme() from './useTheme'
+export { fixerTheme as cyberpunkTheme } from './themes';

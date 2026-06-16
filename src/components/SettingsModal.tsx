@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   View,
   Text,
@@ -7,14 +7,19 @@ import {
   Modal,
   StyleSheet,
   Alert,
+  BackHandler,
 } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { cyberpunkTheme } from '../theme/cyberpunkTheme';
+import { ThemeName } from '../types';
+import { useAppTheme } from '../theme/useTheme';
+import { themes } from '../theme/themes';
 
 interface Props {
   visible: boolean;
+  currentTheme: ThemeName;
   sortByCategory: boolean;
   hasDemoData: boolean;
+  onThemeChange: (theme: ThemeName) => void;
   onToggleCategory: (value: boolean) => void;
   onLoadDemo: () => void;
   onClearAll: () => void;
@@ -23,13 +28,25 @@ interface Props {
 
 export function SettingsModal({
   visible,
+  currentTheme,
   sortByCategory,
   hasDemoData,
+  onThemeChange,
   onToggleCategory,
   onLoadDemo,
   onClearAll,
   onClose,
 }: Props) {
+  const t = useAppTheme();
+
+  // Back button → close modal
+  useEffect(() => {
+    if (!visible) return;
+    const handler = () => { onClose(); return true; };
+    const sub = BackHandler.addEventListener('hardwareBackPress', handler);
+    return () => sub.remove();
+  }, [visible, onClose]);
+
   const handleClearAll = () => {
     Alert.alert(
       'Clear All Data',
@@ -48,16 +65,43 @@ export function SettingsModal({
     );
   };
 
+  const themeEntries = Object.entries(themes) as [ThemeName, typeof themes.fixer][];
+
   return (
-    <Modal visible={visible} transparent animationType="fade">
+    <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose}>
       <View style={styles.overlay}>
         <View style={styles.container}>
           <View style={styles.header}>
             <Text style={styles.title}>Settings</Text>
             <TouchableOpacity onPress={onClose}>
-              <MaterialCommunityIcons name="close" size={24} color={cyberpunkTheme.colors.textPrimary} />
+              <MaterialCommunityIcons name="close" size={24} color={t.colors.textPrimary} />
             </TouchableOpacity>
           </View>
+
+          {/* Theme picker */}
+          <Text style={styles.sectionLabel}>THEME</Text>
+          {themeEntries.map(([key, theme]) => {
+            const active = key === currentTheme;
+            return (
+              <TouchableOpacity
+                key={key}
+                style={[styles.themeRow, active && styles.themeRowActive]}
+                onPress={() => onThemeChange(key)}
+              >
+                <View style={styles.themeInfo}>
+                  <Text style={[styles.themeLabel, active && styles.themeLabelActive]}>
+                    {theme.label}
+                  </Text>
+                  <Text style={styles.themeDesc}>{theme.description}</Text>
+                </View>
+                <View style={[styles.radio, active && styles.radioActive]}>
+                  {active && <View style={styles.radioDot} />}
+                </View>
+              </TouchableOpacity>
+            );
+          })}
+
+          <View style={styles.divider} />
 
           {/* Sort by Category */}
           <View style={styles.row}>
@@ -65,7 +109,7 @@ export function SettingsModal({
               <MaterialCommunityIcons
                 name="sort-variant"
                 size={22}
-                color={cyberpunkTheme.colors.primary}
+                color={t.colors.primary}
               />
               <Text style={styles.rowLabel}>Sort by Category</Text>
             </View>
@@ -73,10 +117,10 @@ export function SettingsModal({
               value={sortByCategory}
               onValueChange={onToggleCategory}
               trackColor={{
-                false: cyberpunkTheme.colors.border,
-                true: cyberpunkTheme.colors.primary,
+                false: t.colors.border,
+                true: t.colors.primary,
               }}
-              thumbColor={cyberpunkTheme.colors.surface}
+              thumbColor={t.colors.surface}
             />
           </View>
 
@@ -92,18 +136,17 @@ export function SettingsModal({
               <MaterialCommunityIcons
                 name="database-import"
                 size={22}
-                color={cyberpunkTheme.colors.primary}
+                color={t.colors.primary}
               />
               <Text style={styles.rowLabel}>Load Demo Data</Text>
             </View>
             <MaterialCommunityIcons
               name="chevron-right"
               size={22}
-              color={cyberpunkTheme.colors.textSecondary}
+              color={t.colors.textSecondary}
             />
           </TouchableOpacity>
 
-          {/* Divider */}
           <View style={styles.divider} />
 
           {/* Clear All Data */}
@@ -112,14 +155,14 @@ export function SettingsModal({
               <MaterialCommunityIcons
                 name="delete-forever"
                 size={22}
-                color={cyberpunkTheme.colors.danger}
+                color={t.colors.danger}
               />
               <Text style={[styles.rowLabel, styles.dangerText]}>Clear All Data</Text>
             </View>
             <MaterialCommunityIcons
               name="chevron-right"
               size={22}
-              color={cyberpunkTheme.colors.danger}
+              color={t.colors.danger}
             />
           </TouchableOpacity>
 
@@ -135,56 +178,114 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'rgba(0,0,0,0.5)',
     justifyContent: 'center',
-    paddingHorizontal: cyberpunkTheme.spacing.lg,
+    paddingHorizontal: 24,
   },
   container: {
-    backgroundColor: cyberpunkTheme.colors.surface,
+    backgroundColor: '#ffffff', // overridden dynamically
     borderRadius: 16,
     borderWidth: 1,
-    borderColor: cyberpunkTheme.colors.primary,
-    padding: cyberpunkTheme.spacing.lg,
+    borderColor: '#cccccc', // overridden dynamically
+    padding: 24,
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: cyberpunkTheme.spacing.lg,
+    marginBottom: 24,
   },
   title: {
-    fontFamily: cyberpunkTheme.fontFamily,
+    fontFamily: 'monospace',
     fontSize: 20,
     fontWeight: 'bold',
-    color: cyberpunkTheme.colors.textPrimary,
+    color: '#000000',
+  },
+  sectionLabel: {
+    fontFamily: 'monospace',
+    fontSize: 11,
+    color: '#888888',
+    marginBottom: 8,
+    fontWeight: 'bold',
+  },
+  themeRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    borderRadius: 8,
+    marginBottom: 4,
+    borderWidth: 1,
+    borderColor: 'transparent',
+  },
+  themeRowActive: {
+    borderColor: '#cc4444',
+  },
+  themeInfo: {
+    flex: 1,
+    marginRight: 12,
+  },
+  themeLabel: {
+    fontFamily: 'monospace',
+    fontSize: 14,
+    color: '#555555',
+  },
+  themeLabelActive: {
+    fontWeight: 'bold',
+    color: '#cc4444',
+  },
+  themeDesc: {
+    fontFamily: 'monospace',
+    fontSize: 11,
+    color: '#888888',
+    marginTop: 2,
+  },
+  radio: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: '#cccccc',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  radioActive: {
+    borderColor: '#cc4444',
+  },
+  radioDot: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    backgroundColor: '#cc4444',
   },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: cyberpunkTheme.spacing.md,
+    paddingVertical: 16,
   },
   rowLeft: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: cyberpunkTheme.spacing.sm,
+    gap: 8,
   },
   rowLabel: {
-    fontFamily: cyberpunkTheme.fontFamily,
+    fontFamily: 'monospace',
     fontSize: 14,
-    color: cyberpunkTheme.colors.textPrimary,
+    color: '#000000',
   },
   dangerText: {
-    color: cyberpunkTheme.colors.danger,
+    color: '#cc0000',
   },
   divider: {
     height: 1,
-    backgroundColor: cyberpunkTheme.colors.border,
-    marginVertical: cyberpunkTheme.spacing.sm,
+    backgroundColor: '#cccccc',
+    marginVertical: 8,
   },
   footer: {
-    fontFamily: cyberpunkTheme.fontFamily,
+    fontFamily: 'monospace',
     fontSize: 11,
-    color: cyberpunkTheme.colors.textSecondary,
+    color: '#888888',
     textAlign: 'center',
-    marginTop: cyberpunkTheme.spacing.lg,
+    marginTop: 24,
   },
 });

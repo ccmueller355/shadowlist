@@ -1,8 +1,9 @@
-import React, { memo } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { memo, useState, useRef } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { ShoppingItem } from '../types';
 import { cyberpunkTheme } from '../theme/cyberpunkTheme';
+import { useAppTheme } from '../theme/useTheme';
 
 interface Props {
   item: ShoppingItem;
@@ -11,7 +12,7 @@ interface Props {
   onTogglePurchased: (id: string) => void;
   onLongPress: (item: ShoppingItem) => void;
   onTapBought: (id: string) => void;
-  onDelete: (id: string) => void;
+  onUpdateItem: (id: string, updates: Partial<ShoppingItem>) => void;
 }
 
 function ItemRowComponent({
@@ -21,9 +22,13 @@ function ItemRowComponent({
   onTogglePurchased,
   onLongPress,
   onTapBought,
-  onDelete,
+  onUpdateItem,
 }: Props) {
+  const cyberpunkTheme = useAppTheme();
   const isBought = item.purchased;
+  const [editingQualifier, setEditingQualifier] = useState(false);
+  const [qualifierDraft, setQualifierDraft] = useState('');
+  const qualifierRef = useRef<TextInput>(null);
 
   const handlePress = () => {
     if (isBought) {
@@ -31,6 +36,18 @@ function ItemRowComponent({
     } else {
       onTogglePurchased(item.id);
     }
+  };
+
+  const startEditingQualifier = () => {
+    setQualifierDraft(item.qualifier || '');
+    setEditingQualifier(true);
+    setTimeout(() => qualifierRef.current?.focus(), 100);
+  };
+
+  const submitQualifier = () => {
+    const trimmed = qualifierDraft.trim();
+    onUpdateItem(item.id, { qualifier: trimmed });
+    setEditingQualifier(false);
   };
 
   return (
@@ -62,21 +79,41 @@ function ItemRowComponent({
 
       {/* Description + qualifier */}
       <View style={styles.info}>
-        <Text
-          style={[
-            styles.description,
-            isBought && styles.descriptionBought,
-          ]}
-          numberOfLines={1}
-          ellipsizeMode="tail"
-        >
-          {item.description}
-        </Text>
-        {item.qualifier ? (
-          <Text style={[styles.qualifier, isBought && styles.qualifierBought]}>
-            {item.qualifier}
+        <View style={styles.descriptionRow}>
+          <Text
+            style={[
+              styles.description,
+              isBought && styles.descriptionBought,
+            ]}
+            numberOfLines={1}
+            ellipsizeMode="tail"
+          >
+            {item.description}
           </Text>
-        ) : null}
+          {editingQualifier ? (
+            <TextInput
+              ref={qualifierRef}
+              style={styles.qualifierInput}
+              value={qualifierDraft}
+              onChangeText={setQualifierDraft}
+              onSubmitEditing={submitQualifier}
+              onBlur={submitQualifier}
+              placeholder="e.g. 2x"
+              placeholderTextColor={cyberpunkTheme.colors.textSecondary}
+              returnKeyType="done"
+            />
+          ) : item.qualifier ? (
+            <TouchableOpacity onPress={startEditingQualifier}>
+              <Text style={[styles.qualifier, isBought && styles.qualifierBought]}>
+                {item.qualifier}
+              </Text>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity onPress={startEditingQualifier} style={styles.addQualifierButton}>
+              <MaterialCommunityIcons name="plus" size={14} color={cyberpunkTheme.colors.border} />
+            </TouchableOpacity>
+          )}
+        </View>
       </View>
 
       {/* Category badge (small) */}
@@ -97,17 +134,6 @@ function ItemRowComponent({
         ) : null}
       </TouchableOpacity>
 
-      {/* Delete */}
-      <TouchableOpacity
-        onPress={() => onDelete(item.id)}
-        hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-      >
-        <MaterialCommunityIcons
-          name="close-circle-outline"
-          size={18}
-          color={cyberpunkTheme.colors.textSecondary}
-        />
-      </TouchableOpacity>
     </TouchableOpacity>
   );
 }
@@ -137,6 +163,9 @@ const styles = StyleSheet.create({
   },
   info: {
     flex: 1,
+    justifyContent: 'center',
+  },
+  descriptionRow: {
     flexDirection: 'row',
     alignItems: 'baseline',
     gap: 6,
@@ -159,6 +188,25 @@ const styles = StyleSheet.create({
   },
   qualifierBought: {
     color: cyberpunkTheme.colors.textSecondary,
+  },
+  qualifierInput: {
+    fontFamily: cyberpunkTheme.fontFamily,
+    fontSize: 12,
+    color: cyberpunkTheme.colors.textPrimary,
+    borderWidth: 1,
+    borderColor: cyberpunkTheme.colors.primary,
+    borderRadius: 4,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    minWidth: 50,
+    backgroundColor: cyberpunkTheme.colors.checkedBg,
+  },
+  addQualifierButton: {
+    borderWidth: 1,
+    borderColor: cyberpunkTheme.colors.border,
+    borderStyle: 'dashed',
+    borderRadius: 4,
+    padding: 2,
   },
   categoryBadge: {
     fontFamily: cyberpunkTheme.fontFamily,

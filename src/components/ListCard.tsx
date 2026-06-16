@@ -4,6 +4,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { ShoppingList } from '../types';
 import { CyberpunkCard } from './CyberpunkCard';
 import { cyberpunkTheme } from '../theme/cyberpunkTheme';
+import { useAppTheme } from '../theme/useTheme';
 
 interface Props {
   list: ShoppingList;
@@ -13,6 +14,7 @@ interface Props {
 }
 
 export function ListCard({ list, itemCount, onPress, onDelete }: Props) {
+  const cyberpunkTheme = useAppTheme();
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.7}>
       <CyberpunkCard style={styles.card}>

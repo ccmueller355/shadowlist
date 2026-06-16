@@ -18,8 +18,10 @@ export interface ShoppingItem {
   updatedAt: number;
 }
 
+export type ThemeName = 'fixer' | 'stuffer' | 'decker';
+
 export interface AppSettings {
-  theme: 'light';
+  theme: ThemeName;
   sortByCategory: boolean;
   defaultIcon: string;
 }

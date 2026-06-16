@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import {
   View,
   Text,
@@ -7,9 +7,11 @@ import {
   TouchableOpacity,
   StyleSheet,
   Alert,
+  BackHandler,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import DraggableFlatList, {
   RenderItemParams,
   ScaleDecorator,
@@ -22,6 +24,7 @@ import { EditModal } from '../components/EditModal';
 import { SettingsModal } from '../components/SettingsModal';
 import { EmptyPlaceholder } from '../components/EmptyPlaceholder';
 import { cyberpunkTheme } from '../theme/cyberpunkTheme';
+import { useThemeStyles } from '../theme/useThemeStyles';
 import Toast from 'react-native-toast-message';
 
 type Props = NativeStackScreenProps<any, 'ListDetail'>;
@@ -39,6 +42,7 @@ export function ListDetailScreen({ route, navigation }: Props) {
   const moveToShop = useStore((s) => s.moveToShop);
   const reorderItems = useStore((s) => s.reorderItems);
   const setSortByCategory = useStore((s) => s.setSortByCategory);
+  const setTheme = useStore((s) => s.setTheme);
   const addDemoData = useStore((s) => s.addDemoData);
   const clearAll = useStore((s) => s.clearAll);
 
@@ -46,6 +50,19 @@ export function ListDetailScreen({ route, navigation }: Props) {
   const [editItem, setEditItem] = useState<ShoppingItem | null>(null);
   const [showEdit, setShowEdit] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const insets = useSafeAreaInsets();
+  const ts = useThemeStyles();
+
+  // Back button: close open modal, else navigate away
+  useEffect(() => {
+    const handler = () => {
+      if (showEdit) { setShowEdit(false); setEditItem(null); return true; }
+      if (showSettings) { setShowSettings(false); return true; }
+      return false;
+    };
+    const sub = BackHandler.addEventListener('hardwareBackPress', handler);
+    return () => sub.remove();
+  }, [showEdit, showSettings]);
 
   // Get current list name
   const currentList = lists.find((l) => l.id === listId);
@@ -111,21 +128,48 @@ export function ListDetailScreen({ route, navigation }: Props) {
   }, [filteredBought, settings.sortByCategory]);
 
   // Handlers
+  // Type + Enter: dedup active items, re-add from bought, or create new
   const handleAddItem = useCallback(
     (description: string) => {
-      // Check if this item exists in bought items → re-add with same properties
-      const existing = boughtItems.find(
-        (i) => i.description.toLowerCase() === description.toLowerCase()
+      const lowerDesc = description.toLowerCase();
+      // 1. Already in active list? Skip
+      const inActive = activeItems.find(
+        (i) => i.description.toLowerCase() === lowerDesc
       );
-      if (existing) {
-        moveToShop(existing.id);
+      if (inActive) {
+        Toast.show({ type: 'info', text1: `"${description}" already in list`, position: 'bottom' });
+        return;
+      }
+      // 2. In bought items? Re-add from bought
+      const inBought = boughtItems.find(
+        (i) => i.description.toLowerCase() === lowerDesc
+      );
+      if (inBought) {
+        moveToShop(inBought.id);
         Toast.show({ type: 'success', text1: `Re-added "${description}"`, position: 'bottom' });
-      } else {
-        addItem({ listId, description });
-        Toast.show({ type: 'success', text1: `Added "${description}"`, position: 'bottom' });
+        return;
+      }
+      // 3. New item — create
+      addItem({ listId, description });
+      Toast.show({ type: 'success', text1: `Added "${description}"`, position: 'bottom' });
+    },
+    [listId, activeItems, boughtItems, addItem, moveToShop]
+  );
+
+  // Tap suggestion in AddItemBar → re-add from bought, preserving icon/qualifier
+  const handleReAddItem = useCallback(
+    (itemId: string) => {
+      const item = items.find((i) => i.id === itemId);
+      if (item) {
+        if (!item.purchased) {
+          Toast.show({ type: 'info', text1: `"${item.description}" already in list`, position: 'bottom' });
+          return;
+        }
+        moveToShop(itemId);
+        Toast.show({ type: 'success', text1: `Re-added "${item.description}"`, position: 'bottom' });
       }
     },
-    [listId, boughtItems, addItem, moveToShop]
+    [items, moveToShop]
   );
 
   const handleLongPress = (item: ShoppingItem) => {
@@ -163,7 +207,7 @@ export function ListDetailScreen({ route, navigation }: Props) {
     onToggle: (id: string) => void,
     onLongPress: (item: ShoppingItem) => void,
     onTapBought: (id: string) => void,
-    onDelete: (id: string) => void,
+    onUpdateItem: (id: string, updates: Partial<ShoppingItem>) => void,
     isBought: boolean
   ) => {
     const cats = Object.keys(group).sort();
@@ -179,7 +223,7 @@ export function ListDetailScreen({ route, navigation }: Props) {
             onTogglePurchased={onToggle}
             onLongPress={onLongPress}
             onTapBought={onTapBought}
-            onDelete={onDelete}
+            onUpdateItem={onUpdateItem}
           />
         ))}
       </View>
@@ -187,46 +231,16 @@ export function ListDetailScreen({ route, navigation }: Props) {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, ts.bg]}>
       {/* Header */}
-      <View style={styles.header}>
+      <View style={[styles.header, ts.header]}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <MaterialCommunityIcons name="arrow-left" size={24} color={cyberpunkTheme.colors.headerText} />
         </TouchableOpacity>
         <Text style={styles.headerTitle} numberOfLines={1}>{displayName}</Text>
-        <Text style={styles.headerCount}>
-          {activeItems.length}
-        </Text>
         <TouchableOpacity onPress={() => setShowSettings(true)}>
-          <MaterialCommunityIcons name="dots-vertical" size={24} color={cyberpunkTheme.colors.headerText} />
+          <MaterialCommunityIcons name="cog" size={24} color={cyberpunkTheme.colors.headerText} />
         </TouchableOpacity>
-      </View>
-
-      {/* Add/Search bar */}
-      <View style={styles.barContainer}>
-        <AddItemBar
-          listId={listId}
-          recentBought={boughtItems}
-          onAddItem={handleAddItem}
-        />
-      </View>
-
-      {/* Search input */}
-      <View style={styles.searchRow}>
-        <MaterialCommunityIcons name="magnify" size={18} color={cyberpunkTheme.colors.textSecondary} />
-        <TextInput
-          style={styles.searchInput}
-          placeholder="Filter items..."
-          placeholderTextColor={cyberpunkTheme.colors.textSecondary}
-          value={search}
-          onChangeText={setSearch}
-          returnKeyType="done"
-        />
-        {search.length > 0 && (
-          <TouchableOpacity onPress={() => setSearch('')}>
-            <MaterialCommunityIcons name="close-circle" size={18} color={cyberpunkTheme.colors.textSecondary} />
-          </TouchableOpacity>
-        )}
       </View>
 
       {/* Content */}
@@ -245,7 +259,7 @@ export function ListDetailScreen({ route, navigation }: Props) {
 
             {settings.sortByCategory && groupedActive ? (
               // Category grouped view
-              renderCategoryGroup(groupedActive, togglePurchased, handleLongPress, moveToShop, handleDeleteItem, false)
+              renderCategoryGroup(groupedActive, togglePurchased, handleLongPress, moveToShop, updateItem, false)
             ) : (
               // Draggable list for active items
               <DraggableFlatList
@@ -260,7 +274,7 @@ export function ListDetailScreen({ route, navigation }: Props) {
                         onTogglePurchased={togglePurchased}
                         onLongPress={handleLongPress}
                         onTapBought={moveToShop}
-                        onDelete={handleDeleteItem}
+                        onUpdateItem={updateItem}
                       />
                     </View>
                   </ScaleDecorator>
@@ -285,7 +299,7 @@ export function ListDetailScreen({ route, navigation }: Props) {
             </View>
 
             {settings.sortByCategory && groupedBought ? (
-              renderCategoryGroup(groupedBought, togglePurchased, handleLongPress, moveToShop, handleDeleteItem, true)
+              renderCategoryGroup(groupedBought, togglePurchased, handleLongPress, moveToShop, updateItem, true)
             ) : (
               filteredBought.map((item) => (
                 <ItemRow
@@ -294,7 +308,7 @@ export function ListDetailScreen({ route, navigation }: Props) {
                   onTogglePurchased={togglePurchased}
                   onLongPress={handleLongPress}
                   onTapBought={moveToShop}
-                  onDelete={handleDeleteItem}
+                  onUpdateItem={updateItem}
                 />
               ))
             )}
@@ -312,18 +326,32 @@ export function ListDetailScreen({ route, navigation }: Props) {
         <View style={styles.bottomSpacer} />
       </ScrollView>
 
+      {/* Bottom add/search bar */}
+      <View style={[styles.bottomBar, { paddingBottom: insets.bottom + 8 }]}>
+        <AddItemBar
+          listId={listId}
+          recentBought={boughtItems}
+          onAddItem={handleAddItem}
+          onReAddItem={handleReAddItem}
+          onSearchChange={setSearch}
+        />
+      </View>
+
       {/* Modals */}
       <EditModal
         visible={showEdit}
         item={editItem}
         onSave={handleSaveEdit}
+        onDelete={handleDeleteItem}
         onClose={() => { setShowEdit(false); setEditItem(null); }}
       />
 
       <SettingsModal
         visible={showSettings}
+        currentTheme={settings.theme}
         sortByCategory={settings.sortByCategory}
         hasDemoData={false}
+        onThemeChange={setTheme}
         onToggleCategory={setSortByCategory}
         onLoadDemo={addDemoData}
         onClearAll={clearAll}
@@ -360,19 +388,21 @@ const styles = StyleSheet.create({
     color: cyberpunkTheme.colors.primary,
     fontWeight: 'bold',
   },
-  barContainer: {
+  bottomBar: {
     paddingHorizontal: cyberpunkTheme.spacing.sm,
     paddingVertical: cyberpunkTheme.spacing.sm,
-    backgroundColor: cyberpunkTheme.colors.background,
+    backgroundColor: cyberpunkTheme.colors.surface,
+    borderTopWidth: 1,
+    borderTopColor: cyberpunkTheme.colors.border,
   },
   searchRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: cyberpunkTheme.colors.surface,
+    backgroundColor: cyberpunkTheme.colors.background,
     marginHorizontal: cyberpunkTheme.spacing.sm,
     marginBottom: cyberpunkTheme.spacing.sm,
     paddingHorizontal: 8,
-    borderRadius: cyberpunkTheme.borderRadius,
+    borderRadius: 6,
     borderWidth: 1,
     borderColor: cyberpunkTheme.colors.border,
     gap: 4,
@@ -380,9 +410,9 @@ const styles = StyleSheet.create({
   searchInput: {
     flex: 1,
     fontFamily: cyberpunkTheme.fontFamily,
-    fontSize: 13,
-    color: cyberpunkTheme.colors.textPrimary,
-    paddingVertical: 6,
+    fontSize: 12,
+    color: cyberpunkTheme.colors.textSecondary,
+    paddingVertical: 4,
   },
   scrollArea: {
     flex: 1,

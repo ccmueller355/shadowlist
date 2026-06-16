@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 import { View, StyleSheet, ViewStyle } from 'react-native';
 import { cyberpunkTheme } from '../theme/cyberpunkTheme';
+import { useAppTheme } from '../theme/useTheme';
 
 interface Props {
   children: ReactNode;
@@ -9,6 +10,7 @@ interface Props {
 }
 
 export function CyberpunkCard({ children, style, glow = true }: Props) {
+  const cyberpunkTheme = useAppTheme();
   return (
     <View
       style={[

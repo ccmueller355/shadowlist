@@ -1,28 +1,33 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo, useRef } from 'react';
 import {
   View,
   TextInput,
   TouchableOpacity,
+  Pressable,
   Text,
-  FlatList,
   StyleSheet,
 } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { ShoppingItem } from '../types';
 import { debounce } from '../utils/debounce';
 import { cyberpunkTheme } from '../theme/cyberpunkTheme';
+import { useAppTheme } from '../theme/useTheme';
 
 interface Props {
   listId: string;
   recentBought: ShoppingItem[];
   onAddItem: (description: string) => void;
+  onReAddItem: (itemId: string) => void;
+  onSearchChange: (query: string) => void;
 }
 
-export function AddItemBar({ listId, recentBought, onAddItem }: Props) {
+export function AddItemBar({ listId, recentBought, onAddItem, onReAddItem, onSearchChange }: Props) {
+  const cyberpunkTheme = useAppTheme();
+  const inputRef = useRef<TextInput>(null);
   const [text, setText] = useState('');
   const [suggestions, setSuggestions] = useState<ShoppingItem[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
-  const [searchFocused, setSearchFocused] = useState(false);
+  const [focused, setFocused] = useState(false);
 
   const debouncedSuggest = useMemo(
     () =>
@@ -42,40 +47,54 @@ export function AddItemBar({ listId, recentBought, onAddItem }: Props) {
     [recentBought]
   );
 
+  const debouncedSearch = useMemo(
+    () => debounce((q: string) => onSearchChange(q), 200),
+    [onSearchChange]
+  );
+
   const handleChange = useCallback(
     (value: string) => {
       setText(value);
       debouncedSuggest(value);
+      debouncedSearch(value);
     },
-    [debouncedSuggest]
+    [debouncedSuggest, debouncedSearch]
   );
+
+  const clearInput = useCallback(() => {
+    setText('');
+    setSuggestions([]);
+    setShowSuggestions(false);
+    onSearchChange('');
+  }, [onSearchChange]);
 
   const handleSubmit = () => {
     const trimmed = text.trim();
     if (!trimmed) return;
     onAddItem(trimmed);
-    setText('');
-    setSuggestions([]);
-    setShowSuggestions(false);
+    clearInput();
   };
 
   const handleSelectSuggestion = (item: ShoppingItem) => {
-    onAddItem(item.description);
-    setText('');
-    setSuggestions([]);
-    setShowSuggestions(false);
+    onReAddItem(item.id);
+    clearInput();
   };
+
+  const showFilterBadge = text.length > 0;
 
   return (
     <View style={styles.container}>
-      {/* Search / Add field */}
-      <View style={[styles.inputRow, searchFocused && styles.inputRowFocused]}>
+      <Pressable
+        style={[styles.inputRow, focused && styles.inputRowFocused]}
+        onPress={() => inputRef.current?.focus()}
+      >
         <MaterialCommunityIcons
           name="magnify"
           size={20}
-          color={cyberpunkTheme.colors.textSecondary}
+          color={focused ? cyberpunkTheme.colors.primary : cyberpunkTheme.colors.textSecondary}
         />
         <TextInput
+          ref={inputRef}
           style={styles.input}
           placeholder="Search or add item..."
           placeholderTextColor={cyberpunkTheme.colors.textSecondary}
@@ -83,21 +102,26 @@ export function AddItemBar({ listId, recentBought, onAddItem }: Props) {
           onChangeText={handleChange}
           onSubmitEditing={handleSubmit}
           returnKeyType="done"
-          onFocus={() => setSearchFocused(true)}
+          onFocus={() => setFocused(true)}
           onBlur={() => {
-            setSearchFocused(false);
-            // Delay hiding so tap on suggestion works
+            setFocused(false);
             setTimeout(() => setShowSuggestions(false), 200);
           }}
         />
+        {showFilterBadge ? (
+          <TouchableOpacity onPress={clearInput} style={styles.clearButton}>
+            <MaterialCommunityIcons name="close-circle" size={20} color={cyberpunkTheme.colors.textSecondary} />
+          </TouchableOpacity>
+        ) : null}
         <TouchableOpacity onPress={handleSubmit} style={styles.addButton}>
           <MaterialCommunityIcons name="plus" size={22} color="#0a0a0a" />
         </TouchableOpacity>
-      </View>
+      </Pressable>
 
       {/* Auto-suggest dropdown */}
       {showSuggestions && suggestions.length > 0 && (
         <View style={styles.suggestionsContainer}>
+          <Text style={styles.recentLabel}>RECENTLY BOUGHT</Text>
           {suggestions.map((item) => (
             <TouchableOpacity
               key={item.id}
@@ -148,6 +172,9 @@ const styles = StyleSheet.create({
     color: cyberpunkTheme.colors.textPrimary,
     paddingVertical: 10,
   },
+  clearButton: {
+    padding: 2,
+  },
   addButton: {
     backgroundColor: cyberpunkTheme.colors.primary,
     width: 34,
@@ -164,6 +191,15 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: cyberpunkTheme.borderRadius,
     borderBottomRightRadius: cyberpunkTheme.borderRadius,
     overflow: 'hidden',
+  },
+  recentLabel: {
+    fontFamily: cyberpunkTheme.fontFamily,
+    fontSize: 10,
+    color: cyberpunkTheme.colors.sectionHeader,
+    paddingHorizontal: cyberpunkTheme.spacing.md,
+    paddingTop: 6,
+    paddingBottom: 2,
+    fontWeight: 'bold',
   },
   suggestionRow: {
     flexDirection: 'row',
