@@ -20,6 +20,19 @@
 - **Search/add bar**: Merged into single input at bottom of screen
 - **Layout**: Add/search input moved to bottom with safe-area padding
 
+### Added
+- **arc42 architecture docs** — 12-split documentation under `docs/arc42/`, one file per section
+- **VitePress docs site** — hero home, Mermaid diagrams, local search, nav+sidebar for arc42
+- **Test suite** — 27 Jest tests (uuid, types, Zustand store), coverage via `jest --coverage`
+- **GitHub Pages deploy workflow** — auto-builds VitePress docs + coverage on push to main
+- **`coverage/` iframe page** — lcov report embedded in VitePress via iframe
+- **`VERSION` file** — standalone version tracking at project root
+- **`docs:dev` / `docs:build` / `docs:preview` / `docs:build:full`** scripts
+
+### Changed
+- **README** — rewritten with features, tech stack, project structure (license TBD)
+- **package.json** — version pinned to 0.9.0; added vitepress, vue, mermaid, jest deps
+
 ### Fixed
 - **SDK compatibility**: Downgraded to Expo SDK 54 for Play Store Expo Go compatibility
 - **Keyboard disappearing**: `Pressable` wrapper forces `TextInput.focus()` on tap, bypassing gesture handler
