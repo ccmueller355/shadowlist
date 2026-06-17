@@ -15,16 +15,47 @@ export interface ShoppingItem {
   purchased: boolean;
   order: number;
   category: string | null;
+  foodType: FoodType | null;
   createdAt: number;
   updatedAt: number;
 }
 
 export type ThemeName = 'fixer' | 'stuffer' | 'decker';
 
+export type FoodType =
+  | 'meat' | 'fish' | 'egg' | 'dairy'
+  | 'grain' | 'sugar' | 'fruit' | 'vegetable'
+  | 'legume' | 'fat' | 'beverage' | 'supplement'
+  | 'non_food';
+
+export type DietId = 'keto' | 'low-carb' | 'slow-carb' | 'vegetarian' | 'vegan' | 'gluten-free' | 'paleo';
+
+export type AppLang = 'en' | 'de';
+
+export interface DietRule {
+  forbid: FoodType[];
+  alternatives?: FoodType[];
+}
+
+export interface DietProfile {
+  id: DietId;
+  nameKey: string;
+  descriptionKey: string;
+  rules: DietRule[];
+}
+
+export interface FoodTypeInfo {
+  id: FoodType;
+  labelKey: string;
+  icon: string;
+}
+
 export interface AppSettings {
   theme: ThemeName;
   sortByCategory: boolean;
   defaultIcon: string;
+  activeDiet: DietId | null;
+  lang: AppLang;
 }
 
 export interface NewItemParams {

@@ -54,3 +54,6 @@ coverage/
 
 # SpecKit (generated, not tracked)
 .specify/
+
+# MemPalace
+entities.json

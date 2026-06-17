@@ -21,6 +21,11 @@
 - **Layout**: Add/search input moved to bottom with safe-area padding
 
 ### Added
+- **Dietary Rules spec** — `specs/001-dietary-rules/spec.md` with 5 user stories, 12 FRs, edge cases, success criteria
+- **Dietary Feature Plan** — `docs/plans/dietary-feature-plan.md` — architecture overview, 6 phases, 7 diet profiles
+- **Types: FoodType, DietProfile, DietRule** — 13 food types (meat, fish, egg, dairy, grain, sugar, fruit, veg, legume, fat, beverage, supplement, non_food)
+- **ShoppingItem.foodType** — user-driven food classification via icon picker
+- **AppSettings.activeDiet + lang** — diet selection and language (EN/DE) in config
 - **arc42 architecture docs** — 12-split documentation under `docs/arc42/`, one file per section
 - **VitePress docs site** — hero home, Mermaid diagrams, local search, nav+sidebar for arc42
 - **Test suite** — 27 Jest tests (uuid, types, Zustand store), coverage via `jest --coverage`
