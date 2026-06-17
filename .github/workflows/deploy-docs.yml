@@ -35,7 +35,7 @@ jobs:
           sudo mv gitleaks /usr/local/bin/
           gitleaks detect --source . --verbose --config .gitleaks.toml
 
-      - run: npm ci
+      - run: npm ci --legacy-peer-deps
 
       - name: Run tests with coverage
         run: npx jest --coverage
