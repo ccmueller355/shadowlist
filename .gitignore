@@ -49,8 +49,8 @@ docs/public/coverage
 # Coverage
 coverage/
 
-# CodeWhale
-.codewhale/
+# CodeWhale (instructions tracked, cache not)
+.codewhale/*.cache
 
 # SpecKit (generated, not tracked)
 .specify/
