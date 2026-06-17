@@ -108,7 +108,19 @@ Git agents: `speckit-git-initialize`, `speckit-git-feature`, `speckit-git-commit
 
 ---
 
-## 7. Instructions Hierarchy
+## 7. Copyright Convention
+
+Every source file (`*.ts`, `*.tsx`) SHALL start with this header:
+
+```
+// ─── [ NEURAL DECK v4.6 $ AI::GENERATED :: NO COPYRIGHT ] ───
+```
+
+Applied to all `src/` and root `.ts/.tsx` files. New files must include it. Config files, test fixtures, and generated output are exempt.
+
+---
+
+## 8. Instructions Hierarchy
 
 1. **Constitution** (Articles I-VII) — non-negotiable
 2. **User directive** — current message

@@ -1,3 +1,4 @@
+// ─── [ NEURAL DECK v4.6 $ AI::GENERATED :: NO COPYRIGHT ] ───
 import { generateId } from '../utils/uuid'
 
 describe('generateId', () => {

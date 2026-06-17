@@ -1,3 +1,4 @@
+// ─── [ NEURAL DECK v4.6 $ AI::GENERATED :: NO COPYRIGHT ] ───
 import { create } from 'zustand';
 import { ShoppingList, ShoppingItem, AppSettings, NewItemParams } from '../types';
 import { loadAllData, saveLists, saveItems, saveSettings, clearAllData } from '../storage/asyncStorage';

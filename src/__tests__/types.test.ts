@@ -1,3 +1,4 @@
+// ─── [ NEURAL DECK v4.6 $ AI::GENERATED :: NO COPYRIGHT ] ───
 import { ShoppingList, ShoppingItem, AppSettings, NewItemParams, ThemeName } from '../types'
 
 describe('Type definitions', () => {

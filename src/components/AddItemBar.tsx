@@ -1,3 +1,4 @@
+// ─── [ NEURAL DECK v4.6 $ AI::GENERATED :: NO COPYRIGHT ] ───
 import React, { useState, useCallback, useMemo, useRef } from 'react';
 import {
   View,

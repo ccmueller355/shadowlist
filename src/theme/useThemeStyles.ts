@@ -1,3 +1,4 @@
+// ─── [ NEURAL DECK v4.6 $ AI::GENERATED :: NO COPYRIGHT ] ───
 import { useMemo } from 'react';
 import { useAppTheme } from './useTheme';
 

@@ -1,3 +1,4 @@
+// ─── [ NEURAL DECK v4.6 $ AI::GENERATED :: NO COPYRIGHT ] ───
 import { ShoppingList, ShoppingItem } from '../types';
 
 const now = Date.now();
