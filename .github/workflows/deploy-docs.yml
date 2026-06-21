@@ -32,6 +32,9 @@ jobs:
 
       - run: npm ci --legacy-peer-deps
 
+      - name: TypeScript check
+        run: npx tsc --noEmit
+
       - name: Run tests with coverage
         run: npx jest --coverage
 

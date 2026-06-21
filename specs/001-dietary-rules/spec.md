@@ -132,6 +132,7 @@ A user on the subway (no network) opens the app, browses their list, adds items,
 - **SC-005**: Zero network requests made by the diet feature (verified by code review)
 - **SC-006**: All existing 27 unit tests + new diet engine tests pass
 - **SC-007**: TypeScript strict mode compiles without errors
+- **SC-008**: All new interactive elements have `accessibilityLabel` set, minimum 48dp touch targets, and warning badges meet color contrast requirements across all 3 themes
 
 ## Assumptions
 

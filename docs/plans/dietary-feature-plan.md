@@ -67,21 +67,25 @@ Icon groups map to these. User can override in EditModal. App remembers per item
 - Fully testable, no UI dependency
 
 ### Phase 4: UI
-- SettingsModal: diet picker + language toggle
+- SettingsModal: diet picker (supports "no diet" option) + language toggle
 - EditModal: food type tag with override dropdown
-- ItemRow: ⚠ warning badge
-- AddItemBar: incompatible suggestion dialog
-- ListDetailScreen: active diet header indicator
+- ItemRow: ⚠ warning badge, tapping opens suggestion dialog
+- AddItemBar: activates diet check on item add
+- **Suggestion dialog**: when ⚠ is tapped, show "Try X instead?" with alternatives. User can tap to add the alternative, or dismiss and keep the original item.
+- ListDetailScreen: active diet header indicator (hidden when no diet active)
+- **Accessibility**: add `accessibilityLabel` to all new interactive elements (diet picker, warning badges, suggestion buttons, food type dropdown). Minimum 48dp touch targets. Verify color contrast for warning badges and diet indicators across all 3 themes.
 
 ### Phase 5: Store + Persistence
-- Zustand: diet actions (activate/deactivate)
+- Zustand: diet actions (activate/deactivate), `activeDiet` can be `null` for "no diet" (FR-002)
 - AsyncStorage: persist `activeDiet` + `lang`
 - Migration: existing items get `foodType = null` (untagged, no warning)
+- Edge cases: no-diet state hides all warnings and badges; null foodType items treated as unchecked (no false positives)
 
 ### Phase 6: Tests
-- Diet engine × all 7 diets × sample items
-- i18n coverage
-- Icon → foodType mapping integrity
+- Diet engine × all 7 diets × sample items (success criteria SC-001, SC-002, SC-003)
+- i18n coverage — all strings present in both EN and DE (SC-004)
+- Icon → foodType mapping integrity — no orphan icons, every food type has at least one icon group
+- Edge case tests: null foodType, no-diet state, multiple matching food types, empty lookup fallback
 
 ## Constraints
 
