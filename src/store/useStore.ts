@@ -1,6 +1,6 @@
 // ─── [ NEURAL DECK v4.6 $ AI::GENERATED :: NO COPYRIGHT ] ───
 import { create } from 'zustand';
-import { ShoppingList, ShoppingItem, AppSettings, NewItemParams } from '../types';
+import { ShoppingList, ShoppingItem, AppSettings, NewItemParams, AppLang, DietId } from '../types';
 import { loadAllData, saveLists, saveItems, saveSettings, clearAllData } from '../storage/asyncStorage';
 import { generateId } from '../utils/uuid';
 import { DEMO_LISTS, DEMO_ITEMS } from '../constants/demoData';
@@ -31,6 +31,8 @@ interface ShoppingState {
   setTheme: (theme: AppSettings['theme']) => void;
   setSortByCategory: (value: boolean) => void;
   setDefaultIcon: (icon: string) => void;
+  setActiveDiet: (dietId: DietId | null) => void;
+  setLang: (lang: AppLang) => void;
 
   // Demo / Danger
   addDemoData: () => void;
@@ -41,6 +43,8 @@ const DEFAULT_SETTINGS: AppSettings = {
   theme: 'fixer',
   sortByCategory: false,
   defaultIcon: 'cart',
+  activeDiet: null,
+  lang: 'en',
 };
 
 export const useStore = create<ShoppingState>((set, get) => ({
@@ -102,6 +106,7 @@ export const useStore = create<ShoppingState>((set, get) => ({
       purchased: false,
       order: maxOrder + 1,
       category: params.category ?? null,
+      foodType: null,
       createdAt: now,
       updatedAt: now,
     };
@@ -186,6 +191,18 @@ export const useStore = create<ShoppingState>((set, get) => ({
 
   setDefaultIcon: (icon: string) => {
     const settings = { ...get().settings, defaultIcon: icon };
+    set({ settings });
+    saveSettings(settings);
+  },
+
+  setActiveDiet: (dietId: DietId | null) => {
+    const settings = { ...get().settings, activeDiet: dietId };
+    set({ settings });
+    saveSettings(settings);
+  },
+
+  setLang: (lang: AppLang) => {
+    const settings = { ...get().settings, lang };
     set({ settings });
     saveSettings(settings);
   },

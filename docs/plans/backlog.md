@@ -62,6 +62,28 @@ Items to resolve before the first public release. Requires research — exact re
 
 ---
 
+## Next Session — UI Polish & i18n Completion
+
+### 🏷️ About section in Settings
+
+- [ ] Add tappable "About" entry below "Clear All Data" — shows version, MIT license, GitHub link, open-source acknowledgements
+- [ ] Keep existing footer version string or replace with expanded About view
+
+### 🌐 Full i18n coverage
+
+- [ ] Internationalize all remaining hardcoded UI strings in:
+  - SettingsModal: title, section labels, row labels, alert buttons
+  - EditModal: title, field labels, category "None", button text
+  - ItemRow: qualifier placeholder
+  - AddItemBar: search placeholder
+  - HomeScreen: empty state, create button
+  - SuggestionDialog: title
+  - ListDetailScreen: section headers ("TO SHOP", "RECENTLY BOUGHT")
+- [ ] Add ~15 new i18n keys to `en.ts` and `de.ts`
+- [ ] Verify no hardcoded English strings remain in the UI source files
+
+---
+
 ## Pre-Release — Open Questions (to resolve together)
 
 ### 💰 Monetization & Store Strategy — DECIDED

@@ -14,11 +14,13 @@ import {
 } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { ShoppingItem } from '../types';
+import { FoodType, ShoppingItem } from '../types';
 import { IconPickerGrid } from './IconPickerGrid';
 import { CATEGORIES } from '../constants/icons';
+import { FOOD_TYPES } from '../constants/foodTypes';
 import { cyberpunkTheme } from '../theme/cyberpunkTheme';
 import { useAppTheme } from '../theme/useTheme';
+import { useTranslation } from '../i18n/useTranslation';
 
 interface Props {
   visible: boolean;
@@ -34,7 +36,9 @@ export function EditModal({ visible, item, onSave, onDelete, onClose }: Props) {
   const [qualifier, setQualifier] = useState('');
   const [icon, setIcon] = useState('cart');
   const [category, setCategory] = useState<string | null>(null);
+  const [foodType, setFoodType] = useState<FoodType | null>(null);
   const insets = useSafeAreaInsets();
+  const { t: tr } = useTranslation();
 
   // Back button → close modal
   useEffect(() => {
@@ -50,6 +54,7 @@ export function EditModal({ visible, item, onSave, onDelete, onClose }: Props) {
       setQualifier(item.qualifier);
       setIcon(item.icon);
       setCategory(item.category);
+      setFoodType(item.foodType ?? null);
     }
   }, [item]);
 
@@ -60,6 +65,7 @@ export function EditModal({ visible, item, onSave, onDelete, onClose }: Props) {
       qualifier: qualifier.trim(),
       icon,
       category,
+      foodType,
     });
     onClose();
   };
@@ -121,6 +127,43 @@ export function EditModal({ visible, item, onSave, onDelete, onClose }: Props) {
                     style={[styles.categoryText, category === cat && styles.categoryTextSelected]}
                   >
                     {cat}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+
+            {/* Food Type */}
+            <Text style={styles.label}>{tr('edit.foodType')}</Text>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.categoryRow}>
+              <TouchableOpacity
+                style={[styles.categoryChip, foodType === null && styles.categorySelected]}
+                onPress={() => setFoodType(null)}
+                accessibilityLabel="Not classified"
+                accessibilityRole="radio"
+                accessibilityState={{ selected: foodType === null }}
+              >
+                <Text style={[styles.categoryText, foodType === null && styles.categoryTextSelected]}>
+                  {tr('edit.foodType.none')}
+                </Text>
+              </TouchableOpacity>
+              {FOOD_TYPES.map((ft) => (
+                <TouchableOpacity
+                  key={ft.id}
+                  style={[styles.categoryChip, foodType === ft.id && styles.categorySelected]}
+                  onPress={() => setFoodType(ft.id)}
+                  accessibilityLabel={tr(ft.labelKey as any)}
+                  accessibilityRole="radio"
+                  accessibilityState={{ selected: foodType === ft.id }}
+                >
+                  <MaterialCommunityIcons
+                    name={ft.icon as any}
+                    size={16}
+                    color={cyberpunkTheme.colors.primary}
+                  />
+                  <Text
+                    style={[styles.categoryText, foodType === ft.id && styles.categoryTextSelected]}
+                  >
+                    {tr(ft.labelKey as any)}
                   </Text>
                 </TouchableOpacity>
               ))}

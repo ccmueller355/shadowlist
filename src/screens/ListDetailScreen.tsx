@@ -18,12 +18,16 @@ import DraggableFlatList, {
   ScaleDecorator,
 } from 'react-native-draggable-flatlist';
 import { useStore } from '../store/useStore';
-import { ShoppingItem } from '../types';
+import { FoodType, ShoppingItem } from '../types';
 import { AddItemBar } from '../components/AddItemBar';
 import { ItemRow } from '../components/ItemRow';
 import { EditModal } from '../components/EditModal';
 import { SettingsModal } from '../components/SettingsModal';
+import { SuggestionDialog } from '../components/SuggestionDialog';
 import { EmptyPlaceholder } from '../components/EmptyPlaceholder';
+import { checkItem, CheckResult } from '../utils/dietEngine';
+import { DIET_PROFILES } from '../constants/diets';
+import { useTranslation } from '../i18n/useTranslation';
 import { cyberpunkTheme } from '../theme/cyberpunkTheme';
 import { useThemeStyles } from '../theme/useThemeStyles';
 import Toast from 'react-native-toast-message';
@@ -44,13 +48,17 @@ export function ListDetailScreen({ route, navigation }: Props) {
   const reorderItems = useStore((s) => s.reorderItems);
   const setSortByCategory = useStore((s) => s.setSortByCategory);
   const setTheme = useStore((s) => s.setTheme);
-  const addDemoData = useStore((s) => s.addDemoData);
+  const setActiveDiet = useStore((s) => s.setActiveDiet);
+  const setLang = useStore((s) => s.setLang);
   const clearAll = useStore((s) => s.clearAll);
+
+  const { t: tr } = useTranslation();
 
   const [search, setSearch] = useState('');
   const [editItem, setEditItem] = useState<ShoppingItem | null>(null);
   const [showEdit, setShowEdit] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const [warningItem, setWarningItem] = useState<{ name: string; dietName: string; foodType: FoodType } | null>(null);
   const insets = useSafeAreaInsets();
   const ts = useThemeStyles();
 
@@ -105,6 +113,26 @@ export function ListDetailScreen({ route, navigation }: Props) {
     return boughtItems.filter((i) => i.description.toLowerCase().includes(q));
   }, [boughtItems, search]);
 
+  // Active diet profile
+  const activeDiet = settings.activeDiet
+    ? DIET_PROFILES.find((d) => d.id === settings.activeDiet) ?? null
+    : null;
+
+  // Diet check cache — which items have warnings
+  const dietWarnings = useMemo(() => {
+    if (!activeDiet) return new Map<string, CheckResult>();
+    const map = new Map<string, CheckResult>();
+    listItems.forEach((item) => {
+      if (item.foodType && item.foodType !== 'non_food') {
+        const result = checkItem(activeDiet, item.foodType);
+        if (!result.compatible) {
+          map.set(item.id, result);
+        }
+      }
+    });
+    return map;
+  }, [activeDiet, listItems]);
+
   // Category grouping
   const groupedActive = useMemo(() => {
     if (!settings.sortByCategory) return null;
@@ -148,13 +176,20 @@ export function ListDetailScreen({ route, navigation }: Props) {
       if (inBought) {
         moveToShop(inBought.id);
         Toast.show({ type: 'success', text1: `Re-added "${description}"`, position: 'bottom' });
+        // Show diet warning for re-added item if applicable
+        if (activeDiet && inBought.foodType && inBought.foodType !== 'non_food') {
+          const result = checkItem(activeDiet, inBought.foodType);
+          if (!result.compatible) {
+            Toast.show({ type: 'info', text1: `⚠ "${description}" — ${result.warnings?.[0] ?? 'diet warning'}`, position: 'bottom' });
+          }
+        }
         return;
       }
       // 3. New item — create
       addItem({ listId, description });
       Toast.show({ type: 'success', text1: `Added "${description}"`, position: 'bottom' });
     },
-    [listId, activeItems, boughtItems, addItem, moveToShop]
+    [listId, activeItems, boughtItems, addItem, moveToShop, activeDiet]
   );
 
   // Tap suggestion in AddItemBar → re-add from bought, preserving icon/qualifier
@@ -244,6 +279,21 @@ export function ListDetailScreen({ route, navigation }: Props) {
         </TouchableOpacity>
       </View>
 
+      {/* Active diet header indicator */}
+      {activeDiet && (
+        <View style={styles.dietHeader}>
+          <MaterialCommunityIcons name="food-apple" size={16} color={cyberpunkTheme.colors.primary} />
+          <Text style={styles.dietHeaderText}>
+            {tr(activeDiet.nameKey as any)}
+          </Text>
+          {dietWarnings.size > 0 && (
+            <Text style={styles.dietWarningsText}>
+              {dietWarnings.size} warning{dietWarnings.size !== 1 ? 's' : ''}
+            </Text>
+          )}
+        </View>
+      )}
+
       {/* Content */}
       <ScrollView
         style={styles.scrollArea}
@@ -272,6 +322,16 @@ export function ListDetailScreen({ route, navigation }: Props) {
                         item={item}
                         drag={drag}
                         isActive={isActive}
+                        showDietWarning={dietWarnings.has(item.id)}
+                        onDietWarningPress={() => {
+                          if (activeDiet && item.foodType) {
+                            setWarningItem({
+                              name: item.description,
+                              dietName: tr(activeDiet.nameKey as any),
+                              foodType: item.foodType,
+                            });
+                          }
+                        }}
                         onTogglePurchased={togglePurchased}
                         onLongPress={handleLongPress}
                         onTapBought={moveToShop}
@@ -351,12 +411,31 @@ export function ListDetailScreen({ route, navigation }: Props) {
         visible={showSettings}
         currentTheme={settings.theme}
         sortByCategory={settings.sortByCategory}
-        hasDemoData={false}
+        activeDiet={settings.activeDiet ?? null}
+        lang={settings.lang}
         onThemeChange={setTheme}
         onToggleCategory={setSortByCategory}
-        onLoadDemo={addDemoData}
+        onDietChange={setActiveDiet}
+        onLangChange={setLang}
         onClearAll={clearAll}
         onClose={() => setShowSettings(false)}
+      />
+
+      {/* Diet warning suggestion dialog */}
+      <SuggestionDialog
+        visible={warningItem !== null}
+        itemName={warningItem?.name ?? ''}
+        dietName={warningItem?.dietName ?? ''}
+        suggestions={[]}
+        onAcceptSuggestion={(label) => {
+          if (warningItem) {
+            addItem({ listId, description: label });
+            Toast.show({ type: 'success', text1: `Added "${label}"`, position: 'bottom' });
+          }
+          setWarningItem(null);
+        }}
+        onAddAnyway={() => setWarningItem(null)}
+        onClose={() => setWarningItem(null)}
       />
     </View>
   );
@@ -462,5 +541,28 @@ const styles = StyleSheet.create({
   },
   bottomSpacer: {
     height: 80,
+  },
+  dietHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    backgroundColor: cyberpunkTheme.colors.surface,
+    paddingHorizontal: cyberpunkTheme.spacing.md,
+    paddingVertical: 6,
+    borderBottomWidth: 1,
+    borderBottomColor: cyberpunkTheme.colors.border,
+  },
+  dietHeaderText: {
+    fontFamily: cyberpunkTheme.fontFamily,
+    fontSize: 13,
+    fontWeight: 'bold',
+    color: cyberpunkTheme.colors.primary,
+    flex: 1,
+  },
+  dietWarningsText: {
+    fontFamily: cyberpunkTheme.fontFamily,
+    fontSize: 11,
+    color: cyberpunkTheme.colors.danger,
+    fontWeight: '600',
   },
 });

@@ -1,5 +1,8 @@
 // ─── [ NEURAL DECK v4.6 $ AI::GENERATED :: NO COPYRIGHT ] ───
-import { ShoppingList, ShoppingItem, AppSettings, NewItemParams, ThemeName } from '../types'
+import {
+  ShoppingList, ShoppingItem, AppSettings, NewItemParams, ThemeName,
+  FoodType, DietId, DietRule, DietProfile, FoodTypeInfo,
+} from '../types'
 
 describe('Type definitions', () => {
   describe('ShoppingList', () => {
@@ -91,6 +94,121 @@ describe('Type definitions', () => {
       expect(params.qualifier).toBe('200g')
       expect(params.icon).toBe('food-variant')
       expect(params.category).toBe('Groceries')
+    })
+  })
+
+  describe('FoodType', () => {
+    it('has 13 string literal values', () => {
+      const types: FoodType[] = [
+        'meat', 'fish', 'egg', 'dairy', 'grain', 'sugar', 'fruit',
+        'vegetable', 'legume', 'fat', 'beverage', 'supplement', 'non_food',
+      ]
+      expect(types).toHaveLength(13)
+    })
+  })
+
+  describe('DietId', () => {
+    it('has 7 string literal values', () => {
+      const ids: DietId[] = ['keto', 'low-carb', 'slow-carb', 'vegetarian', 'vegan', 'gluten-free', 'paleo']
+      expect(ids).toHaveLength(7)
+    })
+  })
+
+  describe('DietRule', () => {
+    it('accepts forbidden food types', () => {
+      const rule: DietRule = { forbid: ['grain', 'sugar'] }
+      expect(rule.forbid).toContain('grain')
+    })
+
+    it('accepts optional alternatives', () => {
+      const rule: DietRule = { forbid: ['grain'], alternatives: ['vegetable', 'fruit'] }
+      expect(rule.alternatives).toHaveLength(2)
+    })
+  })
+
+  describe('DietProfile', () => {
+    it('accepts a complete profile', () => {
+      const profile: DietProfile = {
+        id: 'keto',
+        nameKey: 'diet.keto',
+        descriptionKey: 'diet.keto.desc',
+        rules: [{ forbid: ['grain', 'sugar'] }],
+      }
+      expect(profile.id).toBe('keto')
+      expect(profile.rules[0].forbid).toContain('grain')
+    })
+  })
+
+  describe('FoodTypeInfo', () => {
+    it('accepts a complete food type info', () => {
+      const info: FoodTypeInfo = {
+        id: 'meat',
+        labelKey: 'foodType.meat',
+        icon: 'food-drumstick-outline',
+      }
+      expect(info.id).toBe('meat')
+      expect(info.icon).toBeTruthy()
+    })
+  })
+
+  describe('AppSettings extended', () => {
+    it('accepts activeDiet and lang fields', () => {
+      const settings: AppSettings = {
+        theme: 'fixer',
+        sortByCategory: false,
+        defaultIcon: 'cart',
+        activeDiet: 'keto',
+        lang: 'de',
+      }
+      expect(settings.activeDiet).toBe('keto')
+      expect(settings.lang).toBe('de')
+    })
+
+    it('allows activeDiet to be null (no diet)', () => {
+      const settings: AppSettings = {
+        theme: 'fixer',
+        sortByCategory: false,
+        defaultIcon: 'cart',
+        activeDiet: null,
+        lang: 'en',
+      }
+      expect(settings.activeDiet).toBeNull()
+    })
+  })
+
+  describe('ShoppingItem extended', () => {
+    it('accepts optional foodType', () => {
+      const item: ShoppingItem = {
+        id: 'item-3',
+        listId: 'list-1',
+        description: 'Chicken',
+        qualifier: '',
+        icon: 'food-drumstick-outline',
+        purchased: false,
+        order: 0,
+        category: null,
+        foodType: 'meat',
+        createdAt: 1000,
+        updatedAt: 1000,
+      }
+      expect(item.foodType).toBe('meat')
+    })
+
+    it('allows foodType to be null', () => {
+      const item: ShoppingItem = {
+        id: 'item-4',
+        listId: 'list-1',
+        description: 'Sponge',
+        qualifier: '',
+        icon: 'cart',
+        purchased: false,
+        order: 1,
+        category: null,
+        foodType: null,
+        createdAt: 1000,
+        updatedAt: 1000,
+      }
+      expect(item.foodType).toBeNull()
     })
   })
 })

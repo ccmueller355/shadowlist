@@ -10,6 +10,8 @@ interface Props {
   item: ShoppingItem;
   drag?: () => void;
   isActive?: boolean;
+  showDietWarning?: boolean;
+  onDietWarningPress?: () => void;
   onTogglePurchased: (id: string) => void;
   onLongPress: (item: ShoppingItem) => void;
   onTapBought: (id: string) => void;
@@ -20,6 +22,8 @@ function ItemRowComponent({
   item,
   drag,
   isActive,
+  showDietWarning,
+  onDietWarningPress,
   onTogglePurchased,
   onLongPress,
   onTapBought,
@@ -122,6 +126,18 @@ function ItemRowComponent({
         <Text style={styles.categoryBadge} numberOfLines={1}>
           {item.category}
         </Text>
+      )}
+
+      {/* Diet warning badge */}
+      {showDietWarning && !isBought && (
+        <TouchableOpacity
+          onPress={onDietWarningPress}
+          style={styles.warningBadge}
+          accessibilityLabel="Diet warning: item may not be compatible with active diet"
+          hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+        >
+          <MaterialCommunityIcons name="alert-circle" size={20} color={cyberpunkTheme.colors.danger} />
+        </TouchableOpacity>
       )}
 
       {/* Checkbox */}
@@ -231,5 +247,8 @@ const styles = StyleSheet.create({
   },
   checkboxChecked: {
     backgroundColor: cyberpunkTheme.colors.checkedBg,
+  },
+  warningBadge: {
+    padding: 2,
   },
 });

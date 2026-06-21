@@ -48,10 +48,13 @@ export async function loadAllData(): Promise<{
   return {
     lists,
     items,
-    settings: settings || {
+    settings: {
       theme: 'fixer',
       sortByCategory: false,
       defaultIcon: 'cart',
+      activeDiet: null,
+      lang: 'en',
+      ...(settings || {}),
     },
   };
 }

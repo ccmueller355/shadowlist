@@ -36,6 +36,8 @@ export function HomeScreen({ navigation }: Props) {
   const settings = useStore((s) => s.settings);
   const setTheme = useStore((s) => s.setTheme);
   const setSortByCategory = useStore((s) => s.setSortByCategory);
+  const setActiveDiet = useStore((s) => s.setActiveDiet);
+  const setLang = useStore((s) => s.setLang);
   const clearAll = useStore((s) => s.clearAll);
 
   const [showNewListInput, setShowNewListInput] = useState(false);
@@ -164,10 +166,12 @@ export function HomeScreen({ navigation }: Props) {
         visible={showSettings}
         currentTheme={settings.theme}
         sortByCategory={settings.sortByCategory}
-        hasDemoData={false}
+        activeDiet={settings.activeDiet ?? null}
+        lang={settings.lang}
         onThemeChange={setTheme}
         onToggleCategory={setSortByCategory}
-        onLoadDemo={addDemoData}
+        onDietChange={setActiveDiet}
+        onLangChange={setLang}
         onClearAll={clearAll}
         onClose={() => setShowSettings(false)}
       />

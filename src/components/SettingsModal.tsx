@@ -9,20 +9,25 @@ import {
   StyleSheet,
   Alert,
   BackHandler,
+  ScrollView,
 } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { ThemeName } from '../types';
+import { ThemeName, AppLang, DietId } from '../types';
 import { useAppTheme } from '../theme/useTheme';
 import { themes } from '../theme/themes';
+import { DIET_PROFILES } from '../constants/diets';
+import { useTranslation } from '../i18n/useTranslation';
 
 interface Props {
   visible: boolean;
   currentTheme: ThemeName;
   sortByCategory: boolean;
-  hasDemoData: boolean;
+  activeDiet: DietId | null;
+  lang: AppLang;
   onThemeChange: (theme: ThemeName) => void;
   onToggleCategory: (value: boolean) => void;
-  onLoadDemo: () => void;
+  onDietChange: (dietId: DietId | null) => void;
+  onLangChange: (lang: AppLang) => void;
   onClearAll: () => void;
   onClose: () => void;
 }
@@ -31,14 +36,17 @@ export function SettingsModal({
   visible,
   currentTheme,
   sortByCategory,
-  hasDemoData,
+  activeDiet,
+  lang,
   onThemeChange,
   onToggleCategory,
-  onLoadDemo,
+  onDietChange,
+  onLangChange,
   onClearAll,
   onClose,
 }: Props) {
   const t = useAppTheme();
+  const { t: tr } = useTranslation();
 
   // Back button → close modal
   useEffect(() => {
@@ -67,108 +75,171 @@ export function SettingsModal({
   };
 
   const themeEntries = Object.entries(themes) as [ThemeName, typeof themes.fixer][];
+  const langOptions: { key: AppLang; label: string }[] = [
+    { key: 'en', label: tr('settings.language.en') },
+    { key: 'de', label: tr('settings.language.de') },
+  ];
 
   return (
     <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose}>
       <View style={styles.overlay}>
-        <View style={styles.container}>
-          <View style={styles.header}>
-            <Text style={styles.title}>Settings</Text>
-            <TouchableOpacity onPress={onClose}>
-              <MaterialCommunityIcons name="close" size={24} color={t.colors.textPrimary} />
-            </TouchableOpacity>
-          </View>
-
-          {/* Theme picker */}
-          <Text style={styles.sectionLabel}>THEME</Text>
-          {themeEntries.map(([key, theme]) => {
-            const active = key === currentTheme;
-            return (
+        <ScrollView style={styles.scrollContainer} contentContainerStyle={styles.scrollContent}>
+          <View style={styles.container}>
+            <View style={styles.header}>
+              <Text style={styles.title}>Settings</Text>
               <TouchableOpacity
-                key={key}
-                style={[styles.themeRow, active && styles.themeRowActive]}
-                onPress={() => onThemeChange(key)}
+                onPress={onClose}
+                accessibilityLabel="Close settings"
               >
-                <View style={styles.themeInfo}>
-                  <Text style={[styles.themeLabel, active && styles.themeLabelActive]}>
-                    {theme.label}
-                  </Text>
-                  <Text style={styles.themeDesc}>{theme.description}</Text>
-                </View>
-                <View style={[styles.radio, active && styles.radioActive]}>
-                  {active && <View style={styles.radioDot} />}
-                </View>
+                <MaterialCommunityIcons name="close" size={24} color={t.colors.textPrimary} />
               </TouchableOpacity>
-            );
-          })}
-
-          <View style={styles.divider} />
-
-          {/* Sort by Category */}
-          <View style={styles.row}>
-            <View style={styles.rowLeft}>
-              <MaterialCommunityIcons
-                name="sort-variant"
-                size={22}
-                color={t.colors.primary}
-              />
-              <Text style={styles.rowLabel}>Sort by Category</Text>
             </View>
-            <Switch
-              value={sortByCategory}
-              onValueChange={onToggleCategory}
-              trackColor={{
-                false: t.colors.border,
-                true: t.colors.primary,
-              }}
-              thumbColor={t.colors.surface}
-            />
-          </View>
 
-          {/* Load Demo Data */}
-          <TouchableOpacity
-            style={styles.row}
-            onPress={() => {
-              onLoadDemo();
-              onClose();
-            }}
-          >
-            <View style={styles.rowLeft}>
-              <MaterialCommunityIcons
-                name="database-import"
-                size={22}
-                color={t.colors.primary}
+            {/* Theme picker */}
+            <Text style={styles.sectionLabel}>THEME</Text>
+            {themeEntries.map(([key, theme]) => {
+              const active = key === currentTheme;
+              return (
+                <TouchableOpacity
+                  key={key}
+                  style={[styles.themeRow, active && styles.themeRowActive]}
+                  onPress={() => onThemeChange(key)}
+                  accessibilityLabel={`Theme: ${theme.label}`}
+                  accessibilityRole="radio"
+                  accessibilityState={{ selected: active }}
+                >
+                  <View style={styles.themeInfo}>
+                    <Text style={[styles.themeLabel, active && styles.themeLabelActive]}>
+                      {theme.label}
+                    </Text>
+                    <Text style={styles.themeDesc}>{theme.description}</Text>
+                  </View>
+                  <View style={[styles.radio, active && styles.radioActive]}>
+                    {active && <View style={styles.radioDot} />}
+                  </View>
+                </TouchableOpacity>
+              );
+            })}
+
+            <View style={styles.divider} />
+
+            {/* Sort by Category */}
+            <View style={styles.row}>
+              <View style={styles.rowLeft}>
+                <MaterialCommunityIcons
+                  name="sort-variant"
+                  size={22}
+                  color={t.colors.primary}
+                />
+                <Text style={styles.rowLabel}>Sort by Category</Text>
+              </View>
+              <Switch
+                value={sortByCategory}
+                onValueChange={onToggleCategory}
+                trackColor={{
+                  false: t.colors.border,
+                  true: t.colors.primary,
+                }}
+                thumbColor={t.colors.surface}
+                accessibilityLabel="Toggle sort by category"
               />
-              <Text style={styles.rowLabel}>Load Demo Data</Text>
             </View>
-            <MaterialCommunityIcons
-              name="chevron-right"
-              size={22}
-              color={t.colors.textSecondary}
-            />
-          </TouchableOpacity>
 
-          <View style={styles.divider} />
+            <View style={styles.divider} />
 
-          {/* Clear All Data */}
-          <TouchableOpacity style={styles.row} onPress={handleClearAll}>
-            <View style={styles.rowLeft}>
+            {/* Diet picker */}
+            <Text style={styles.sectionLabel}>{tr('settings.diet')}</Text>
+            <TouchableOpacity
+              style={[styles.themeRow, activeDiet === null && styles.themeRowActive]}
+              onPress={() => onDietChange(null)}
+              accessibilityLabel="No diet selected"
+              accessibilityRole="radio"
+              accessibilityState={{ selected: activeDiet === null }}
+            >
+              <View style={styles.themeInfo}>
+                <Text style={[styles.themeLabel, activeDiet === null && styles.themeLabelActive]}>
+                  {tr('settings.diet.none')}
+                </Text>
+                <Text style={styles.themeDesc}>No dietary restrictions</Text>
+              </View>
+              <View style={[styles.radio, activeDiet === null && styles.radioActive]}>
+                {activeDiet === null && <View style={styles.radioDot} />}
+              </View>
+            </TouchableOpacity>
+            {DIET_PROFILES.map((diet) => {
+              const active = activeDiet === diet.id;
+              return (
+                <TouchableOpacity
+                  key={diet.id}
+                  style={[styles.themeRow, active && styles.themeRowActive]}
+                  onPress={() => onDietChange(diet.id)}
+                  accessibilityLabel={`Diet: ${tr(diet.nameKey as any)}`}
+                  accessibilityRole="radio"
+                  accessibilityState={{ selected: active }}
+                >
+                  <View style={styles.themeInfo}>
+                    <Text style={[styles.themeLabel, active && styles.themeLabelActive]}>
+                      {tr(diet.nameKey as any)}
+                    </Text>
+                    <Text style={styles.themeDesc}>{tr(diet.descriptionKey as any)}</Text>
+                  </View>
+                  <View style={[styles.radio, active && styles.radioActive]}>
+                    {active && <View style={styles.radioDot} />}
+                  </View>
+                </TouchableOpacity>
+              );
+            })}
+
+            <View style={styles.divider} />
+
+            {/* Language toggle */}
+            <Text style={styles.sectionLabel}>{tr('settings.language')}</Text>
+            <View style={styles.langRow}>
+              {langOptions.map((opt) => {
+                const active = lang === opt.key;
+                return (
+                  <TouchableOpacity
+                    key={opt.key}
+                    style={[styles.langChip, active && styles.langChipActive]}
+                    onPress={() => onLangChange(opt.key)}
+                    accessibilityLabel={`Language: ${opt.label}`}
+                    accessibilityRole="radio"
+                    accessibilityState={{ selected: active }}
+                  >
+                    <Text style={[styles.langText, active && styles.langTextActive]}>
+                      {opt.label}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+
+            <View style={styles.divider} />
+
+            {/* Clear All Data */}
+            <TouchableOpacity
+              style={styles.row}
+              onPress={handleClearAll}
+              accessibilityLabel="Clear all data"
+            >
+              <View style={styles.rowLeft}>
+                <MaterialCommunityIcons
+                  name="delete-forever"
+                  size={22}
+                  color={t.colors.danger}
+                />
+                <Text style={[styles.rowLabel, styles.dangerText]}>Clear All Data</Text>
+              </View>
               <MaterialCommunityIcons
-                name="delete-forever"
+                name="chevron-right"
                 size={22}
                 color={t.colors.danger}
               />
-              <Text style={[styles.rowLabel, styles.dangerText]}>Clear All Data</Text>
-            </View>
-            <MaterialCommunityIcons
-              name="chevron-right"
-              size={22}
-              color={t.colors.danger}
-            />
-          </TouchableOpacity>
+            </TouchableOpacity>
 
-          <Text style={styles.footer}>ShadowList v1.0.0</Text>
-        </View>
+            <Text style={styles.footer}>ShadowList v0.9.1</Text>
+          </View>
+        </ScrollView>
       </View>
     </Modal>
   );
@@ -179,13 +250,20 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'rgba(0,0,0,0.5)',
     justifyContent: 'center',
+  },
+  scrollContainer: {
+    flex: 1,
+  },
+  scrollContent: {
+    justifyContent: 'center',
     paddingHorizontal: 24,
+    paddingVertical: 60,
   },
   container: {
-    backgroundColor: '#ffffff', // overridden dynamically
+    backgroundColor: '#ffffff',
     borderRadius: 16,
     borderWidth: 1,
-    borderColor: '#cccccc', // overridden dynamically
+    borderColor: '#cccccc',
     padding: 24,
   },
   header: {
@@ -198,46 +276,42 @@ const styles = StyleSheet.create({
     fontFamily: 'monospace',
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#000000',
   },
   sectionLabel: {
     fontFamily: 'monospace',
     fontSize: 11,
-    color: '#888888',
-    marginBottom: 8,
     fontWeight: 'bold',
+    color: '#888',
+    letterSpacing: 1.5,
+    marginBottom: 8,
+    marginTop: 4,
   },
   themeRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
     paddingVertical: 10,
     paddingHorizontal: 12,
     borderRadius: 8,
     marginBottom: 4,
-    borderWidth: 1,
-    borderColor: 'transparent',
   },
   themeRowActive: {
-    borderColor: '#cc4444',
+    backgroundColor: '#f0f0ff',
   },
   themeInfo: {
     flex: 1,
-    marginRight: 12,
   },
   themeLabel: {
     fontFamily: 'monospace',
-    fontSize: 14,
-    color: '#555555',
+    fontSize: 15,
+    fontWeight: '600',
   },
   themeLabelActive: {
-    fontWeight: 'bold',
-    color: '#cc4444',
+    color: '#6c5ce7',
   },
   themeDesc: {
     fontFamily: 'monospace',
-    fontSize: 11,
-    color: '#888888',
+    fontSize: 12,
+    color: '#888',
     marginTop: 2,
   },
   radio: {
@@ -245,48 +319,71 @@ const styles = StyleSheet.create({
     height: 20,
     borderRadius: 10,
     borderWidth: 2,
-    borderColor: '#cccccc',
+    borderColor: '#ccc',
     alignItems: 'center',
     justifyContent: 'center',
   },
   radioActive: {
-    borderColor: '#cc4444',
+    borderColor: '#6c5ce7',
   },
   radioDot: {
     width: 10,
     height: 10,
     borderRadius: 5,
-    backgroundColor: '#cc4444',
+    backgroundColor: '#6c5ce7',
+  },
+  divider: {
+    height: 1,
+    backgroundColor: '#e0e0e0',
+    marginVertical: 16,
   },
   row: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 16,
+    justifyContent: 'space-between',
+    paddingVertical: 6,
   },
   rowLeft: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    gap: 10,
   },
   rowLabel: {
     fontFamily: 'monospace',
-    fontSize: 14,
-    color: '#000000',
+    fontSize: 15,
   },
   dangerText: {
-    color: '#cc0000',
+    color: '#e74c3c',
   },
-  divider: {
-    height: 1,
-    backgroundColor: '#cccccc',
-    marginVertical: 8,
+  langRow: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+  langChip: {
+    flex: 1,
+    paddingVertical: 10,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    alignItems: 'center',
+  },
+  langChipActive: {
+    borderColor: '#6c5ce7',
+    backgroundColor: '#f0f0ff',
+  },
+  langText: {
+    fontFamily: 'monospace',
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  langTextActive: {
+    color: '#6c5ce7',
   },
   footer: {
     fontFamily: 'monospace',
     fontSize: 11,
-    color: '#888888',
+    color: '#aaa',
     textAlign: 'center',
-    marginTop: 24,
+    marginTop: 20,
   },
 });

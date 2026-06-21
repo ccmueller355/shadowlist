@@ -94,6 +94,36 @@ export const SHOPPING_ICONS = [
   { name: 'clipboard-list', label: 'List' },
 ];
 
+// Map icon names to FoodType for pre-selection when user picks an icon
+export const ICON_FOOD_TYPE_MAP: Record<string, string> = {
+  // Meat / Fish / Egg / Dairy
+  'food-drumstick-outline': 'meat',
+  'fish': 'fish',
+  'egg-outline': 'egg',
+  'cheese': 'dairy',
+
+  // Grain / Sugar / Fruit / Vegetable
+  'bread-slice-outline': 'grain',
+  'candy': 'sugar',
+  'fruit-cherries': 'fruit',
+  'carrot': 'vegetable',
+
+  // Legume / Fat
+  'seed-outline': 'legume',
+  'oil': 'fat',
+
+  // Beverages
+  'cup': 'beverage',
+  'bottle-wine': 'beverage',
+  'coffee': 'beverage',
+  'water': 'beverage',
+
+  // Supplement / Non-food
+  'pill': 'supplement',
+  'medication': 'supplement',
+  'package-variant': 'non_food',
+};
+
 export const CATEGORIES = [
   'Groceries',
   'Beverages',
