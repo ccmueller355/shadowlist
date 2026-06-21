@@ -1,5 +1,39 @@
 # Changelog
 
+## v0.9.1 — 2026-06-21
+
+### Added
+- **Dietary Rules feature** (spec 001) — 7 diet profiles (keto, low-carb, slow-carb, vegetarian, vegan, gluten-free, paleo)
+- **13 FoodType constants** — `src/constants/foodTypes.ts` with icons and i18n keys
+- **Diet engine** — `src/utils/dietEngine.ts` — pure function `checkItem(diet, foodType)` with full test coverage
+- **Diet picker** in SettingsModal — select active diet or "No Diet"
+- **Language toggle** in SettingsModal — EN/DE switching
+- **Food type tag** in EditModal — assign/change food type per item with icon chips
+- **⚠ Warning badge** on ItemRow — red alert icon when item incompatible with active diet
+- **SuggestionDialog** — tap warning badge to see alternatives
+- **Diet header** in ListDetailScreen — shows active diet name and incompatible item count
+- **i18n system** — `src/i18n/en.ts`, `src/i18n/de.ts`, `useTranslation()` hook with `{placeholder}` interpolation
+- **Zustand store actions** — `setActiveDiet`, `setLang` with AsyncStorage persistence
+- **32 new tests** — diet engine, food types, diet profiles, i18n, icon→foodType mapping
+- **CI TypeScript check** — `npx tsc --noEmit` runs on push to main
+- **`npm run typecheck`** script + auto-sync `npm version` script for `app.json`
+
+### Changed
+- **SettingsModal** — diet picker, language toggle; removed "Load Demo Data" button
+- **EditModal** — food type selector added after category; `foodType` saved with item
+- **ItemRow** — optional `showDietWarning` + `onDietWarningPress` props
+- **Icon constants** — added `ICON_FOOD_TYPE_MAP` connecting icon names to food types
+- **AsyncStorage** — migration-safe settings fallback with `activeDiet` + `lang` defaults
+- **Zustand store** — `DEFAULT_SETTINGS` includes `activeDiet: null` and `lang: 'en'`
+- **tsconfig.json** — excludes `src/__tests__` from `tsc` check
+- **docs/plans/backlog.md** — pre-release checklist, next session tasks
+
+### Fixed
+- **TypeScript strict** — demo data items missing `foodType` field (added `foodType: null`)
+- **Variable ordering** — `listItems` used before declaration in ListDetailScreen
+
+---
+
 ## v0.9.0 — 2026-06-17
 
 ### Added

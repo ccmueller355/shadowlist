@@ -69,6 +69,35 @@ Items to resolve before the first public release. Requires research — exact re
 - [ ] Add tappable "About" entry below "Clear All Data" — shows version, MIT license, GitHub link, open-source acknowledgements
 - [ ] Keep existing footer version string or replace with expanded About view
 
+### 📝 EditModal layout — name/qualifier should be top
+
+- [ ] Move **Description** and **Qualifier** fields above the Icon picker in EditModal
+- [ ] Current order: Icon → Description → Qualifier → Category → Food Type (forces scroll to reach the name)
+- [ ] Target order: Description → Qualifier → Food Type → Category → Icon (most-edited fields on top)
+- [ ] Alternatively: keep icon picker collapsible or smaller (single row, not grid)
+
+### 🗑️ Icon set cleanup
+
+- [ ] Audit all 54 icons for duplicates and dead entries
+  - `car` + `oil` → keep `car` only (auto covers both)
+  - `cake` + `balloon` → duplicate party vibes, keep one
+  - `screwdriver` + `wrench` + `hammer` → DIY overlap, trim to 2
+  - `tshirt-crew` + `hanger` + `shoe-sneaker` + `sunglasses` → clothing overload, trim to 2
+  - `flower` + `tree` + `sprinkler` → gardening, keep `flower` only
+  - `bike` + `dumbbell` + `campfire` → sports, keep `dumbbell` only
+  - `broom` + `soap` + `toilet-paper` + `spray-bottle` + `silverware` + `pot` → household, trim to 3
+- [ ] Check which icons fail to render (??? icons — possible broken MaterialCommunityIcons names)
+- [ ] Target: ~40 clean icons, no duplicates, every icon renders
+- [ ] Update demo data to use remaining icons
+- [ ] Propose final set as a table before cutting
+
+### 🚨 Diet warnings hardcoded English
+
+- [ ] `dietEngine.ts` — return structured data (`{ foodType, dietId }`) instead of formatted warning strings
+- [ ] `ListDetailScreen.tsx` — format diet warnings via `tr()` with `{foodType}` and `{diet}` interpolation
+- [ ] `ItemRow.tsx` — warning badge accessibility label should be localized
+- [ ] Add i18n keys: `warning.incompatibleDetailed` (e.g. "Meat is not compatible with Vegetarian")
+
 ### 🌐 Full i18n coverage
 
 - [ ] Internationalize all remaining hardcoded UI strings in:
