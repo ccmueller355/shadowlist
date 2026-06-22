@@ -1,5 +1,19 @@
 # Changelog
 
+## v0.9.2 — 2026-06-22
+
+### Added
+- **Bilingual demo data** — `src/constants/demoData.ts` now exports EN (`DEMO_LISTS_EN`/`DEMO_ITEMS_EN`) and DE (`DEMO_LISTS_DE`/`DEMO_ITEMS_DE`) sets
+- **Language-aware demo loading** — `addDemoData()` reads current `lang` setting and loads matching language version; re-loading replaces old demo data with the new language's data
+- **Food types + matching icons on all demo items** — 15 items across 2 lists with proper `foodType` and diet-aware icons (e.g., Bread→grain, Chicken→meat, Apples→fruit)
+- **`getDemoData(lang)` helper** — exported from `demoData.ts` for programmatic language selection
+
+### Changed
+- **Demo item icons** — updated from generic (`food-variant`, `cart`) to food-type-matched icons (`carrot`, `cheese`, `bread-slice-outline`, `fruit-cherries`, etc.)
+- **`addDemoData` store action** — replaces existing demo lists/items instead of skipping duplicates, enabling clean language switching
+
+---
+
 ## v0.9.1 — 2026-06-21
 
 ### Added

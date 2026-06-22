@@ -3,7 +3,7 @@ import { create } from 'zustand';
 import { ShoppingList, ShoppingItem, AppSettings, NewItemParams, AppLang, DietId } from '../types';
 import { loadAllData, saveLists, saveItems, saveSettings, clearAllData } from '../storage/asyncStorage';
 import { generateId } from '../utils/uuid';
-import { DEMO_LISTS, DEMO_ITEMS } from '../constants/demoData';
+import { getDemoData } from '../constants/demoData';
 
 interface ShoppingState {
   lists: ShoppingList[];
@@ -208,12 +208,12 @@ export const useStore = create<ShoppingState>((set, get) => ({
   },
 
   addDemoData: () => {
-    const existingIds = new Set(get().lists.map((l) => l.id));
-    const newLists = DEMO_LISTS.filter((l) => !existingIds.has(l.id));
-    const newItems = DEMO_ITEMS.filter((i) => !get().items.some((x) => x.id === i.id));
-    if (newLists.length === 0 && newItems.length === 0) return;
-    const lists = [...get().lists, ...newLists];
-    const items = [...get().items, ...newItems];
+    const { lists: demoLists, items: demoItems } = getDemoData(get().settings.lang);
+    // Replace existing demo data with current language version
+    const otherLists = get().lists.filter((l) => !l.id.startsWith('list_demo_'));
+    const otherItems = get().items.filter((i) => !i.id.startsWith('item_demo_'));
+    const lists = [...otherLists, ...demoLists];
+    const items = [...otherItems, ...demoItems];
     set({ lists, items });
     saveLists(lists);
     saveItems(items);

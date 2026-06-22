@@ -98,6 +98,12 @@ Items to resolve before the first public release. Requires research — exact re
 - [ ] `ItemRow.tsx` — warning badge accessibility label should be localized
 - [ ] Add i18n keys: `warning.incompatibleDetailed` (e.g. "Meat is not compatible with Vegetarian")
 
+### 🥩 Demo data food types
+
+- [x] Assign food types and matching icons to demo items in `src/constants/demoData.ts`
+- [x] E.g. Milk → `dairy` + `cheese` icon, Chicken → `meat` + `food-drumstick-outline`, etc.
+- [x] Makes the diet warning feature testable immediately without manual tagging
+
 ### 🌐 Full i18n coverage
 
 - [ ] Internationalize all remaining hardcoded UI strings in:
