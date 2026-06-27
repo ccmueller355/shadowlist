@@ -5,8 +5,8 @@ import { de } from '../i18n/de';
 describe('i18n', () => {
   const requiredKeys = [
     // Diet names
-    'diet.keto', 'diet.lowCarb', 'diet.slowCarb', 'diet.vegetarian',
-    'diet.vegan', 'diet.glutenFree', 'diet.paleo',
+    'diet.keto.label', 'diet.lowCarb.label', 'diet.slowCarb.label', 'diet.vegetarian.label',
+    'diet.vegan.label', 'diet.glutenFree.label', 'diet.paleo.label',
     // Diet descriptions
     'diet.keto.desc', 'diet.lowCarb.desc', 'diet.slowCarb.desc',
     'diet.vegetarian.desc', 'diet.vegan.desc', 'diet.glutenFree.desc',

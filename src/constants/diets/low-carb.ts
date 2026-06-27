@@ -3,7 +3,7 @@ import { DietProfile } from '../../types';
 
 export const lowCarb: DietProfile = {
   id: 'low-carb',
-  nameKey: 'diet.lowCarb',
+  nameKey: 'diet.lowCarb.label',
   descriptionKey: 'diet.lowCarb.desc',
   rules: [
     { forbid: ['grain', 'sugar', 'fruit'] },

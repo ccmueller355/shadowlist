@@ -1,20 +1,34 @@
 // ─── [ NEURAL DECK v4.6 $ AI::GENERATED :: NO COPYRIGHT ] ───
 export const de = {
   diet: {
-    keto: 'Keto',
-    'keto.desc': 'Low-Carb, High-Fat. Kein Getreide, Zucker, Obst oder Hülsenfrüchte.',
-    lowCarb: 'Low Carb',
-    'lowCarb.desc': 'Reduzierte Kohlenhydrate. Kein Getreide, Zucker oder Obst.',
-    slowCarb: 'Slow Carb',
-    'slowCarb.desc': 'Tim Ferriss Stil. Kein Getreide, Milchprodukte, Zucker oder Obst.',
-    vegetarian: 'Vegetarisch',
-    'vegetarian.desc': 'Kein Fleisch oder Fisch.',
-    vegan: 'Vegan',
-    'vegan.desc': 'Keine tierischen Produkte. Kein Fleisch, Fisch, Milchprodukte oder Eier.',
-    glutenFree: 'Glutenfrei',
-    'glutenFree.desc': 'Keine Getreideprodukte.',
-    paleo: 'Paleo',
-    'paleo.desc': 'Steinzeit-Ernährung. Kein Getreide, Milchprodukte oder Hülsenfrüchte.',
+    keto: {
+      label: 'Keto',
+      desc: 'Low-Carb, High-Fat. Kein Getreide, Zucker, Obst oder Hülsenfrüchte.',
+    },
+    lowCarb: {
+      label: 'Low Carb',
+      desc: 'Wenig Kohlenhydrate. Kein Getreide, Zucker oder Obst.',
+    },
+    slowCarb: {
+      label: 'Slow Carb',
+      desc: 'Tim Ferriss Stil. Kein Getreide, Milch, Zucker oder Obst.',
+    },
+    vegetarian: {
+      label: 'Vegetarisch',
+      desc: 'Kein Fleisch oder Fisch.',
+    },
+    vegan: {
+      label: 'Vegan',
+      desc: 'Keine Tierprodukte. Kein Fleisch, Fisch, Milch oder Eier.',
+    },
+    glutenFree: {
+      label: 'Glutenfrei',
+      desc: 'Keine Getreideprodukte.',
+    },
+    paleo: {
+      label: 'Paleo',
+      desc: 'Steinzeit-Ernährung. Kein Getreide, Milch oder Hülsenfrüchte.',
+    },
   },
   foodType: {
     meat: 'Fleisch',

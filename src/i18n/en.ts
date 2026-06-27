@@ -1,20 +1,34 @@
 // ─── [ NEURAL DECK v4.6 $ AI::GENERATED :: NO COPYRIGHT ] ───
 export const en = {
   diet: {
-    keto: 'Keto',
-    'keto.desc': 'Low-carb, high-fat. No grains, sugar, fruit, or legumes.',
-    lowCarb: 'Low Carb',
-    'lowCarb.desc': 'Reduced carbohydrate intake. No grains, sugar, or fruit.',
-    slowCarb: 'Slow Carb',
-    'slowCarb.desc': 'Tim Ferriss style. No grains, dairy, sugar, or fruit.',
-    vegetarian: 'Vegetarian',
-    'vegetarian.desc': 'No meat or fish.',
-    vegan: 'Vegan',
-    'vegan.desc': 'No animal products. No meat, fish, dairy, or eggs.',
-    glutenFree: 'Gluten-Free',
-    'glutenFree.desc': 'No grain-based foods.',
-    paleo: 'Paleo',
-    'paleo.desc': 'Ancestral diet. No grains, dairy, or legumes.',
+    keto: {
+      label: 'Keto',
+      desc: 'Low-carb, high-fat. No grains, sugar, fruit, or legumes.',
+    },
+    lowCarb: {
+      label: 'Low Carb',
+      desc: 'Reduced carb intake. No grains, sugar, or fruit.',
+    },
+    slowCarb: {
+      label: 'Slow Carb',
+      desc: 'Tim Ferriss style. No grains, dairy, sugar, or fruit.',
+    },
+    vegetarian: {
+      label: 'Vegetarian',
+      desc: 'No meat or fish.',
+    },
+    vegan: {
+      label: 'Vegan',
+      desc: 'No animal products. No meat, fish, dairy, or eggs.',
+    },
+    glutenFree: {
+      label: 'Gluten-Free',
+      desc: 'No grain-based foods.',
+    },
+    paleo: {
+      label: 'Paleo',
+      desc: 'Ancestral diet. No grains, dairy, or legumes.',
+    },
   },
   foodType: {
     meat: 'Meat',

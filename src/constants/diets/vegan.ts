@@ -3,7 +3,7 @@ import { DietProfile } from '../../types';
 
 export const vegan: DietProfile = {
   id: 'vegan',
-  nameKey: 'diet.vegan',
+  nameKey: 'diet.vegan.label',
   descriptionKey: 'diet.vegan.desc',
   rules: [
     { forbid: ['meat', 'fish', 'dairy', 'egg'] },
