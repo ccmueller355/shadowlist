@@ -62,6 +62,8 @@ function ItemRowComponent({
       activeOpacity={0.6}
       style={[
         styles.container,
+        { backgroundColor: cyberpunkTheme.colors.surface, borderBottomColor: cyberpunkTheme.colors.border },
+        isActive && { backgroundColor: cyberpunkTheme.colors.checkedBg, shadowColor: cyberpunkTheme.colors.primary },
         isActive && styles.active,
         isBought && styles.bought,
       ]}
@@ -86,19 +88,20 @@ function ItemRowComponent({
       <View style={styles.info}>
         <View style={styles.descriptionRow}>
           <Text
-            style={[
-              styles.description,
-              isBought && styles.descriptionBought,
-            ]}
-            numberOfLines={1}
-            ellipsizeMode="tail"
+          style={[
+            styles.description,
+            { color: isBought ? cyberpunkTheme.colors.textSecondary : cyberpunkTheme.colors.textPrimary },
+            isBought && styles.descriptionBought,
+          ]}
+          numberOfLines={1}
+          ellipsizeMode="tail"
           >
             {item.description}
           </Text>
           {editingQualifier ? (
             <TextInput
               ref={qualifierRef}
-              style={styles.qualifierInput}
+              style={[styles.qualifierInput, { color: cyberpunkTheme.colors.textPrimary, borderColor: cyberpunkTheme.colors.primary, backgroundColor: cyberpunkTheme.colors.checkedBg }]}
               value={qualifierDraft}
               onChangeText={setQualifierDraft}
               onSubmitEditing={submitQualifier}
@@ -114,7 +117,7 @@ function ItemRowComponent({
               </Text>
             </TouchableOpacity>
           ) : (
-            <TouchableOpacity onPress={startEditingQualifier} style={styles.addQualifierButton}>
+            <TouchableOpacity onPress={startEditingQualifier} style={[styles.addQualifierButton, { borderColor: cyberpunkTheme.colors.border }]}>
               <MaterialCommunityIcons name="plus" size={14} color={cyberpunkTheme.colors.border} />
             </TouchableOpacity>
           )}
@@ -164,13 +167,9 @@ const styles = StyleSheet.create({
     gap: cyberpunkTheme.spacing.sm,
     paddingVertical: 10,
     paddingHorizontal: cyberpunkTheme.spacing.sm,
-    backgroundColor: cyberpunkTheme.colors.surface,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: cyberpunkTheme.colors.border,
   },
   active: {
-    backgroundColor: cyberpunkTheme.colors.checkedBg,
-    shadowColor: cyberpunkTheme.colors.primary,
     shadowOpacity: 0.2,
     shadowRadius: 4,
     elevation: 4,
@@ -190,37 +189,28 @@ const styles = StyleSheet.create({
   description: {
     fontFamily: cyberpunkTheme.fontFamily,
     fontSize: 15,
-    color: cyberpunkTheme.colors.textPrimary,
     flexShrink: 1,
   },
   descriptionBought: {
     textDecorationLine: 'line-through',
-    color: cyberpunkTheme.colors.textSecondary,
   },
   qualifier: {
     fontFamily: cyberpunkTheme.fontFamily,
     fontSize: 12,
-    color: cyberpunkTheme.colors.primary,
     fontWeight: 'bold',
   },
-  qualifierBought: {
-    color: cyberpunkTheme.colors.textSecondary,
-  },
+  qualifierBought: {},
   qualifierInput: {
     fontFamily: cyberpunkTheme.fontFamily,
     fontSize: 12,
-    color: cyberpunkTheme.colors.textPrimary,
     borderWidth: 1,
-    borderColor: cyberpunkTheme.colors.primary,
     borderRadius: 4,
     paddingHorizontal: 6,
     paddingVertical: 2,
     minWidth: 50,
-    backgroundColor: cyberpunkTheme.colors.checkedBg,
   },
   addQualifierButton: {
     borderWidth: 1,
-    borderColor: cyberpunkTheme.colors.border,
     borderStyle: 'dashed',
     borderRadius: 4,
     padding: 2,
@@ -228,8 +218,6 @@ const styles = StyleSheet.create({
   categoryBadge: {
     fontFamily: cyberpunkTheme.fontFamily,
     fontSize: 9,
-    color: cyberpunkTheme.colors.textSecondary,
-    backgroundColor: cyberpunkTheme.colors.background,
     paddingHorizontal: 4,
     paddingVertical: 2,
     borderRadius: 4,
@@ -241,13 +229,10 @@ const styles = StyleSheet.create({
     height: 24,
     borderRadius: 4,
     borderWidth: 2,
-    borderColor: cyberpunkTheme.colors.primary,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  checkboxChecked: {
-    backgroundColor: cyberpunkTheme.colors.checkedBg,
-  },
+  checkboxChecked: {},
   warningBadge: {
     padding: 2,
   },
