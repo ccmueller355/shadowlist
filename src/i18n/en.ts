@@ -69,5 +69,6 @@ export const en = {
   general: {
     save: 'Save',
     cancel: 'Cancel',
+    addItemPlaceholder: 'Search or add item...',
   },
 };

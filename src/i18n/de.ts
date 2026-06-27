@@ -69,5 +69,6 @@ export const de = {
   general: {
     save: 'Speichern',
     cancel: 'Abbrechen',
+    addItemPlaceholder: 'Suchen oder Artikel hinzufügen...',
   },
 };

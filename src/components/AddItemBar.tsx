@@ -11,6 +11,7 @@ import {
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { ShoppingItem } from '../types';
 import { debounce } from '../utils/debounce';
+import { useTranslation } from '../i18n/useTranslation';
 import { cyberpunkTheme } from '../theme/cyberpunkTheme';
 import { useAppTheme } from '../theme/useTheme';
 
@@ -23,6 +24,7 @@ interface Props {
 }
 
 export function AddItemBar({ listId, recentBought, onAddItem, onReAddItem, onSearchChange }: Props) {
+  const { t: tr } = useTranslation();
   const cyberpunkTheme = useAppTheme();
   const inputRef = useRef<TextInput>(null);
   const [text, setText] = useState('');
@@ -97,7 +99,7 @@ export function AddItemBar({ listId, recentBought, onAddItem, onReAddItem, onSea
         <TextInput
           ref={inputRef}
           style={styles.input}
-          placeholder="Search or add item..."
+          placeholder={tr('general.addItemPlaceholder')}
           placeholderTextColor={cyberpunkTheme.colors.textSecondary}
           value={text}
           onChangeText={handleChange}
