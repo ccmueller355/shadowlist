@@ -12,12 +12,6 @@ export const DEMO_LISTS_EN: ShoppingList[] = [
     createdAt: now - 86400000,
     updatedAt: now,
   },
-  {
-    id: 'list_demo_2',
-    name: 'Party Supplies',
-    createdAt: now - 43200000,
-    updatedAt: now,
-  },
 ];
 
 export const DEMO_ITEMS_EN: ShoppingItem[] = [
@@ -34,13 +28,6 @@ export const DEMO_ITEMS_EN: ShoppingItem[] = [
   { id: 'item_demo_8', listId: 'list_demo_1', description: 'Eggs',          qualifier: '12x',   icon: 'egg-outline',           foodType: 'egg',        purchased: true,  order: 1, category: 'Groceries',  createdAt: now - 172800000, updatedAt: now },
   { id: 'item_demo_9', listId: 'list_demo_1', description: 'Salmon',        qualifier: '300g',  icon: 'fish',                  foodType: 'fish',       purchased: true,  order: 2, category: 'Groceries',  createdAt: now - 172800000, updatedAt: now },
   { id: 'item_demo_10', listId: 'list_demo_1', description: 'Butter',       qualifier: '250g',  icon: 'cheese',                foodType: 'dairy',      purchased: true,  order: 3, category: 'Groceries',  createdAt: now - 172800000, updatedAt: now },
-
-  // --- Party Supplies ---
-  { id: 'item_demo_11', listId: 'list_demo_2', description: 'Chips',        qualifier: '3 bags', icon: 'food-variant',         foodType: 'grain',      purchased: false, order: 0, category: 'General',    createdAt: now, updatedAt: now },
-  { id: 'item_demo_12', listId: 'list_demo_2', description: 'Soda',         qualifier: '6x',     icon: 'bottle-wine',           foodType: 'beverage',   purchased: false, order: 1, category: 'Beverages',  createdAt: now, updatedAt: now },
-  { id: 'item_demo_13', listId: 'list_demo_2', description: 'Ice Cream',    qualifier: '1 tub',  icon: 'candy',                 foodType: 'sugar',      purchased: false, order: 2, category: 'Groceries',  createdAt: now, updatedAt: now },
-  { id: 'item_demo_14', listId: 'list_demo_2', description: 'Cups',         qualifier: '20x',    icon: 'cup',                   foodType: 'non_food',   purchased: false, order: 3, category: 'Beverages',  createdAt: now, updatedAt: now },
-  { id: 'item_demo_15', listId: 'list_demo_2', description: 'Napkins',      qualifier: '1 pack', icon: 'toilet-paper',          foodType: 'non_food',   purchased: true,  order: 0, category: 'Household',  createdAt: now - 86400000, updatedAt: now },
 ];
 
 // ─── GERMAN DEMO DATA ───
@@ -50,12 +37,6 @@ export const DEMO_LISTS_DE: ShoppingList[] = [
     id: 'list_demo_1',
     name: 'Wocheneinkauf',
     createdAt: now - 86400000,
-    updatedAt: now,
-  },
-  {
-    id: 'list_demo_2',
-    name: 'Partybedarf',
-    createdAt: now - 43200000,
     updatedAt: now,
   },
 ];
@@ -74,13 +55,6 @@ export const DEMO_ITEMS_DE: ShoppingItem[] = [
   { id: 'item_demo_8', listId: 'list_demo_1', description: 'Eier',          qualifier: '12x',   icon: 'egg-outline',           foodType: 'egg',        purchased: true,  order: 1, category: 'Groceries',  createdAt: now - 172800000, updatedAt: now },
   { id: 'item_demo_9', listId: 'list_demo_1', description: 'Lachs',         qualifier: '300g',  icon: 'fish',                  foodType: 'fish',       purchased: true,  order: 2, category: 'Groceries',  createdAt: now - 172800000, updatedAt: now },
   { id: 'item_demo_10', listId: 'list_demo_1', description: 'Butter',       qualifier: '250g',  icon: 'cheese',                foodType: 'dairy',      purchased: true,  order: 3, category: 'Groceries',  createdAt: now - 172800000, updatedAt: now },
-
-  // --- Partybedarf ---
-  { id: 'item_demo_11', listId: 'list_demo_2', description: 'Chips',        qualifier: '3 bags', icon: 'food-variant',         foodType: 'grain',      purchased: false, order: 0, category: 'General',    createdAt: now, updatedAt: now },
-  { id: 'item_demo_12', listId: 'list_demo_2', description: 'Limonade',     qualifier: '6x',     icon: 'bottle-wine',           foodType: 'beverage',   purchased: false, order: 1, category: 'Beverages',  createdAt: now, updatedAt: now },
-  { id: 'item_demo_13', listId: 'list_demo_2', description: 'Eiscreme',     qualifier: '1 tub',  icon: 'candy',                 foodType: 'sugar',      purchased: false, order: 2, category: 'Groceries',  createdAt: now, updatedAt: now },
-  { id: 'item_demo_14', listId: 'list_demo_2', description: 'Becher',       qualifier: '20x',    icon: 'cup',                   foodType: 'non_food',   purchased: false, order: 3, category: 'Beverages',  createdAt: now, updatedAt: now },
-  { id: 'item_demo_15', listId: 'list_demo_2', description: 'Servietten',   qualifier: '1 pack', icon: 'toilet-paper',          foodType: 'non_food',   purchased: true,  order: 0, category: 'Household',  createdAt: now - 86400000, updatedAt: now },
 ];
 
 // ─── LANGUAGE SELECTION ───
