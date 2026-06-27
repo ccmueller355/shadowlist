@@ -66,10 +66,10 @@ describe('Type definitions', () => {
   })
 
   describe('ThemeName', () => {
-    it('accepts the three valid theme names', () => {
-      const themes: ThemeName[] = ['fixer', 'stuffer', 'decker']
-      expect(themes).toHaveLength(3)
-      themes.forEach((t) => expect(['fixer', 'stuffer', 'decker']).toContain(t))
+    it('accepts the five valid theme names', () => {
+      const themes: ThemeName[] = ['fixer', 'stuffer', 'decker', 'cyber', 'terminal']
+      expect(themes).toHaveLength(5)
+      themes.forEach((t) => expect(['fixer', 'stuffer', 'decker', 'cyber', 'terminal']).toContain(t))
     })
   })
 

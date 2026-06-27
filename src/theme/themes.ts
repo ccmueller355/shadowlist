@@ -94,19 +94,19 @@ export const stufferTheme: Theme = {
 // ── C: Decker's Den (dark terminal + synth) ──
 export const deckerTheme: Theme = {
   colors: {
-    primary: '#ff6b35',
-    secondary: '#b34dd4',
+    primary: '#c055e0',
+    secondary: '#ff6b35',
     background: '#0f0d14',
     surface: '#1a1721',
     textPrimary: '#e8dcc8',
     textSecondary: '#6a6678',
     border: '#252133',
-    shadow: 'rgba(179,77,212,0.15)',
+    shadow: 'rgba(192,85,224,0.15)',
     danger: '#cc3333',
     headerBg: '#0a0810',
     headerText: '#e8dcc8',
     checkedBg: '#1e1b26',
-    sectionHeader: '#b34dd4',
+    sectionHeader: '#ff6b35',
   },
   spacing,
   borderRadius,
@@ -115,8 +115,58 @@ export const deckerTheme: Theme = {
   description: 'Dark terminal with synth purple & orange',
 };
 
+// ── D: Cyber Blue (dark + blue neon) ──
+export const cyberTheme: Theme = {
+  colors: {
+    primary: '#00d4ff',
+    secondary: '#0088cc',
+    background: '#0a0e17',
+    surface: '#121b2e',
+    textPrimary: '#d0e8ff',
+    textSecondary: '#6080a0',
+    border: '#1a2a45',
+    shadow: 'rgba(0,212,255,0.15)',
+    danger: '#cc3333',
+    headerBg: '#060a12',
+    headerText: '#d0e8ff',
+    checkedBg: '#0e1728',
+    sectionHeader: '#00d4ff',
+  },
+  spacing,
+  borderRadius,
+  fontFamily,
+  label: 'Cyber Blue',
+  description: 'Deep blue night with cyan neon',
+};
+
+// ── E: Terminal Green (monitor glow) ──
+export const terminalTheme: Theme = {
+  colors: {
+    primary: '#00ff41',
+    secondary: '#00cc33',
+    background: '#0c0c0c',
+    surface: '#121212',
+    textPrimary: '#c0ffc0',
+    textSecondary: '#408040',
+    border: '#1a2a1a',
+    shadow: 'rgba(0,255,65,0.12)',
+    danger: '#cc3333',
+    headerBg: '#050505',
+    headerText: '#c0ffc0',
+    checkedBg: '#0d1a0d',
+    sectionHeader: '#00ff41',
+  },
+  spacing,
+  borderRadius,
+  fontFamily,
+  label: 'Terminal Green',
+  description: 'CRT monitor phosphor green',
+};
+
 export const themes: Record<ThemeName, Theme> = {
   fixer: fixerTheme,
   stuffer: stufferTheme,
   decker: deckerTheme,
+  cyber: cyberTheme,
+  terminal: terminalTheme,
 };

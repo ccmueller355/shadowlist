@@ -20,7 +20,7 @@ export interface ShoppingItem {
   updatedAt: number;
 }
 
-export type ThemeName = 'fixer' | 'stuffer' | 'decker';
+export type ThemeName = 'fixer' | 'stuffer' | 'decker' | 'cyber' | 'terminal';
 
 export type FoodType =
   | 'meat' | 'fish' | 'egg' | 'dairy'
