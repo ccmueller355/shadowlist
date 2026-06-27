@@ -126,7 +126,7 @@ export function EditModal({ visible, item, onSave, onDelete, onClose }: Props) {
                   <Text
                     style={[styles.categoryText, category === cat && styles.categoryTextSelected]}
                   >
-                    {tr('category.' + cat.replace(/[ &]/g, ''))}
+                    {tr(('category.' + cat.replace(/[ &]/g, '')) as any)}
                   </Text>
                 </TouchableOpacity>
               ))}
@@ -316,6 +316,6 @@ const styles = StyleSheet.create({
   saveText: {
     fontFamily: cyberpunkTheme.fontFamily,
     fontWeight: 'bold',
-    color: '#0a0a0a',
+    color: cyberpunkTheme.colors.background,
   },
 });

@@ -159,7 +159,7 @@ export function HomeScreen({ navigation }: Props) {
           setTimeout(() => inputRef.current?.focus(), 100);
         }}
       >
-        <MaterialCommunityIcons name="plus" size={28} color="#0a0a0a" />
+        <MaterialCommunityIcons name="plus" size={28} color={cyberpunkTheme.colors.background} />
       </TouchableOpacity>
 
       <SettingsModal
@@ -245,7 +245,7 @@ const styles = StyleSheet.create({
   createButtonText: {
     fontFamily: cyberpunkTheme.fontFamily,
     fontWeight: 'bold',
-    color: '#0a0a0a',
+    color: cyberpunkTheme.colors.background,
   },
   listContent: {
     padding: cyberpunkTheme.spacing.md,
