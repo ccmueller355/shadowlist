@@ -68,8 +68,10 @@ export const de = {
     amountPlaceholder: '2x, 500g, 1L...',
     category: 'Kategorie',
     categoryNone: 'Keine',
-    foodType: 'Lebensmitteltyp',
-    'foodType.none': 'Nicht klassifiziert',
+    foodType: {
+      label: 'Lebensmitteltyp',
+      none: 'Nicht klassifiziert',
+    },
   },
   warning: {
     incompatible: 'Dieser Artikel ist nicht kompatibel mit {diet}.',

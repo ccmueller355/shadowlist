@@ -68,8 +68,10 @@ export const en = {
     amountPlaceholder: '2x, 500g, 1L...',
     category: 'Category',
     categoryNone: 'None',
-    foodType: 'Food Type',
-    'foodType.none': 'Not classified',
+    foodType: {
+      label: 'Food Type',
+      none: 'Not classified',
+    },
   },
   warning: {
     incompatible: 'This item is not compatible with {diet}.',

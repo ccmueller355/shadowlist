@@ -23,7 +23,7 @@ describe('i18n', () => {
     // Edit modal
     'edit.title', 'edit.icon', 'edit.description', 'edit.descriptionPlaceholder',
     'edit.amount', 'edit.amountPlaceholder', 'edit.category', 'edit.categoryNone',
-    'edit.foodType', 'edit.foodType.none',
+    'edit.foodType.label', 'edit.foodType.none',
     // Warnings
     'warning.incompatible', 'warning.suggestion', 'warning.addAnyway',
     'warning.unchecked',

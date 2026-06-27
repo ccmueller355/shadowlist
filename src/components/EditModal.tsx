@@ -133,7 +133,7 @@ export function EditModal({ visible, item, onSave, onDelete, onClose }: Props) {
             </ScrollView>
 
             {/* Food Type */}
-            <Text style={styles.label}>{tr('edit.foodType')}</Text>
+            <Text style={styles.label}>{tr('edit.foodType.label')}</Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.categoryRow}>
               <TouchableOpacity
                 style={[styles.categoryChip, foodType === null && styles.categorySelected]}
