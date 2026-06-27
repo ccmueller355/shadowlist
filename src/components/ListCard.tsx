@@ -27,8 +27,8 @@ export function ListCard({ list, itemCount, onPress, onDelete }: Props) {
               color={cyberpunkTheme.colors.primary}
             />
             <View style={styles.info}>
-              <Text style={styles.name} numberOfLines={1}>{list.name}</Text>
-              <Text style={styles.meta}>
+              <Text style={[styles.name, { color: cyberpunkTheme.colors.textPrimary }]} numberOfLines={1}>{list.name}</Text>
+              <Text style={[styles.meta, { color: cyberpunkTheme.colors.textSecondary }]}>
                 {itemCount} {itemCount === 1 ? 'item' : 'items'}
               </Text>
             </View>

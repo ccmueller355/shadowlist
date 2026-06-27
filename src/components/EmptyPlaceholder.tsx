@@ -16,13 +16,13 @@ export function EmptyPlaceholder({
 }: Props) {
   const cyberpunkTheme = useAppTheme();
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: cyberpunkTheme.colors.background }]}>
       <MaterialCommunityIcons
         name={icon as any}
         size={64}
         color={cyberpunkTheme.colors.border}
       />
-      <Text style={styles.text}>{message}</Text>
+      <Text style={[styles.text, { color: cyberpunkTheme.colors.textSecondary }]}>{message}</Text>
     </View>
   );
 }
@@ -37,7 +37,6 @@ const styles = StyleSheet.create({
   text: {
     fontFamily: cyberpunkTheme.fontFamily,
     fontSize: 16,
-    color: cyberpunkTheme.colors.textSecondary,
     marginTop: cyberpunkTheme.spacing.md,
     textAlign: 'center',
   },
