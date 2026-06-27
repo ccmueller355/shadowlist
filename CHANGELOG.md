@@ -2,6 +2,10 @@
 
 ## v0.9.2 — 2026-06-22
 
+### Specs
+- **004-build-pipeline** — spec, research, data model, and implementation plan for EAS Build Android deployment pipeline (Expo SDK 54, two build profiles, CI gates, first APK)
+- **005-data-backup** — specification for export/import of all user data (lists, items, settings, learned name→food type mappings) with share sheet and file picker integration
+
 ### Added
 - **Bilingual demo data** — `src/constants/demoData.ts` now exports EN (`DEMO_LISTS_EN`/`DEMO_ITEMS_EN`) and DE (`DEMO_LISTS_DE`/`DEMO_ITEMS_DE`) sets
 - **Language-aware demo loading** — `addDemoData()` reads current `lang` setting and loads matching language version; re-loading replaces old demo data with the new language's data
