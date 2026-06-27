@@ -57,3 +57,7 @@ coverage/
 
 # MemPalace
 entities.json
+
+# Operator scripts (user-executed, not tracked)
+operator-execute.sh
+operator-log

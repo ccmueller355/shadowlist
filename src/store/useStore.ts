@@ -1,7 +1,7 @@
 // ─── [ NEURAL DECK v4.6 $ AI::GENERATED :: NO COPYRIGHT ] ───
 import { create } from 'zustand';
 import { ShoppingList, ShoppingItem, AppSettings, NewItemParams, AppLang, DietId } from '../types';
-import { loadAllData, saveLists, saveItems, saveSettings, clearAllData } from '../storage/asyncStorage';
+import { runMigrations, loadAllData, saveLists, saveItems, saveSettings, clearAllData } from '../storage/asyncStorage';
 import { generateId } from '../utils/uuid';
 import { getDemoData } from '../constants/demoData';
 
@@ -54,6 +54,7 @@ export const useStore = create<ShoppingState>((set, get) => ({
   hydrated: false,
 
   hydrate: async () => {
+    await runMigrations();
     const data = await loadAllData();
     set({
       lists: data.lists,
