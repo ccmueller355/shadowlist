@@ -152,7 +152,7 @@ export function SettingsModal({
             <TouchableOpacity
               style={[styles.themeRow, activeDiet === null && styles.themeRowActive]}
               onPress={() => onDietChange(null)}
-              accessibilityLabel="No diet selected"
+              accessibilityLabel={tr('settings.diet.none')}
               accessibilityRole="radio"
               accessibilityState={{ selected: activeDiet === null }}
             >
@@ -160,7 +160,7 @@ export function SettingsModal({
                 <Text style={[styles.themeLabel, activeDiet === null && styles.themeLabelActive]}>
                   {tr('settings.diet.none')}
                 </Text>
-                <Text style={styles.themeDesc}>No dietary restrictions</Text>
+                <Text style={styles.themeDesc}>{tr('settings.diet.descNone')}</Text>
               </View>
               <View style={[styles.radio, activeDiet === null && styles.radioActive]}>
                 {activeDiet === null && <View style={styles.radioDot} />}
@@ -220,7 +220,7 @@ export function SettingsModal({
             <TouchableOpacity
               style={styles.row}
               onPress={handleClearAll}
-              accessibilityLabel="Clear all data"
+              accessibilityLabel={tr('settings.clearAllData')}
             >
               <View style={styles.rowLeft}>
                 <MaterialCommunityIcons
@@ -228,7 +228,7 @@ export function SettingsModal({
                   size={22}
                   color={t.colors.danger}
                 />
-                <Text style={[styles.rowLabel, styles.dangerText]}>Clear All Data</Text>
+                <Text style={[styles.rowLabel, styles.dangerText]}>{tr('settings.clearAllData')}</Text>
               </View>
               <MaterialCommunityIcons
                 name="chevron-right"

@@ -17,15 +17,25 @@ describe('i18n', () => {
     'foodType.legume', 'foodType.fat', 'foodType.beverage', 'foodType.supplement',
     'foodType.nonFood',
     // Settings
-    'settings.sortByCategory', 'settings.diet.label', 'settings.diet.none', 'settings.language.label',
-    'settings.language.en', 'settings.language.de',
+    'settings.sortByCategory', 'settings.diet.label', 'settings.diet.none',
+    'settings.diet.descNone', 'settings.language.label',
+    'settings.language.en', 'settings.language.de', 'settings.clearAllData',
+    // Edit modal
+    'edit.title', 'edit.icon', 'edit.description', 'edit.descriptionPlaceholder',
+    'edit.amount', 'edit.amountPlaceholder', 'edit.category', 'edit.categoryNone',
+    'edit.foodType', 'edit.foodType.none',
     // Warnings
     'warning.incompatible', 'warning.suggestion', 'warning.addAnyway',
     'warning.unchecked',
-    // Edit modal
-    'edit.foodType', 'edit.foodType.none',
     // General
-    'general.save', 'general.cancel', 'general.addItemPlaceholder', 'general.emptyListMessage',
+    'general.save', 'general.cancel', 'general.delete',
+    'general.addItemPlaceholder', 'general.emptyListMessage',
+    // Categories
+    'category.Groceries', 'category.Beverages', 'category.Pharmacy', 'category.Beauty',
+    'category.HomeDIY', 'category.Gardening', 'category.Clothing', 'category.Household',
+    'category.Electronics', 'category.Office', 'category.Sports', 'category.Automotive',
+    'category.Pets', 'category.Baby', 'category.BooksMedia', 'category.Party',
+    'category.Travel', 'category.General', 'category.Other',
   ];
 
   const flattenKeys = (obj: Record<string, unknown>, prefix = ''): string[] =>

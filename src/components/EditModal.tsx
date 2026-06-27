@@ -80,41 +80,41 @@ export function EditModal({ visible, item, onSave, onDelete, onClose }: Props) {
       >
         <View style={styles.container}>
           <ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="always" style={styles.scrollBody}>
-            <Text style={styles.title}>Edit Item</Text>
-
+            <Text style={styles.title}>{tr('edit.title')}</Text>
+ 
             {/* Icon Picker */}
-            <Text style={styles.label}>Icon</Text>
+            <Text style={styles.label}>{tr('edit.icon')}</Text>
             <IconPickerGrid selected={icon} onSelect={setIcon} />
-
+ 
             {/* Description */}
-            <Text style={styles.label}>Description</Text>
+            <Text style={styles.label}>{tr('edit.description')}</Text>
             <TextInput
               style={styles.input}
               value={description}
               onChangeText={setDescription}
-              placeholder="Item name"
+              placeholder={tr('edit.descriptionPlaceholder')}
               placeholderTextColor={cyberpunkTheme.colors.textSecondary}
             />
-
-            {/* Qualifier */}
-            <Text style={styles.label}>Qualifier</Text>
+ 
+            {/* Amount / Qualifier */}
+            <Text style={styles.label}>{tr('edit.amount')}</Text>
             <TextInput
               style={styles.input}
               value={qualifier}
               onChangeText={setQualifier}
-              placeholder="2x, 500g, 1L..."
+              placeholder={tr('edit.amountPlaceholder')}
               placeholderTextColor={cyberpunkTheme.colors.textSecondary}
             />
-
+ 
             {/* Category */}
-            <Text style={styles.label}>Category</Text>
+            <Text style={styles.label}>{tr('edit.category')}</Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.categoryRow}>
               <TouchableOpacity
                 style={[styles.categoryChip, category === null && styles.categorySelected]}
                 onPress={() => setCategory(null)}
               >
                 <Text style={[styles.categoryText, category === null && styles.categoryTextSelected]}>
-                  None
+                  {tr('edit.categoryNone')}
                 </Text>
               </TouchableOpacity>
               {CATEGORIES.map((cat) => (
@@ -126,7 +126,7 @@ export function EditModal({ visible, item, onSave, onDelete, onClose }: Props) {
                   <Text
                     style={[styles.categoryText, category === cat && styles.categoryTextSelected]}
                   >
-                    {cat}
+                    {tr('category.' + cat.replace(/[ &]/g, ''))}
                   </Text>
                 </TouchableOpacity>
               ))}
@@ -138,7 +138,7 @@ export function EditModal({ visible, item, onSave, onDelete, onClose }: Props) {
               <TouchableOpacity
                 style={[styles.categoryChip, foodType === null && styles.categorySelected]}
                 onPress={() => setFoodType(null)}
-                accessibilityLabel="Not classified"
+                accessibilityLabel={tr('edit.foodType.none')}
                 accessibilityRole="radio"
                 accessibilityState={{ selected: foodType === null }}
               >
@@ -180,15 +180,15 @@ export function EditModal({ visible, item, onSave, onDelete, onClose }: Props) {
                   onClose();
                 }}
               >
-                <Text style={styles.deleteText}>Delete</Text>
+                <Text style={styles.deleteText}>{tr('general.delete')}</Text>
               </TouchableOpacity>
               <View style={styles.buttonSpacer} />
               <TouchableOpacity style={styles.cancelButton} onPress={onClose}>
-                <Text style={styles.cancelText}>Cancel</Text>
+                <Text style={styles.cancelText}>{tr('general.cancel')}</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
                 <MaterialCommunityIcons name="check" size={20} color="#0a0a0a" />
-                <Text style={styles.saveText}>Save</Text>
+                <Text style={styles.saveText}>{tr('general.save')}</Text>
               </TouchableOpacity>
             </View>
           </View>
