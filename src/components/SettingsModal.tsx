@@ -148,7 +148,7 @@ export function SettingsModal({
             <View style={styles.divider} />
 
             {/* Diet picker */}
-            <Text style={styles.sectionLabel}>{tr('settings.diet')}</Text>
+            <Text style={styles.sectionLabel}>{tr('settings.diet.label')}</Text>
             <TouchableOpacity
               style={[styles.themeRow, activeDiet === null && styles.themeRowActive]}
               onPress={() => onDietChange(null)}

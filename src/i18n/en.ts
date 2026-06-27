@@ -32,8 +32,10 @@ export const en = {
     nonFood: 'Non-Food',
   },
   settings: {
-    diet: 'Active Diet',
-    'diet.none': 'No Filter',
+    diet: {
+      label: 'Active Diet',
+      none: 'No Filter',
+    },
     language: {
       label: 'Language',
       en: 'English',

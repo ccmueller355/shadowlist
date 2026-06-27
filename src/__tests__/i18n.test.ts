@@ -17,7 +17,7 @@ describe('i18n', () => {
     'foodType.legume', 'foodType.fat', 'foodType.beverage', 'foodType.supplement',
     'foodType.nonFood',
     // Settings
-    'settings.diet', 'settings.diet.none', 'settings.language.label',
+    'settings.diet.label', 'settings.diet.none', 'settings.language.label',
     'settings.language.en', 'settings.language.de',
     // Warnings
     'warning.incompatible', 'warning.suggestion', 'warning.addAnyway',
