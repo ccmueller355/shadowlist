@@ -46,6 +46,7 @@ export const en = {
     nonFood: 'Non-Food',
   },
   settings: {
+    sortByCategory: 'Sort by Category',
     diet: {
       label: 'Active Diet',
       none: 'No Filter',

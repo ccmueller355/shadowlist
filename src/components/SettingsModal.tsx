@@ -131,7 +131,7 @@ export function SettingsModal({
                   size={22}
                   color={t.colors.primary}
                 />
-                <Text style={styles.rowLabel}>Sort by Category</Text>
+                <Text style={styles.rowLabel}>{tr('settings.sortByCategory')}</Text>
               </View>
               <Switch
                 value={sortByCategory}
@@ -141,7 +141,7 @@ export function SettingsModal({
                   true: t.colors.primary,
                 }}
                 thumbColor={t.colors.surface}
-                accessibilityLabel="Toggle sort by category"
+                accessibilityLabel={tr('settings.sortByCategory')}
               />
             </View>
 
