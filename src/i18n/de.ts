@@ -33,7 +33,7 @@ export const de = {
   },
   settings: {
     diet: 'Aktive Diät',
-    'diet.none': 'Keine Diät',
+    'diet.none': 'Kein Filter',
     language: {
       label: 'Sprache',
       en: 'English',
