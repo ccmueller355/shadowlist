@@ -19,6 +19,11 @@
       "predictiveBackGestureEnabled": false,
       "package": "com.aethelredcybernetics.shadowlist"
     },
+    "updates": {
+      "enabled": false,
+      "checkAutomatically": "ON_ERROR_RECOVERY",
+      "fallbackToCacheTimeout": 0
+    },
     "web": {
       "favicon": "./assets/favicon.png"
     },
