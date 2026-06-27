@@ -379,7 +379,7 @@ export function ListDetailScreen({ route, navigation }: Props) {
         {/* Empty state */}
         {activeItems.length === 0 && boughtItems.length === 0 && (
           <EmptyPlaceholder
-            message="Your shopping list is empty — add items above"
+            message={tr('general.emptyListMessage')}
             icon="cart-outline"
           />
         )}

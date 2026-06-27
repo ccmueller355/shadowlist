@@ -25,7 +25,7 @@ describe('i18n', () => {
     // Edit modal
     'edit.foodType', 'edit.foodType.none',
     // General
-    'general.save', 'general.cancel', 'general.addItemPlaceholder',
+    'general.save', 'general.cancel', 'general.addItemPlaceholder', 'general.emptyListMessage',
   ];
 
   const flattenKeys = (obj: Record<string, unknown>, prefix = ''): string[] =>

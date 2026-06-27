@@ -70,5 +70,6 @@ export const en = {
     save: 'Save',
     cancel: 'Cancel',
     addItemPlaceholder: 'Search or add item...',
+    emptyListMessage: 'Your shopping list is empty — add items below',
   },
 };

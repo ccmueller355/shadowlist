@@ -70,5 +70,6 @@ export const de = {
     save: 'Speichern',
     cancel: 'Abbrechen',
     addItemPlaceholder: 'Suchen oder Artikel hinzufügen...',
+    emptyListMessage: 'Deine Einkaufsliste ist leer — füge unten Artikel hinzu',
   },
 };
