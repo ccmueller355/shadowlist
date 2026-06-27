@@ -86,6 +86,13 @@ export const de = {
     addItemPlaceholder: 'Suchen oder Artikel hinzufügen...',
     emptyListMessage: 'Deine Einkaufsliste ist leer — füge unten Artikel hinzu',
   },
+  theme: {
+    fixer: { label: 'Fixers Notizbuch', desc: 'Dunkles Papier-Noir mit Rot & Gold' },
+    stuffer: { label: 'Stuffer Shack', desc: 'Altes Pergament mit dunkler Tinte' },
+    decker: { label: 'Deckers Versteck', desc: 'Tiefes Lila mit Lavendelschimmer' },
+    cyber: { label: 'Cyber Blau', desc: 'Tiefblaue Nacht mit Cyan-Neon' },
+    terminal: { label: 'Terminal Grün', desc: 'CRT-Monitor Phosphorgrün' },
+  },
   category: {
     Groceries: 'Lebensmittel',
     Beverages: 'Getränke',

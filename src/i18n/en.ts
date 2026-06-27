@@ -86,6 +86,13 @@ export const en = {
     addItemPlaceholder: 'Search or add item...',
     emptyListMessage: 'Your shopping list is empty — add items below',
   },
+  theme: {
+    fixer: { label: "Fixer's Notebook", desc: 'Dark paper noir with red & gold' },
+    stuffer: { label: 'Stuffer Shack', desc: 'Aged parchment & dark ink' },
+    decker: { label: "Decker's Den", desc: 'Deep purple with lavender glow' },
+    cyber: { label: 'Cyber Blue', desc: 'Deep blue night with cyan neon' },
+    terminal: { label: 'Terminal Green', desc: 'CRT monitor phosphor green' },
+  },
   category: {
     Groceries: 'Groceries',
     Beverages: 'Beverages',

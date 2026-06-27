@@ -16,6 +16,10 @@ describe('i18n', () => {
     'foodType.grain', 'foodType.sugar', 'foodType.fruit', 'foodType.vegetable',
     'foodType.legume', 'foodType.fat', 'foodType.beverage', 'foodType.supplement',
     'foodType.nonFood',
+    // Themes
+    'theme.fixer.label', 'theme.fixer.desc', 'theme.stuffer.label', 'theme.stuffer.desc',
+    'theme.decker.label', 'theme.decker.desc', 'theme.cyber.label', 'theme.cyber.desc',
+    'theme.terminal.label', 'theme.terminal.desc',
     // Settings
     'settings.sortByCategory', 'settings.diet.label', 'settings.diet.none',
     'settings.diet.descNone', 'settings.language.label',

@@ -104,18 +104,18 @@ export function SettingsModal({
                   key={key}
                   style={[styles.themeRow, active && styles.themeRowActive]}
                   onPress={() => onThemeChange(key)}
-                  accessibilityLabel={`Theme: ${theme.label}`}
+                  accessibilityLabel={`${tr('theme.' + String(key) + '.label')}`}
                   accessibilityRole="radio"
                   accessibilityState={{ selected: active }}
                 >
                   <View style={styles.themeInfo}>
                     <Text style={[styles.themeLabel, active && styles.themeLabelActive]}>
-                      {theme.label}
+                      {tr(('theme.' + String(key) + '.label') as any)}
                     </Text>
-                    <Text style={styles.themeDesc}>{theme.description}</Text>
+                    <Text style={styles.themeDesc}>{tr(('theme.' + String(key) + '.desc') as any)}</Text>
                   </View>
-                  <View style={[styles.radio, active && styles.radioActive]}>
-                    {active && <View style={styles.radioDot} />}
+                  <View style={[styles.radio, active && { borderColor: t.colors.primary }]}>
+                    {active && <View style={[styles.radioDot, { backgroundColor: t.colors.primary }]} />}
                   </View>
                 </TouchableOpacity>
               );
@@ -162,8 +162,8 @@ export function SettingsModal({
                 </Text>
                 <Text style={styles.themeDesc}>{tr('settings.diet.descNone')}</Text>
               </View>
-              <View style={[styles.radio, activeDiet === null && styles.radioActive]}>
-                {activeDiet === null && <View style={styles.radioDot} />}
+              <View style={[styles.radio, activeDiet === null && { borderColor: t.colors.primary }]}>
+                {activeDiet === null && <View style={[styles.radioDot, { backgroundColor: t.colors.primary }]} />}
               </View>
             </TouchableOpacity>
             {DIET_PROFILES.map((diet) => {
@@ -183,8 +183,8 @@ export function SettingsModal({
                     </Text>
                     <Text style={styles.themeDesc}>{tr(diet.descriptionKey as any)}</Text>
                   </View>
-                  <View style={[styles.radio, active && styles.radioActive]}>
-                    {active && <View style={styles.radioDot} />}
+                  <View style={[styles.radio, active && { borderColor: t.colors.primary }]}>
+                    {active && <View style={[styles.radioDot, { backgroundColor: t.colors.primary }]} />}
                   </View>
                 </TouchableOpacity>
               );
@@ -323,14 +323,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  radioActive: {
-    borderColor: '#6c5ce7',
-  },
   radioDot: {
     width: 10,
     height: 10,
     borderRadius: 5,
-    backgroundColor: '#6c5ce7',
   },
   divider: {
     height: 1,
