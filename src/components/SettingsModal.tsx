@@ -193,7 +193,7 @@ export function SettingsModal({
             <View style={styles.divider} />
 
             {/* Language toggle */}
-            <Text style={styles.sectionLabel}>{tr('settings.language')}</Text>
+            <Text style={styles.sectionLabel}>{tr('settings.language.label')}</Text>
             <View style={styles.langRow}>
               {langOptions.map((opt) => {
                 const active = lang === opt.key;

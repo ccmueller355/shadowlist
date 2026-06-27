@@ -34,9 +34,11 @@ export const de = {
   settings: {
     diet: 'Aktive Diät',
     'diet.none': 'Keine Diät',
-    language: 'Sprache',
-    'language.en': 'English',
-    'language.de': 'Deutsch',
+    language: {
+      label: 'Sprache',
+      en: 'English',
+      de: 'Deutsch',
+    },
   },
   warning: {
     incompatible: 'Dieser Artikel ist nicht kompatibel mit {diet}.',
