@@ -28,6 +28,7 @@ interface Props {
   onToggleCategory: (value: boolean) => void;
   onDietChange: (dietId: DietId | null) => void;
   onLangChange: (lang: AppLang) => void;
+  onAddDemoData?: () => void;
   onClearAll: () => void;
   onGenerateTestData?: () => void;
   onClose: () => void;
@@ -43,6 +44,7 @@ export function SettingsModal({
   onToggleCategory,
   onDietChange,
   onLangChange,
+  onAddDemoData,
   onClearAll,
   onGenerateTestData,
   onClose,
@@ -217,6 +219,29 @@ export function SettingsModal({
             </View>
 
             <View style={[styles.divider, { backgroundColor: t.colors.border }]} />
+
+            {/* Load Demo Data */}
+            {onAddDemoData && (
+              <TouchableOpacity
+                style={styles.row}
+                onPress={() => { onAddDemoData(); Alert.alert('Demo Data', 'Demo lists loaded.'); }}
+                accessibilityLabel={tr('general.loadDemoData')}
+              >
+                <View style={styles.rowLeft}>
+                  <MaterialCommunityIcons
+                    name="database-outline"
+                    size={22}
+                    color={t.colors.primary}
+                  />
+                  <Text style={styles.rowLabel}>{tr('general.loadDemoData')}</Text>
+                </View>
+                <MaterialCommunityIcons
+                  name="chevron-right"
+                  size={22}
+                  color={t.colors.primary}
+                />
+              </TouchableOpacity>
+            )}
 
             {/* Clear All Data */}
             <TouchableOpacity

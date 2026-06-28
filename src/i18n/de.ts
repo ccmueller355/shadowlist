@@ -85,6 +85,7 @@ export const de = {
     delete: 'Löschen',
     generateTestData: 'Testdaten generieren',
     testDataGenerated: '{n} Testlisten erstellt',
+    loadDemoData: 'Demo-Daten laden',
     addItemPlaceholder: 'Suchen oder hinzufügen...',
     emptyListMessage: 'Deine Einkaufsliste ist leer — füge unten Artikel hinzu',
   },

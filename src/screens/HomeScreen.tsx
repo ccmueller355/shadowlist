@@ -172,6 +172,7 @@ export function HomeScreen({ navigation }: Props) {
         onToggleCategory={setSortByCategory}
         onDietChange={setActiveDiet}
         onLangChange={setLang}
+        onAddDemoData={addDemoData}
         onClearAll={clearAll}
         onGenerateTestData={generateTestData}
         onClose={() => setShowSettings(false)}
