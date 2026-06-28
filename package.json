@@ -11,6 +11,7 @@
     "babel-preset-expo": "~56.0.0",
     "expo": "^56",
     "expo-font": "~56.0.7",
+    "expo-splash-screen": "~56.0.10",
     "expo-status-bar": "~56.0.4",
     "mermaid": "^11.15.0",
     "react": "19.2.3",
