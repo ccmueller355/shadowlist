@@ -221,7 +221,7 @@ export function SettingsModal({
             <View style={[styles.divider, { backgroundColor: t.colors.border }]} />
 
             {/* Load Demo Data */}
-            {onAddDemoData && (
+            {__DEV__ && onAddDemoData && (
               <TouchableOpacity
                 style={styles.row}
                 onPress={() => { onAddDemoData(); Alert.alert('Demo Data', 'Demo lists loaded.'); }}
