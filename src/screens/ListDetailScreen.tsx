@@ -249,8 +249,8 @@ export function ListDetailScreen({ route, navigation }: Props) {
     const cats = Object.keys(group).sort();
     return cats.map((cat) => (
       <View key={cat}>
-        <Text style={styles.categoryHeader}>
-          {cat}
+        <Text style={[styles.categoryHeader, { color: cyberpunkTheme.colors.secondary, backgroundColor: cyberpunkTheme.colors.background }]}>
+          {tr(('category.' + cat.replace(/[ &]/g, '')) as any)}
         </Text>
         {group[cat].map((item) => (
           <ItemRow
@@ -303,9 +303,9 @@ export function ListDetailScreen({ route, navigation }: Props) {
         {/* ===== TO SHOP SECTION ===== */}
         {activeItems.length > 0 && (
           <>
-            <Text style={styles.sectionHeader}>
+            <Text style={[styles.sectionHeader, { color: cyberpunkTheme.colors.sectionHeader }]}>
               TO SHOP
-              <Text style={styles.sectionCount}> ({activeItems.length})</Text>
+              <Text style={[styles.sectionCount, { color: cyberpunkTheme.colors.textSecondary }]}> ({activeItems.length})</Text>
             </Text>
 
             {settings.sortByCategory && groupedActive ? (
@@ -353,9 +353,9 @@ export function ListDetailScreen({ route, navigation }: Props) {
           <>
             <View style={styles.divider}>
               <MaterialCommunityIcons name="check-circle-outline" size={16} color={cyberpunkTheme.colors.sectionHeader} />
-              <Text style={styles.sectionHeader}>
+              <Text style={[styles.sectionHeader, { color: cyberpunkTheme.colors.sectionHeader }]}>
                 RECENTLY BOUGHT
-                <Text style={styles.sectionCount}> ({boughtItems.length})</Text>
+                <Text style={[styles.sectionCount, { color: cyberpunkTheme.colors.textSecondary }]}> ({boughtItems.length})</Text>
               </Text>
             </View>
 
