@@ -18,7 +18,6 @@ import { FoodType, ShoppingItem } from '../types';
 import { IconPickerGrid } from './IconPickerGrid';
 import { CATEGORIES } from '../constants/icons';
 import { FOOD_TYPES } from '../constants/foodTypes';
-import { cyberpunkTheme } from '../theme/cyberpunkTheme';
 import { useAppTheme } from '../theme/useTheme';
 import { useTranslation } from '../i18n/useTranslation';
 
@@ -207,39 +206,39 @@ const styles = StyleSheet.create({
     flex: 1,
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
-    paddingTop: cyberpunkTheme.spacing.lg,
-    paddingHorizontal: cyberpunkTheme.spacing.lg,
+    paddingTop: 24,
+    paddingHorizontal: 24,
   },
   scrollBody: {
     flex: 1,
   },
   footer: {
-    paddingTop: cyberpunkTheme.spacing.sm,
+    paddingTop: 8,
     borderTopWidth: 1,
   },
   title: {
-    fontFamily: cyberpunkTheme.fontFamily,
+    fontFamily: 'monospace',
     fontSize: 20,
     fontWeight: 'bold',
-    marginBottom: cyberpunkTheme.spacing.md,
+    marginBottom: 16,
   },
   label: {
-    fontFamily: cyberpunkTheme.fontFamily,
+    fontFamily: 'monospace',
     fontSize: 12,
-    marginTop: cyberpunkTheme.spacing.sm,
+    marginTop: 8,
     marginBottom: 4,
     textTransform: 'uppercase',
   },
   input: {
-    fontFamily: cyberpunkTheme.fontFamily,
+    fontFamily: 'monospace',
     fontSize: 16,
     borderWidth: 1,
-    borderRadius: cyberpunkTheme.borderRadius,
-    padding: cyberpunkTheme.spacing.sm,
+    borderRadius: 8,
+    padding: 8,
   },
   categoryRow: {
     flexDirection: 'row',
-    marginVertical: cyberpunkTheme.spacing.sm,
+    marginVertical: 8,
   },
   categoryChip: {
     paddingHorizontal: 12,
@@ -249,7 +248,7 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   categoryText: {
-    fontFamily: cyberpunkTheme.fontFamily,
+    fontFamily: 'monospace',
     fontSize: 12,
   },
   categoryTextSelected: {
@@ -258,9 +257,9 @@ const styles = StyleSheet.create({
   buttonRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    gap: cyberpunkTheme.spacing.sm,
-    marginTop: cyberpunkTheme.spacing.lg,
-    paddingBottom: cyberpunkTheme.spacing.md,
+    gap: 8,
+    marginTop: 24,
+    paddingBottom: 16,
   },
   buttonSpacer: {
     flex: 1,
@@ -268,21 +267,21 @@ const styles = StyleSheet.create({
   deleteButton: {
     paddingHorizontal: 20,
     paddingVertical: 12,
-    borderRadius: cyberpunkTheme.borderRadius,
+    borderRadius: 8,
     borderWidth: 1,
   },
   deleteText: {
-    fontFamily: cyberpunkTheme.fontFamily,
+    fontFamily: 'monospace',
     fontWeight: 'bold',
   },
   cancelButton: {
     paddingHorizontal: 20,
     paddingVertical: 12,
-    borderRadius: cyberpunkTheme.borderRadius,
+    borderRadius: 8,
     borderWidth: 1,
   },
   cancelText: {
-    fontFamily: cyberpunkTheme.fontFamily,
+    fontFamily: 'monospace',
   },
   saveButton: {
     flexDirection: 'row',
@@ -290,10 +289,10 @@ const styles = StyleSheet.create({
     gap: 6,
     paddingHorizontal: 20,
     paddingVertical: 12,
-    borderRadius: cyberpunkTheme.borderRadius,
+    borderRadius: 8,
   },
   saveText: {
-    fontFamily: cyberpunkTheme.fontFamily,
+    fontFamily: 'monospace',
     fontWeight: 'bold',
   },
 });

@@ -1,7 +1,6 @@
 // ─── [ NEURAL DECK v4.6 $ AI::GENERATED :: NO COPYRIGHT ] ───
 import React, { ReactNode } from 'react';
 import { View, StyleSheet, ViewStyle } from 'react-native';
-import { cyberpunkTheme } from '../theme/cyberpunkTheme';
 import { useAppTheme } from '../theme/useTheme';
 
 interface Props {
@@ -29,7 +28,7 @@ export function CyberpunkCard({ children, style, glow = true }: Props) {
 const styles = StyleSheet.create({
   card: {
     borderWidth: 1,
-    borderRadius: cyberpunkTheme.borderRadius,
-    padding: cyberpunkTheme.spacing.md,
+    borderRadius: 8,
+    padding: 16,
   },
 });

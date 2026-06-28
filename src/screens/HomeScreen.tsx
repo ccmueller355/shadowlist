@@ -19,7 +19,6 @@ import { EmptyPlaceholder } from '../components/EmptyPlaceholder';
 import { CyberpunkCard } from '../components/CyberpunkCard';
 import { SettingsModal } from '../components/SettingsModal';
 import { generateId } from '../utils/uuid';
-import { cyberpunkTheme } from '../theme/cyberpunkTheme';
 import { useAppTheme } from '../theme/useTheme';
 import Toast from 'react-native-toast-message';
 
@@ -189,56 +188,56 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   loadingText: {
-    fontFamily: cyberpunkTheme.fontFamily,
+    fontFamily: 'monospace',
     fontSize: 16,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: cyberpunkTheme.spacing.sm,
-    paddingHorizontal: cyberpunkTheme.spacing.md,
-    paddingVertical: cyberpunkTheme.spacing.md,
+    gap: 8,
+    paddingHorizontal: 16,
+    paddingVertical: 16,
     paddingTop: 50,
   },
   headerTitle: {
-    fontFamily: cyberpunkTheme.fontFamily,
+    fontFamily: 'monospace',
     fontSize: 22,
     fontWeight: 'bold',
     flex: 1,
   },
   headerSubtitle: {
-    fontFamily: cyberpunkTheme.fontFamily,
+    fontFamily: 'monospace',
     fontSize: 12,
   },
   newListCard: {
-    marginHorizontal: cyberpunkTheme.spacing.md,
-    marginTop: cyberpunkTheme.spacing.sm,
-    padding: cyberpunkTheme.spacing.sm,
+    marginHorizontal: 16,
+    marginTop: 8,
+    padding: 8,
   },
   newListRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: cyberpunkTheme.spacing.sm,
+    gap: 8,
   },
   newListInput: {
     flex: 1,
-    fontFamily: cyberpunkTheme.fontFamily,
+    fontFamily: 'monospace',
     fontSize: 15,
     borderWidth: 1,
-    borderRadius: cyberpunkTheme.borderRadius,
+    borderRadius: 8,
     padding: 8,
   },
   createButton: {
     paddingHorizontal: 16,
     paddingVertical: 8,
-    borderRadius: cyberpunkTheme.borderRadius,
+    borderRadius: 8,
   },
   createButtonText: {
-    fontFamily: cyberpunkTheme.fontFamily,
+    fontFamily: 'monospace',
     fontWeight: 'bold',
   },
   listContent: {
-    padding: cyberpunkTheme.spacing.md,
+    padding: 16,
     paddingBottom: 80,
   },
   fab: {

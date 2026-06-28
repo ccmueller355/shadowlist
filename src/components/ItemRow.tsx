@@ -4,7 +4,6 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-nativ
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { ShoppingItem } from '../types';
 import { useTranslation } from '../i18n/useTranslation';
-import { cyberpunkTheme } from '../theme/cyberpunkTheme';
 import { useAppTheme } from '../theme/useTheme';
 
 interface Props {
@@ -166,9 +165,9 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: cyberpunkTheme.spacing.sm,
+    gap: 8,
     paddingVertical: 10,
-    paddingHorizontal: cyberpunkTheme.spacing.sm,
+    paddingHorizontal: 8,
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
   active: {
@@ -189,7 +188,7 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   description: {
-    fontFamily: cyberpunkTheme.fontFamily,
+    fontFamily: 'monospace',
     fontSize: 15,
     flexShrink: 1,
   },
@@ -197,13 +196,13 @@ const styles = StyleSheet.create({
     textDecorationLine: 'line-through',
   },
   qualifier: {
-    fontFamily: cyberpunkTheme.fontFamily,
+    fontFamily: 'monospace',
     fontSize: 12,
     fontWeight: 'bold',
   },
   qualifierBought: {},
   qualifierInput: {
-    fontFamily: cyberpunkTheme.fontFamily,
+    fontFamily: 'monospace',
     fontSize: 12,
     borderWidth: 1,
     borderRadius: 4,
@@ -218,7 +217,7 @@ const styles = StyleSheet.create({
     padding: 2,
   },
   categoryBadge: {
-    fontFamily: cyberpunkTheme.fontFamily,
+    fontFamily: 'monospace',
     fontSize: 9,
     paddingHorizontal: 4,
     paddingVertical: 2,

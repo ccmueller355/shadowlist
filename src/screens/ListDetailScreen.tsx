@@ -28,7 +28,7 @@ import { EmptyPlaceholder } from '../components/EmptyPlaceholder';
 import { checkItem, CheckResult } from '../utils/dietEngine';
 import { DIET_PROFILES } from '../constants/diets';
 import { useTranslation } from '../i18n/useTranslation';
-import { cyberpunkTheme } from '../theme/cyberpunkTheme';
+import { useAppTheme } from '../theme/useTheme';
 import { useThemeStyles } from '../theme/useThemeStyles';
 import Toast from 'react-native-toast-message';
 
@@ -53,6 +53,7 @@ export function ListDetailScreen({ route, navigation }: Props) {
   const clearAll = useStore((s) => s.clearAll);
 
   const { t: tr } = useTranslation();
+  const cyberpunkTheme = useAppTheme();
 
   const [search, setSearch] = useState('');
   const [editItem, setEditItem] = useState<ShoppingItem | null>(null);
@@ -452,32 +453,32 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: cyberpunkTheme.spacing.sm,
-    paddingHorizontal: cyberpunkTheme.spacing.md,
-    paddingVertical: cyberpunkTheme.spacing.sm,
+    gap: 8,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
     paddingTop: 50,
   },
   headerTitle: {
-    fontFamily: cyberpunkTheme.fontFamily,
+    fontFamily: 'monospace',
     fontSize: 18,
     fontWeight: 'bold',
     flex: 1,
   },
   headerCount: {
-    fontFamily: cyberpunkTheme.fontFamily,
+    fontFamily: 'monospace',
     fontSize: 14,
     fontWeight: 'bold',
   },
   bottomBar: {
-    paddingHorizontal: cyberpunkTheme.spacing.sm,
-    paddingVertical: cyberpunkTheme.spacing.sm,
+    paddingHorizontal: 8,
+    paddingVertical: 8,
     borderTopWidth: 1,
   },
   searchRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginHorizontal: cyberpunkTheme.spacing.sm,
-    marginBottom: cyberpunkTheme.spacing.sm,
+    marginHorizontal: 8,
+    marginBottom: 8,
     paddingHorizontal: 8,
     borderRadius: 6,
     borderWidth: 1,
@@ -485,7 +486,7 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     flex: 1,
-    fontFamily: cyberpunkTheme.fontFamily,
+    fontFamily: 'monospace',
     fontSize: 12,
     paddingVertical: 4,
   },
@@ -493,33 +494,33 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollContent: {
-    paddingHorizontal: cyberpunkTheme.spacing.sm,
+    paddingHorizontal: 8,
     paddingBottom: 40,
   },
   sectionHeader: {
-    fontFamily: cyberpunkTheme.fontFamily,
+    fontFamily: 'monospace',
     fontSize: 13,
     fontWeight: 'bold',
-    paddingVertical: cyberpunkTheme.spacing.sm,
+    paddingVertical: 8,
     textTransform: 'uppercase',
   },
   sectionCount: {
-    fontFamily: cyberpunkTheme.fontFamily,
+    fontFamily: 'monospace',
     fontSize: 11,
     fontWeight: 'normal',
   },
   categoryHeader: {
-    fontFamily: cyberpunkTheme.fontFamily,
+    fontFamily: 'monospace',
     fontSize: 11,
     paddingVertical: 4,
-    paddingHorizontal: cyberpunkTheme.spacing.sm,
+    paddingHorizontal: 8,
   },
   divider: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
     borderTopWidth: 1,
-    marginTop: cyberpunkTheme.spacing.sm,
+    marginTop: 8,
     paddingTop: 4,
   },
   dragging: {
@@ -535,18 +536,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
-    paddingHorizontal: cyberpunkTheme.spacing.md,
+    paddingHorizontal: 16,
     paddingVertical: 6,
     borderBottomWidth: 1,
   },
   dietHeaderText: {
-    fontFamily: cyberpunkTheme.fontFamily,
+    fontFamily: 'monospace',
     fontSize: 13,
     fontWeight: 'bold',
     flex: 1,
   },
   dietWarningsText: {
-    fontFamily: cyberpunkTheme.fontFamily,
+    fontFamily: 'monospace',
     fontSize: 11,
     fontWeight: '600',
   },
