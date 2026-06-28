@@ -87,11 +87,11 @@ export const de = {
     emptyListMessage: 'Deine Einkaufsliste ist leer — füge unten Artikel hinzu',
   },
   theme: {
-    fixer: { label: 'Fixers Notizbuch', desc: 'Dunkles Papier-Noir mit Rot & Gold' },
-    stuffer: { label: 'Stuffer Shack', desc: 'Altes Pergament mit dunkler Tinte' },
-    decker: { label: 'Deckers Versteck', desc: 'Tiefes Lila mit Lavendelschimmer' },
-    cyber: { label: 'Cyber Blau', desc: 'Tiefblaue Nacht mit Cyan-Neon' },
-    terminal: { label: 'Fiddlers Grün', desc: 'Ewige grüne Felder des Dreamings' },
+    fixer: { label: "Fixer's Notebook", desc: 'Warme Ledertöne mit Rost und Messing' },
+    stuffer: { label: 'Stuffer Shack', desc: 'Altes Pergament mit dunklen Tintenakzenten' },
+    decker: { label: 'Deckers Versteck', desc: 'Kühle Violettöne mit sanftem Lavendelschimmer' },
+    cyber: { label: 'Cyber Blue', desc: 'Tiefe Ozeantöne mit ruhigen Cyan-Akzenten' },
+    terminal: { label: "Fiddler's Green", desc: 'Ewige grüne Felder des Dreamings' },
   },
   category: {
     Groceries: 'Lebensmittel',

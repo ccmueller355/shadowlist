@@ -87,10 +87,10 @@ export const en = {
     emptyListMessage: 'Your shopping list is empty — add items below',
   },
   theme: {
-    fixer: { label: "Fixer's Notebook", desc: 'Dark paper noir with red & gold' },
-    stuffer: { label: 'Stuffer Shack', desc: 'Aged parchment & dark ink' },
-    decker: { label: "Decker's Den", desc: 'Deep purple with lavender glow' },
-    cyber: { label: 'Cyber Blue', desc: 'Deep blue night with cyan neon' },
+    fixer: { label: "Fixer's Notebook", desc: 'Warm leather tones with rust and brass' },
+    stuffer: { label: 'Stuffer Shack', desc: 'Aged parchment with dark ink accents' },
+    decker: { label: "Deckers Versteck", desc: 'Cool violet tones with soft lavender glow' },
+    cyber: { label: 'Cyber Blue', desc: 'Deep ocean tones with calm cyan accents' },
     terminal: { label: "Fiddler's Green", desc: 'Eternal green fields of the Dreaming' },
   },
   category: {
