@@ -16,6 +16,7 @@ export function useThemeStyles() {
     textMuted: { color: t.colors.textSecondary },
     headerText: { color: t.colors.headerText },
     accent: { color: t.colors.primary },
+    sectionHeader: { color: t.colors.sectionHeader },
 
     // Borders & glow
     border: { borderColor: t.colors.border },
