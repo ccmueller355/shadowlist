@@ -18,7 +18,6 @@ import { FoodType, ShoppingItem } from '../types';
 import { IconPickerGrid } from './IconPickerGrid';
 import { CATEGORIES } from '../constants/icons';
 import { FOOD_TYPES } from '../constants/foodTypes';
-import { cyberpunkTheme } from '../theme/cyberpunkTheme';
 import { useAppTheme } from '../theme/useTheme';
 import { useTranslation } from '../i18n/useTranslation';
 
@@ -76,80 +75,80 @@ export function EditModal({ visible, item, onSave, onDelete, onClose }: Props) {
     <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={styles.overlay}
+        style={[styles.overlay, { backgroundColor: 'rgba(0,0,0,0.5)' }]}
       >
-        <View style={styles.container}>
+        <View style={[styles.container, { backgroundColor: cyberpunkTheme.colors.surface }]}>
           <ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="always" style={styles.scrollBody}>
-            <Text style={styles.title}>Edit Item</Text>
-
+            <Text style={[styles.title, { color: cyberpunkTheme.colors.textPrimary }]}>{tr('edit.title')}</Text>
+ 
             {/* Icon Picker */}
-            <Text style={styles.label}>Icon</Text>
+            <Text style={[styles.label, { color: cyberpunkTheme.colors.primary }]}>{tr('edit.icon')}</Text>
             <IconPickerGrid selected={icon} onSelect={setIcon} />
-
+ 
             {/* Description */}
-            <Text style={styles.label}>Description</Text>
+            <Text style={[styles.label, { color: cyberpunkTheme.colors.primary }]}>{tr('edit.description')}</Text>
             <TextInput
-              style={styles.input}
+              style={[styles.input, { color: cyberpunkTheme.colors.textPrimary, borderColor: cyberpunkTheme.colors.border, backgroundColor: cyberpunkTheme.colors.background }]}
               value={description}
               onChangeText={setDescription}
-              placeholder="Item name"
+              placeholder={tr('edit.descriptionPlaceholder')}
               placeholderTextColor={cyberpunkTheme.colors.textSecondary}
             />
-
-            {/* Qualifier */}
-            <Text style={styles.label}>Qualifier</Text>
+ 
+            {/* Amount / Qualifier */}
+            <Text style={[styles.label, { color: cyberpunkTheme.colors.primary }]}>{tr('edit.amount')}</Text>
             <TextInput
-              style={styles.input}
+              style={[styles.input, { color: cyberpunkTheme.colors.textPrimary, borderColor: cyberpunkTheme.colors.border, backgroundColor: cyberpunkTheme.colors.background }]}
               value={qualifier}
               onChangeText={setQualifier}
-              placeholder="2x, 500g, 1L..."
+              placeholder={tr('edit.amountPlaceholder')}
               placeholderTextColor={cyberpunkTheme.colors.textSecondary}
             />
-
+ 
             {/* Category */}
-            <Text style={styles.label}>Category</Text>
+            <Text style={[styles.label, { color: cyberpunkTheme.colors.primary }]}>{tr('edit.category')}</Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.categoryRow}>
               <TouchableOpacity
-                style={[styles.categoryChip, category === null && styles.categorySelected]}
+                style={[styles.categoryChip, { borderColor: category === null ? cyberpunkTheme.colors.primary : cyberpunkTheme.colors.border, backgroundColor: category === null ? cyberpunkTheme.colors.checkedBg : cyberpunkTheme.colors.background }]}
                 onPress={() => setCategory(null)}
               >
-                <Text style={[styles.categoryText, category === null && styles.categoryTextSelected]}>
-                  None
+                <Text style={[styles.categoryText, { color: category === null ? cyberpunkTheme.colors.primary : cyberpunkTheme.colors.textSecondary }, category === null && styles.categoryTextSelected]}>
+                  {tr('edit.categoryNone')}
                 </Text>
               </TouchableOpacity>
               {CATEGORIES.map((cat) => (
                 <TouchableOpacity
                   key={cat}
-                  style={[styles.categoryChip, category === cat && styles.categorySelected]}
+                  style={[styles.categoryChip, { borderColor: category === cat ? cyberpunkTheme.colors.primary : cyberpunkTheme.colors.border, backgroundColor: category === cat ? cyberpunkTheme.colors.checkedBg : cyberpunkTheme.colors.background }]}
                   onPress={() => setCategory(cat)}
                 >
                   <Text
-                    style={[styles.categoryText, category === cat && styles.categoryTextSelected]}
+                    style={[styles.categoryText, { color: category === cat ? cyberpunkTheme.colors.primary : cyberpunkTheme.colors.textSecondary }, category === cat && styles.categoryTextSelected]}
                   >
-                    {cat}
+                    {tr(('category.' + cat.replace(/[ &]/g, '')) as any)}
                   </Text>
                 </TouchableOpacity>
               ))}
             </ScrollView>
 
             {/* Food Type */}
-            <Text style={styles.label}>{tr('edit.foodType')}</Text>
+            <Text style={[styles.label, { color: cyberpunkTheme.colors.primary }]}>{tr('edit.foodType.label')}</Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.categoryRow}>
               <TouchableOpacity
-                style={[styles.categoryChip, foodType === null && styles.categorySelected]}
+                style={[styles.categoryChip, { borderColor: foodType === null ? cyberpunkTheme.colors.primary : cyberpunkTheme.colors.border, backgroundColor: foodType === null ? cyberpunkTheme.colors.checkedBg : cyberpunkTheme.colors.background }]}
                 onPress={() => setFoodType(null)}
-                accessibilityLabel="Not classified"
+                accessibilityLabel={tr('edit.foodType.none')}
                 accessibilityRole="radio"
                 accessibilityState={{ selected: foodType === null }}
               >
-                <Text style={[styles.categoryText, foodType === null && styles.categoryTextSelected]}>
+                <Text style={[styles.categoryText, { color: foodType === null ? cyberpunkTheme.colors.primary : cyberpunkTheme.colors.textSecondary }, foodType === null && styles.categoryTextSelected]}>
                   {tr('edit.foodType.none')}
                 </Text>
               </TouchableOpacity>
               {FOOD_TYPES.map((ft) => (
                 <TouchableOpacity
                   key={ft.id}
-                  style={[styles.categoryChip, foodType === ft.id && styles.categorySelected]}
+                  style={[styles.categoryChip, { borderColor: foodType === ft.id ? cyberpunkTheme.colors.primary : cyberpunkTheme.colors.border, backgroundColor: foodType === ft.id ? cyberpunkTheme.colors.checkedBg : cyberpunkTheme.colors.background }]}
                   onPress={() => setFoodType(ft.id)}
                   accessibilityLabel={tr(ft.labelKey as any)}
                   accessibilityRole="radio"
@@ -161,7 +160,7 @@ export function EditModal({ visible, item, onSave, onDelete, onClose }: Props) {
                     color={cyberpunkTheme.colors.primary}
                   />
                   <Text
-                    style={[styles.categoryText, foodType === ft.id && styles.categoryTextSelected]}
+                    style={[styles.categoryText, { color: foodType === ft.id ? cyberpunkTheme.colors.primary : cyberpunkTheme.colors.textSecondary }, foodType === ft.id && styles.categoryTextSelected]}
                   >
                     {tr(ft.labelKey as any)}
                   </Text>
@@ -171,24 +170,24 @@ export function EditModal({ visible, item, onSave, onDelete, onClose }: Props) {
           </ScrollView>
 
           {/* Fixed footer with buttons */}
-          <View style={[styles.footer, { paddingBottom: insets.bottom + 8 }]}>
+          <View style={[styles.footer, { borderTopColor: cyberpunkTheme.colors.border, paddingBottom: insets.bottom + 8 }]}>
             <View style={styles.buttonRow}>
               <TouchableOpacity
-                style={styles.deleteButton}
+                style={[styles.deleteButton, { borderColor: cyberpunkTheme.colors.danger }]}
                 onPress={() => {
                   if (item) onDelete(item.id);
                   onClose();
                 }}
               >
-                <Text style={styles.deleteText}>Delete</Text>
+                <Text style={[styles.deleteText, { color: cyberpunkTheme.colors.danger }]}>{tr('general.delete')}</Text>
               </TouchableOpacity>
               <View style={styles.buttonSpacer} />
-              <TouchableOpacity style={styles.cancelButton} onPress={onClose}>
-                <Text style={styles.cancelText}>Cancel</Text>
+              <TouchableOpacity style={[styles.cancelButton, { borderColor: cyberpunkTheme.colors.border }]} onPress={onClose}>
+                <Text style={[styles.cancelText, { color: cyberpunkTheme.colors.textSecondary }]}>{tr('general.cancel')}</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
-                <MaterialCommunityIcons name="check" size={20} color="#0a0a0a" />
-                <Text style={styles.saveText}>Save</Text>
+              <TouchableOpacity style={[styles.saveButton, { backgroundColor: cyberpunkTheme.colors.primary }]} onPress={handleSave}>
+                <MaterialCommunityIcons name="check" size={20} color={cyberpunkTheme.colors.background} />
+                <Text style={[styles.saveText, { color: cyberpunkTheme.colors.background }]}>{tr('general.save')}</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -201,82 +200,66 @@ export function EditModal({ visible, item, onSave, onDelete, onClose }: Props) {
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
     justifyContent: 'flex-end',
   },
   container: {
     flex: 1,
-    backgroundColor: cyberpunkTheme.colors.surface,
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
-    paddingTop: cyberpunkTheme.spacing.lg,
-    paddingHorizontal: cyberpunkTheme.spacing.lg,
+    paddingTop: 24,
+    paddingHorizontal: 24,
   },
   scrollBody: {
     flex: 1,
   },
   footer: {
-    paddingTop: cyberpunkTheme.spacing.sm,
+    paddingTop: 8,
     borderTopWidth: 1,
-    borderTopColor: cyberpunkTheme.colors.border,
   },
   title: {
-    fontFamily: cyberpunkTheme.fontFamily,
+    fontFamily: 'monospace',
     fontSize: 20,
     fontWeight: 'bold',
-    color: cyberpunkTheme.colors.textPrimary,
-    marginBottom: cyberpunkTheme.spacing.md,
+    marginBottom: 16,
   },
   label: {
-    fontFamily: cyberpunkTheme.fontFamily,
+    fontFamily: 'monospace',
     fontSize: 12,
-    color: cyberpunkTheme.colors.primary,
-    marginTop: cyberpunkTheme.spacing.sm,
+    marginTop: 8,
     marginBottom: 4,
     textTransform: 'uppercase',
   },
   input: {
-    fontFamily: cyberpunkTheme.fontFamily,
+    fontFamily: 'monospace',
     fontSize: 16,
-    color: cyberpunkTheme.colors.textPrimary,
     borderWidth: 1,
-    borderColor: cyberpunkTheme.colors.border,
-    borderRadius: cyberpunkTheme.borderRadius,
-    padding: cyberpunkTheme.spacing.sm,
-    backgroundColor: cyberpunkTheme.colors.background,
+    borderRadius: 8,
+    padding: 8,
   },
   categoryRow: {
     flexDirection: 'row',
-    marginVertical: cyberpunkTheme.spacing.sm,
+    marginVertical: 8,
   },
   categoryChip: {
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 16,
     borderWidth: 1,
-    borderColor: cyberpunkTheme.colors.border,
     marginRight: 8,
-    backgroundColor: cyberpunkTheme.colors.background,
-  },
-  categorySelected: {
-    borderColor: cyberpunkTheme.colors.primary,
-    backgroundColor: cyberpunkTheme.colors.checkedBg,
   },
   categoryText: {
-    fontFamily: cyberpunkTheme.fontFamily,
+    fontFamily: 'monospace',
     fontSize: 12,
-    color: cyberpunkTheme.colors.textSecondary,
   },
   categoryTextSelected: {
-    color: cyberpunkTheme.colors.primary,
     fontWeight: 'bold',
   },
   buttonRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    gap: cyberpunkTheme.spacing.sm,
-    marginTop: cyberpunkTheme.spacing.lg,
-    paddingBottom: cyberpunkTheme.spacing.md,
+    gap: 8,
+    marginTop: 24,
+    paddingBottom: 16,
   },
   buttonSpacer: {
     flex: 1,
@@ -284,25 +267,21 @@ const styles = StyleSheet.create({
   deleteButton: {
     paddingHorizontal: 20,
     paddingVertical: 12,
-    borderRadius: cyberpunkTheme.borderRadius,
+    borderRadius: 8,
     borderWidth: 1,
-    borderColor: cyberpunkTheme.colors.danger,
   },
   deleteText: {
-    fontFamily: cyberpunkTheme.fontFamily,
-    color: cyberpunkTheme.colors.danger,
+    fontFamily: 'monospace',
     fontWeight: 'bold',
   },
   cancelButton: {
     paddingHorizontal: 20,
     paddingVertical: 12,
-    borderRadius: cyberpunkTheme.borderRadius,
+    borderRadius: 8,
     borderWidth: 1,
-    borderColor: cyberpunkTheme.colors.border,
   },
   cancelText: {
-    fontFamily: cyberpunkTheme.fontFamily,
-    color: cyberpunkTheme.colors.textSecondary,
+    fontFamily: 'monospace',
   },
   saveButton: {
     flexDirection: 'row',
@@ -310,12 +289,10 @@ const styles = StyleSheet.create({
     gap: 6,
     paddingHorizontal: 20,
     paddingVertical: 12,
-    borderRadius: cyberpunkTheme.borderRadius,
-    backgroundColor: cyberpunkTheme.colors.primary,
+    borderRadius: 8,
   },
   saveText: {
-    fontFamily: cyberpunkTheme.fontFamily,
+    fontFamily: 'monospace',
     fontWeight: 'bold',
-    color: '#0a0a0a',
   },
 });

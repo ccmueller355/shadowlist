@@ -3,7 +3,7 @@ import { DietProfile } from '../../types';
 
 export const slowCarb: DietProfile = {
   id: 'slow-carb',
-  nameKey: 'diet.slowCarb',
+  nameKey: 'diet.slowCarb.label',
   descriptionKey: 'diet.slowCarb.desc',
   rules: [
     { forbid: ['grain', 'dairy', 'sugar', 'fruit'] },

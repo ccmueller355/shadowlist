@@ -2,7 +2,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { cyberpunkTheme } from '../theme/cyberpunkTheme';
 import { useAppTheme } from '../theme/useTheme';
 
 interface Props {
@@ -16,13 +15,13 @@ export function EmptyPlaceholder({
 }: Props) {
   const cyberpunkTheme = useAppTheme();
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: cyberpunkTheme.colors.background }]}>
       <MaterialCommunityIcons
         name={icon as any}
         size={64}
         color={cyberpunkTheme.colors.border}
       />
-      <Text style={styles.text}>{message}</Text>
+      <Text style={[styles.text, { color: cyberpunkTheme.colors.textSecondary }]}>{message}</Text>
     </View>
   );
 }
@@ -32,13 +31,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 60,
-    paddingHorizontal: cyberpunkTheme.spacing.md,
+    paddingHorizontal: 16,
   },
   text: {
-    fontFamily: cyberpunkTheme.fontFamily,
+    fontFamily: 'monospace',
     fontSize: 16,
-    color: cyberpunkTheme.colors.textSecondary,
-    marginTop: cyberpunkTheme.spacing.md,
+    marginTop: 16,
     textAlign: 'center',
   },
 });

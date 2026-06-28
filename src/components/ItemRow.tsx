@@ -3,7 +3,7 @@ import React, { memo, useState, useRef } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { ShoppingItem } from '../types';
-import { cyberpunkTheme } from '../theme/cyberpunkTheme';
+import { useTranslation } from '../i18n/useTranslation';
 import { useAppTheme } from '../theme/useTheme';
 
 interface Props {
@@ -30,6 +30,7 @@ function ItemRowComponent({
   onUpdateItem,
 }: Props) {
   const cyberpunkTheme = useAppTheme();
+  const { t: tr } = useTranslation();
   const isBought = item.purchased;
   const [editingQualifier, setEditingQualifier] = useState(false);
   const [qualifierDraft, setQualifierDraft] = useState('');
@@ -62,6 +63,8 @@ function ItemRowComponent({
       activeOpacity={0.6}
       style={[
         styles.container,
+        { backgroundColor: cyberpunkTheme.colors.surface, borderBottomColor: cyberpunkTheme.colors.border },
+        isActive && { backgroundColor: cyberpunkTheme.colors.checkedBg, shadowColor: cyberpunkTheme.colors.primary },
         isActive && styles.active,
         isBought && styles.bought,
       ]}
@@ -86,19 +89,20 @@ function ItemRowComponent({
       <View style={styles.info}>
         <View style={styles.descriptionRow}>
           <Text
-            style={[
-              styles.description,
-              isBought && styles.descriptionBought,
-            ]}
-            numberOfLines={1}
-            ellipsizeMode="tail"
+          style={[
+            styles.description,
+            { color: isBought ? cyberpunkTheme.colors.textSecondary : cyberpunkTheme.colors.textPrimary },
+            isBought && styles.descriptionBought,
+          ]}
+          numberOfLines={1}
+          ellipsizeMode="tail"
           >
             {item.description}
           </Text>
           {editingQualifier ? (
             <TextInput
               ref={qualifierRef}
-              style={styles.qualifierInput}
+              style={[styles.qualifierInput, { color: cyberpunkTheme.colors.textPrimary, borderColor: cyberpunkTheme.colors.primary, backgroundColor: cyberpunkTheme.colors.checkedBg }]}
               value={qualifierDraft}
               onChangeText={setQualifierDraft}
               onSubmitEditing={submitQualifier}
@@ -109,12 +113,12 @@ function ItemRowComponent({
             />
           ) : item.qualifier ? (
             <TouchableOpacity onPress={startEditingQualifier}>
-              <Text style={[styles.qualifier, isBought && styles.qualifierBought]}>
+              <Text style={[styles.qualifier, { color: cyberpunkTheme.colors.secondary }, isBought && { color: cyberpunkTheme.colors.textSecondary }]}>
                 {item.qualifier}
               </Text>
             </TouchableOpacity>
           ) : (
-            <TouchableOpacity onPress={startEditingQualifier} style={styles.addQualifierButton}>
+            <TouchableOpacity onPress={startEditingQualifier} style={[styles.addQualifierButton, { borderColor: cyberpunkTheme.colors.border }]}>
               <MaterialCommunityIcons name="plus" size={14} color={cyberpunkTheme.colors.border} />
             </TouchableOpacity>
           )}
@@ -123,8 +127,8 @@ function ItemRowComponent({
 
       {/* Category badge (small) */}
       {item.category && (
-        <Text style={styles.categoryBadge} numberOfLines={1}>
-          {item.category}
+        <Text style={[styles.categoryBadge, { color: cyberpunkTheme.colors.textSecondary, backgroundColor: cyberpunkTheme.colors.background }]} numberOfLines={1}>
+          {tr(('category.' + item.category.replace(/[ &]/g, '')) as any)}
         </Text>
       )}
 
@@ -143,11 +147,11 @@ function ItemRowComponent({
       {/* Checkbox */}
       <TouchableOpacity
         onPress={() => onTogglePurchased(item.id)}
-        style={[styles.checkbox, isBought && styles.checkboxChecked]}
+        style={[styles.checkbox, { borderColor: cyberpunkTheme.colors.primary }, isBought && { backgroundColor: cyberpunkTheme.colors.checkedBg }]}
         hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
       >
         {isBought ? (
-          <MaterialCommunityIcons name="check-bold" size={16} color={cyberpunkTheme.colors.primary} />
+          <MaterialCommunityIcons name="check-bold" size={16} color={cyberpunkTheme.colors.danger} />
         ) : null}
       </TouchableOpacity>
 
@@ -161,16 +165,12 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: cyberpunkTheme.spacing.sm,
+    gap: 8,
     paddingVertical: 10,
-    paddingHorizontal: cyberpunkTheme.spacing.sm,
-    backgroundColor: cyberpunkTheme.colors.surface,
+    paddingHorizontal: 8,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: cyberpunkTheme.colors.border,
   },
   active: {
-    backgroundColor: cyberpunkTheme.colors.checkedBg,
-    shadowColor: cyberpunkTheme.colors.primary,
     shadowOpacity: 0.2,
     shadowRadius: 4,
     elevation: 4,
@@ -188,48 +188,37 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   description: {
-    fontFamily: cyberpunkTheme.fontFamily,
+    fontFamily: 'monospace',
     fontSize: 15,
-    color: cyberpunkTheme.colors.textPrimary,
     flexShrink: 1,
   },
   descriptionBought: {
     textDecorationLine: 'line-through',
-    color: cyberpunkTheme.colors.textSecondary,
   },
   qualifier: {
-    fontFamily: cyberpunkTheme.fontFamily,
+    fontFamily: 'monospace',
     fontSize: 12,
-    color: cyberpunkTheme.colors.primary,
     fontWeight: 'bold',
   },
-  qualifierBought: {
-    color: cyberpunkTheme.colors.textSecondary,
-  },
+  qualifierBought: {},
   qualifierInput: {
-    fontFamily: cyberpunkTheme.fontFamily,
+    fontFamily: 'monospace',
     fontSize: 12,
-    color: cyberpunkTheme.colors.textPrimary,
     borderWidth: 1,
-    borderColor: cyberpunkTheme.colors.primary,
     borderRadius: 4,
     paddingHorizontal: 6,
     paddingVertical: 2,
     minWidth: 50,
-    backgroundColor: cyberpunkTheme.colors.checkedBg,
   },
   addQualifierButton: {
     borderWidth: 1,
-    borderColor: cyberpunkTheme.colors.border,
     borderStyle: 'dashed',
     borderRadius: 4,
     padding: 2,
   },
   categoryBadge: {
-    fontFamily: cyberpunkTheme.fontFamily,
+    fontFamily: 'monospace',
     fontSize: 9,
-    color: cyberpunkTheme.colors.textSecondary,
-    backgroundColor: cyberpunkTheme.colors.background,
     paddingHorizontal: 4,
     paddingVertical: 2,
     borderRadius: 4,
@@ -241,13 +230,10 @@ const styles = StyleSheet.create({
     height: 24,
     borderRadius: 4,
     borderWidth: 2,
-    borderColor: cyberpunkTheme.colors.primary,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  checkboxChecked: {
-    backgroundColor: cyberpunkTheme.colors.checkedBg,
-  },
+  checkboxChecked: {},
   warningBadge: {
     padding: 2,
   },

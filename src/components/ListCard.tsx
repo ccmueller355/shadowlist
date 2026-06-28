@@ -4,7 +4,6 @@ import { Text, TouchableOpacity, View, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { ShoppingList } from '../types';
 import { CyberpunkCard } from './CyberpunkCard';
-import { cyberpunkTheme } from '../theme/cyberpunkTheme';
 import { useAppTheme } from '../theme/useTheme';
 
 interface Props {
@@ -27,8 +26,8 @@ export function ListCard({ list, itemCount, onPress, onDelete }: Props) {
               color={cyberpunkTheme.colors.primary}
             />
             <View style={styles.info}>
-              <Text style={styles.name} numberOfLines={1}>{list.name}</Text>
-              <Text style={styles.meta}>
+              <Text style={[styles.name, { color: cyberpunkTheme.colors.textPrimary }]} numberOfLines={1}>{list.name}</Text>
+              <Text style={[styles.meta, { color: cyberpunkTheme.colors.textSecondary }]}>
                 {itemCount} {itemCount === 1 ? 'item' : 'items'}
               </Text>
             </View>
@@ -48,7 +47,7 @@ export function ListCard({ list, itemCount, onPress, onDelete }: Props) {
 
 const styles = StyleSheet.create({
   card: {
-    marginBottom: cyberpunkTheme.spacing.sm,
+    marginBottom: 8,
   },
   row: {
     flexDirection: 'row',
@@ -58,22 +57,20 @@ const styles = StyleSheet.create({
   left: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: cyberpunkTheme.spacing.sm,
+    gap: 8,
     flex: 1,
   },
   info: {
     flex: 1,
   },
   name: {
-    fontFamily: cyberpunkTheme.fontFamily,
+    fontFamily: 'monospace',
     fontSize: 16,
     fontWeight: 'bold',
-    color: cyberpunkTheme.colors.textPrimary,
   },
   meta: {
-    fontFamily: cyberpunkTheme.fontFamily,
+    fontFamily: 'monospace',
     fontSize: 12,
-    color: cyberpunkTheme.colors.textSecondary,
     marginTop: 2,
   },
 });

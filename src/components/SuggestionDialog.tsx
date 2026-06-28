@@ -34,20 +34,20 @@ export function SuggestionDialog({
 
   return (
     <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose}>
-      <View style={styles.overlay}>
-        <View style={styles.container}>
+      <View style={[styles.overlay, { backgroundColor: 'rgba(0,0,0,0.5)' }]}>
+        <View style={[styles.container, { backgroundColor: t.colors.surface }]}>
           <View style={styles.header}>
             <MaterialCommunityIcons name="alert-circle" size={28} color={t.colors.danger} />
             <Text style={styles.title}>Diet Warning</Text>
           </View>
 
-          <Text style={styles.message}>
+          <Text style={[styles.message, { color: t.colors.textSecondary }]}>
             {itemName} is not compatible with {dietName}.
           </Text>
 
           {suggestions.length > 0 && (
             <>
-              <Text style={styles.suggestionHeader}>
+              <Text style={[styles.suggestionHeader, { color: t.colors.textPrimary }]}>
                 {suggestions.length === 1
                   ? tr('warning.suggestion').replace('{alternative}', suggestions[0].label)
                   : 'Try one of these instead?'}
@@ -55,7 +55,7 @@ export function SuggestionDialog({
               {suggestions.map((s, i) => (
                 <TouchableOpacity
                   key={i}
-                  style={styles.suggestionRow}
+                  style={[styles.suggestionRow, { backgroundColor: t.colors.checkedBg }]}
                   onPress={() => onAcceptSuggestion(s.label)}
                   accessibilityLabel={`Add ${s.label} instead`}
                 >
@@ -66,7 +66,7 @@ export function SuggestionDialog({
                       color={t.colors.primary}
                     />
                   )}
-                  <Text style={styles.suggestionText}>{s.label}</Text>
+                  <Text style={[styles.suggestionText, { color: t.colors.textPrimary }]}>{s.label}</Text>
                   <MaterialCommunityIcons
                     name="plus-circle-outline"
                     size={20}
@@ -79,18 +79,18 @@ export function SuggestionDialog({
 
           <View style={styles.buttonRow}>
             <TouchableOpacity
-              style={styles.addAnywayButton}
+              style={[styles.addAnywayButton, { borderColor: t.colors.border }]}
               onPress={onAddAnyway}
               accessibilityLabel={tr('warning.addAnyway')}
             >
-              <Text style={styles.addAnywayText}>{tr('warning.addAnyway')}</Text>
+              <Text style={[styles.addAnywayText, { color: t.colors.textSecondary }]}>{tr('warning.addAnyway')}</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={styles.cancelButton}
+              style={[styles.cancelButton, { backgroundColor: t.colors.primary }]}
               onPress={onClose}
               accessibilityLabel={tr('general.cancel')}
             >
-              <Text style={styles.cancelText}>{tr('general.cancel')}</Text>
+              <Text style={[styles.cancelText, { color: t.colors.background }]}>{tr('general.cancel')}</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -102,12 +102,10 @@ export function SuggestionDialog({
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
     justifyContent: 'center',
     paddingHorizontal: 24,
   },
   container: {
-    backgroundColor: '#fff',
     borderRadius: 16,
     padding: 24,
   },
@@ -125,7 +123,6 @@ const styles = StyleSheet.create({
   message: {
     fontFamily: 'monospace',
     fontSize: 14,
-    color: '#555',
     marginBottom: 16,
     lineHeight: 20,
   },
@@ -133,7 +130,6 @@ const styles = StyleSheet.create({
     fontFamily: 'monospace',
     fontSize: 13,
     fontWeight: '600',
-    color: '#333',
     marginBottom: 8,
   },
   suggestionRow: {
@@ -143,14 +139,12 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 12,
     borderRadius: 8,
-    backgroundColor: '#f5f5ff',
     marginBottom: 6,
   },
   suggestionText: {
     fontFamily: 'monospace',
     fontSize: 15,
     flex: 1,
-    color: '#333',
   },
   buttonRow: {
     flexDirection: 'row',
@@ -162,26 +156,22 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#ccc',
     alignItems: 'center',
   },
   addAnywayText: {
     fontFamily: 'monospace',
     fontSize: 14,
     fontWeight: '600',
-    color: '#555',
   },
   cancelButton: {
     flex: 1,
     paddingVertical: 12,
     borderRadius: 8,
-    backgroundColor: '#6c5ce7',
     alignItems: 'center',
   },
   cancelText: {
     fontFamily: 'monospace',
     fontSize: 14,
     fontWeight: '600',
-    color: '#fff',
   },
 });

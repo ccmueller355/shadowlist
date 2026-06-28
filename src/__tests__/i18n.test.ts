@@ -5,8 +5,8 @@ import { de } from '../i18n/de';
 describe('i18n', () => {
   const requiredKeys = [
     // Diet names
-    'diet.keto', 'diet.lowCarb', 'diet.slowCarb', 'diet.vegetarian',
-    'diet.vegan', 'diet.glutenFree', 'diet.paleo',
+    'diet.keto.label', 'diet.lowCarb.label', 'diet.slowCarb.label', 'diet.vegetarian.label',
+    'diet.vegan.label', 'diet.glutenFree.label', 'diet.paleo.label',
     // Diet descriptions
     'diet.keto.desc', 'diet.lowCarb.desc', 'diet.slowCarb.desc',
     'diet.vegetarian.desc', 'diet.vegan.desc', 'diet.glutenFree.desc',
@@ -16,16 +16,30 @@ describe('i18n', () => {
     'foodType.grain', 'foodType.sugar', 'foodType.fruit', 'foodType.vegetable',
     'foodType.legume', 'foodType.fat', 'foodType.beverage', 'foodType.supplement',
     'foodType.nonFood',
+    // Themes
+    'theme.fixer.label', 'theme.fixer.desc', 'theme.stuffer.label', 'theme.stuffer.desc',
+    'theme.decker.label', 'theme.decker.desc', 'theme.cyber.label', 'theme.cyber.desc',
+    'theme.terminal.label', 'theme.terminal.desc',
     // Settings
-    'settings.diet', 'settings.diet.none', 'settings.language',
-    'settings.language.en', 'settings.language.de',
+    'settings.sortByCategory', 'settings.diet.label', 'settings.diet.none',
+    'settings.diet.descNone', 'settings.language.label',
+    'settings.language.en', 'settings.language.de', 'settings.clearAllData',
+    // Edit modal
+    'edit.title', 'edit.icon', 'edit.description', 'edit.descriptionPlaceholder',
+    'edit.amount', 'edit.amountPlaceholder', 'edit.category', 'edit.categoryNone',
+    'edit.foodType.label', 'edit.foodType.none',
     // Warnings
     'warning.incompatible', 'warning.suggestion', 'warning.addAnyway',
     'warning.unchecked',
-    // Edit modal
-    'edit.foodType', 'edit.foodType.none',
     // General
-    'general.save', 'general.cancel',
+    'general.save', 'general.cancel', 'general.delete',
+    'general.addItemPlaceholder', 'general.emptyListMessage',
+    // Categories
+    'category.Groceries', 'category.Beverages', 'category.Pharmacy', 'category.Beauty',
+    'category.HomeDIY', 'category.Gardening', 'category.Clothing', 'category.Household',
+    'category.Electronics', 'category.Office', 'category.Sports', 'category.Automotive',
+    'category.Pets', 'category.Baby', 'category.BooksMedia', 'category.Party',
+    'category.Travel', 'category.General', 'category.Other',
   ];
 
   const flattenKeys = (obj: Record<string, unknown>, prefix = ''): string[] =>

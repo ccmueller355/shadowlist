@@ -11,7 +11,7 @@ import {
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { ShoppingItem } from '../types';
 import { debounce } from '../utils/debounce';
-import { cyberpunkTheme } from '../theme/cyberpunkTheme';
+import { useTranslation } from '../i18n/useTranslation';
 import { useAppTheme } from '../theme/useTheme';
 
 interface Props {
@@ -23,6 +23,7 @@ interface Props {
 }
 
 export function AddItemBar({ listId, recentBought, onAddItem, onReAddItem, onSearchChange }: Props) {
+  const { t: tr } = useTranslation();
   const cyberpunkTheme = useAppTheme();
   const inputRef = useRef<TextInput>(null);
   const [text, setText] = useState('');
@@ -97,7 +98,7 @@ export function AddItemBar({ listId, recentBought, onAddItem, onReAddItem, onSea
         <TextInput
           ref={inputRef}
           style={styles.input}
-          placeholder="Search or add item..."
+          placeholder={tr('general.addItemPlaceholder')}
           placeholderTextColor={cyberpunkTheme.colors.textSecondary}
           value={text}
           onChangeText={handleChange}
@@ -153,31 +154,25 @@ const styles = StyleSheet.create({
   inputRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: cyberpunkTheme.colors.surface,
-    borderWidth: 1,
-    borderColor: cyberpunkTheme.colors.border,
-    borderRadius: cyberpunkTheme.borderRadius,
-    paddingHorizontal: cyberpunkTheme.spacing.sm,
+    borderRadius: 8,
+    paddingHorizontal: 8,
     gap: 6,
   },
   inputRowFocused: {
-    borderColor: cyberpunkTheme.colors.primary,
-    shadowColor: cyberpunkTheme.colors.primary,
     shadowOpacity: 0.2,
     shadowRadius: 2,
   },
   input: {
     flex: 1,
-    fontFamily: cyberpunkTheme.fontFamily,
+    fontFamily: 'monospace',
     fontSize: 15,
-    color: cyberpunkTheme.colors.textPrimary,
     paddingVertical: 10,
+    minWidth: 0,
   },
   clearButton: {
     padding: 2,
   },
   addButton: {
-    backgroundColor: cyberpunkTheme.colors.primary,
     width: 34,
     height: 34,
     borderRadius: 17,
@@ -185,19 +180,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   suggestionsContainer: {
-    backgroundColor: cyberpunkTheme.colors.surface,
     borderWidth: 1,
-    borderColor: cyberpunkTheme.colors.primary,
     borderTopWidth: 0,
-    borderBottomLeftRadius: cyberpunkTheme.borderRadius,
-    borderBottomRightRadius: cyberpunkTheme.borderRadius,
+    borderBottomLeftRadius: 8,
+    borderBottomRightRadius: 8,
     overflow: 'hidden',
   },
   recentLabel: {
-    fontFamily: cyberpunkTheme.fontFamily,
+    fontFamily: 'monospace',
     fontSize: 10,
-    color: cyberpunkTheme.colors.sectionHeader,
-    paddingHorizontal: cyberpunkTheme.spacing.md,
+    paddingHorizontal: 16,
     paddingTop: 6,
     paddingBottom: 2,
     fontWeight: 'bold',
@@ -206,21 +198,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
-    paddingHorizontal: cyberpunkTheme.spacing.md,
+    paddingHorizontal: 16,
     paddingVertical: 10,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: cyberpunkTheme.colors.border,
   },
   suggestionText: {
-    fontFamily: cyberpunkTheme.fontFamily,
+    fontFamily: 'monospace',
     fontSize: 14,
-    color: cyberpunkTheme.colors.textPrimary,
     flex: 1,
   },
   suggestionQualifier: {
-    fontFamily: cyberpunkTheme.fontFamily,
+    fontFamily: 'monospace',
     fontSize: 12,
-    color: cyberpunkTheme.colors.primary,
     fontWeight: 'bold',
   },
 });

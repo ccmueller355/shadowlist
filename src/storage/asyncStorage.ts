@@ -6,7 +6,64 @@ const KEYS = {
   lists: '@shadowlist/lists',
   items: '@shadowlist/items',
   settings: '@shadowlist/settings',
+  schemaVersion: '@shadowlist/schema_version',
 };
+
+// ── Schema Versioning & Migration ──
+
+const CURRENT_SCHEMA_VERSION = 1;
+
+type Migration = () => Promise<void>;
+
+/**
+ * Each migration transforms data from version N to N+1.
+ * Index 0 = v0→v1, index 1 = v1→v2, etc.
+ * Only write ONE-STEP migrations. The runner chains them.
+ */
+const MIGRATIONS: Migration[] = [
+  // v0 → v1: Current shape is our v1 baseline.
+  // No data transformation needed — just mark as versioned.
+  async () => {
+    // Data already matches current types. Nothing to transform.
+  },
+];
+
+/** Read the stored schema version (0 if unversioned / fresh install). */
+export async function getSchemaVersion(): Promise<number> {
+  const raw = await AsyncStorage.getItem(KEYS.schemaVersion);
+  if (raw === null) return 0;
+  const v = parseInt(raw, 10);
+  return Number.isNaN(v) ? 0 : v;
+}
+
+/** Write schema version after migrations complete. */
+async function setSchemaVersion(version: number): Promise<void> {
+  await AsyncStorage.setItem(KEYS.schemaVersion, String(version));
+}
+
+/**
+ * Run all pending migrations in order.
+ * Call this ONCE before any data is loaded on app boot.
+ */
+export async function runMigrations(): Promise<void> {
+  const current = await getSchemaVersion();
+
+  if (current >= CURRENT_SCHEMA_VERSION) {
+    return; // Already up to date
+  }
+
+  for (let v = current; v < CURRENT_SCHEMA_VERSION; v++) {
+    const migration = MIGRATIONS[v];
+    if (!migration) {
+      throw new Error(`Missing migration for version ${v} → ${v + 1}`);
+    }
+    await migration();
+  }
+
+  await setSchemaVersion(CURRENT_SCHEMA_VERSION);
+}
+
+// ── Data I/O ──
 
 export async function loadLists(): Promise<ShoppingList[]> {
   const raw = await AsyncStorage.getItem(KEYS.lists);
@@ -60,5 +117,10 @@ export async function loadAllData(): Promise<{
 }
 
 export async function clearAllData(): Promise<void> {
-  await AsyncStorage.multiRemove([KEYS.lists, KEYS.items, KEYS.settings]);
+  await AsyncStorage.multiRemove([
+    KEYS.lists,
+    KEYS.items,
+    KEYS.settings,
+    KEYS.schemaVersion,
+  ]);
 }

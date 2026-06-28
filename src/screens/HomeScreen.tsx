@@ -19,7 +19,6 @@ import { EmptyPlaceholder } from '../components/EmptyPlaceholder';
 import { CyberpunkCard } from '../components/CyberpunkCard';
 import { SettingsModal } from '../components/SettingsModal';
 import { generateId } from '../utils/uuid';
-import { cyberpunkTheme } from '../theme/cyberpunkTheme';
 import { useAppTheme } from '../theme/useTheme';
 import Toast from 'react-native-toast-message';
 
@@ -34,11 +33,13 @@ export function HomeScreen({ navigation }: Props) {
   const hydrated = useStore((s) => s.hydrated);
   const addDemoData = useStore((s) => s.addDemoData);
   const settings = useStore((s) => s.settings);
+  const generateTestData = useStore((s) => s.generateTestData);
   const setTheme = useStore((s) => s.setTheme);
   const setSortByCategory = useStore((s) => s.setSortByCategory);
   const setActiveDiet = useStore((s) => s.setActiveDiet);
   const setLang = useStore((s) => s.setLang);
   const clearAll = useStore((s) => s.clearAll);
+  const generateExtremeData = useStore((s) => s.generateExtremeData);
 
   const [showNewListInput, setShowNewListInput] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
@@ -86,21 +87,21 @@ export function HomeScreen({ navigation }: Props) {
 
   if (!hydrated) {
     return (
-      <View style={styles.loadingContainer}>
-        <Text style={styles.loadingText}>Loading ShadowList...</Text>
+      <View style={[styles.loadingContainer, { backgroundColor: cyberpunkTheme.colors.background }]}>
+        <Text style={[styles.loadingText, { color: cyberpunkTheme.colors.primary }]}>Loading ShadowList...</Text>
       </View>
     );
   }
 
   return (
     <KeyboardAvoidingView
-      style={styles.container}
+      style={[styles.container, { backgroundColor: cyberpunkTheme.colors.background }]}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
       {/* Header */}
-      <View style={styles.header}>
+      <View style={[styles.header, { backgroundColor: cyberpunkTheme.colors.headerBg }]}>
         <MaterialCommunityIcons name="cart-outline" size={28} color={cyberpunkTheme.colors.headerText} />
-        <Text style={styles.headerTitle}>ShadowList</Text>
+        <Text style={[styles.headerTitle, { color: cyberpunkTheme.colors.headerText }]}>ShadowList</Text>
         <TouchableOpacity onPress={() => setShowSettings(true)}>
           <MaterialCommunityIcons name="cog" size={24} color={cyberpunkTheme.colors.headerText} />
         </TouchableOpacity>
@@ -112,7 +113,7 @@ export function HomeScreen({ navigation }: Props) {
           <View style={styles.newListRow}>
             <TextInput
               ref={inputRef}
-              style={styles.newListInput}
+              style={[styles.newListInput, { color: cyberpunkTheme.colors.textPrimary, borderColor: cyberpunkTheme.colors.border }]}
               placeholder="List name..."
               placeholderTextColor={cyberpunkTheme.colors.textSecondary}
               value={newListName}
@@ -120,8 +121,8 @@ export function HomeScreen({ navigation }: Props) {
               onSubmitEditing={handleCreateList}
               autoFocus
             />
-            <TouchableOpacity onPress={handleCreateList} style={styles.createButton}>
-              <Text style={styles.createButtonText}>Create</Text>
+            <TouchableOpacity onPress={handleCreateList} style={[styles.createButton, { backgroundColor: cyberpunkTheme.colors.primary }]}>
+              <Text style={[styles.createButtonText, { color: cyberpunkTheme.colors.background }]}>Create</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => { setShowNewListInput(false); setNewListName(''); }}>
               <MaterialCommunityIcons name="close" size={22} color={cyberpunkTheme.colors.textSecondary} />
@@ -153,13 +154,13 @@ export function HomeScreen({ navigation }: Props) {
 
       {/* FAB */}
       <TouchableOpacity
-        style={styles.fab}
+        style={[styles.fab, { backgroundColor: cyberpunkTheme.colors.primary, shadowColor: cyberpunkTheme.colors.primary }]}
         onPress={() => {
           setShowNewListInput(true);
           setTimeout(() => inputRef.current?.focus(), 100);
         }}
       >
-        <MaterialCommunityIcons name="plus" size={28} color="#0a0a0a" />
+        <MaterialCommunityIcons name="plus" size={28} color={cyberpunkTheme.colors.background} />
       </TouchableOpacity>
 
       <SettingsModal
@@ -172,7 +173,10 @@ export function HomeScreen({ navigation }: Props) {
         onToggleCategory={setSortByCategory}
         onDietChange={setActiveDiet}
         onLangChange={setLang}
+        onAddDemoData={addDemoData}
         onClearAll={clearAll}
+        onGenerateTestData={generateTestData}
+        onGenerateExtremeData={generateExtremeData}
         onClose={() => setShowSettings(false)}
       />
     </KeyboardAvoidingView>
@@ -182,73 +186,63 @@ export function HomeScreen({ navigation }: Props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: cyberpunkTheme.colors.background,
   },
   loadingContainer: {
     flex: 1,
-    backgroundColor: cyberpunkTheme.colors.background,
     alignItems: 'center',
     justifyContent: 'center',
   },
   loadingText: {
-    fontFamily: cyberpunkTheme.fontFamily,
+    fontFamily: 'monospace',
     fontSize: 16,
-    color: cyberpunkTheme.colors.primary,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: cyberpunkTheme.spacing.sm,
-    backgroundColor: cyberpunkTheme.colors.headerBg,
-    paddingHorizontal: cyberpunkTheme.spacing.md,
-    paddingVertical: cyberpunkTheme.spacing.md,
+    gap: 8,
+    paddingHorizontal: 16,
+    paddingVertical: 16,
     paddingTop: 50,
   },
   headerTitle: {
-    fontFamily: cyberpunkTheme.fontFamily,
+    fontFamily: 'monospace',
     fontSize: 22,
     fontWeight: 'bold',
-    color: cyberpunkTheme.colors.headerText,
     flex: 1,
   },
   headerSubtitle: {
-    fontFamily: cyberpunkTheme.fontFamily,
+    fontFamily: 'monospace',
     fontSize: 12,
-    color: cyberpunkTheme.colors.textSecondary,
   },
   newListCard: {
-    marginHorizontal: cyberpunkTheme.spacing.md,
-    marginTop: cyberpunkTheme.spacing.sm,
-    padding: cyberpunkTheme.spacing.sm,
+    marginHorizontal: 16,
+    marginTop: 8,
+    padding: 8,
   },
   newListRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: cyberpunkTheme.spacing.sm,
+    gap: 8,
   },
   newListInput: {
     flex: 1,
-    fontFamily: cyberpunkTheme.fontFamily,
+    fontFamily: 'monospace',
     fontSize: 15,
-    color: cyberpunkTheme.colors.textPrimary,
     borderWidth: 1,
-    borderColor: cyberpunkTheme.colors.border,
-    borderRadius: cyberpunkTheme.borderRadius,
+    borderRadius: 8,
     padding: 8,
   },
   createButton: {
-    backgroundColor: cyberpunkTheme.colors.primary,
     paddingHorizontal: 16,
     paddingVertical: 8,
-    borderRadius: cyberpunkTheme.borderRadius,
+    borderRadius: 8,
   },
   createButtonText: {
-    fontFamily: cyberpunkTheme.fontFamily,
+    fontFamily: 'monospace',
     fontWeight: 'bold',
-    color: '#0a0a0a',
   },
   listContent: {
-    padding: cyberpunkTheme.spacing.md,
+    padding: 16,
     paddingBottom: 80,
   },
   fab: {
@@ -258,10 +252,8 @@ const styles = StyleSheet.create({
     width: 56,
     height: 56,
     borderRadius: 28,
-    backgroundColor: cyberpunkTheme.colors.primary,
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: cyberpunkTheme.colors.primary,
     shadowOpacity: 0.5,
     shadowRadius: 8,
     shadowOffset: { width: 0, height: 4 },

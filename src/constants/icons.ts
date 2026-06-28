@@ -6,7 +6,17 @@ export const SHOPPING_ICONS = [
   { name: 'fridge', label: 'Fridge' },
   { name: 'basket', label: 'Basket' },
   { name: 'snowflake', label: 'Frozen' },
-
+  { name: 'food-drumstick-outline', label: 'Meat' },
+  { name: 'fish', label: 'Fish' },
+  { name: 'egg-outline', label: 'Egg' },
+  { name: 'cheese', label: 'Cheese' },
+  { name: 'bread-slice-outline', label: 'Bread' },
+  { name: 'candy', label: 'Candy' },
+  { name: 'fruit-cherries', label: 'Fruit' },
+  { name: 'carrot', label: 'Vegetable' },
+  { name: 'seed-outline', label: 'Legume' },
+  { name: 'baguette', label: 'Bakery' },
+  { name: 'rice', label: 'Grain' },
   // 🍺 Beverages
   { name: 'bottle-wine', label: 'Beverages' },
   { name: 'coffee', label: 'Coffee' },
@@ -27,7 +37,7 @@ export const SHOPPING_ICONS = [
   { name: 'home-variant', label: 'Home' },
   { name: 'hammer', label: 'Tools' },
   { name: 'wrench', label: 'Hardware' },
-  { name: 'paint-bucket', label: 'Paint' },
+  { name: 'format-paint', label: 'Paint' },
   { name: 'lightbulb', label: 'Lighting' },
   { name: 'screwdriver', label: 'DIY' },
 
@@ -44,8 +54,8 @@ export const SHOPPING_ICONS = [
 
   // 🏡 Household / Kitchen
   { name: 'broom', label: 'Cleaning' },
-  { name: 'soap', label: 'Soap' },
-  { name: 'toilet-paper', label: 'Paper' },
+  { name: 'hand-wash-outline', label: 'Soap' },
+  { name: 'toilet', label: 'Paper' },
   { name: 'spray-bottle', label: 'Spray' },
   { name: 'silverware', label: 'Kitchen' },
   { name: 'pot', label: 'Cookware' },
@@ -73,7 +83,7 @@ export const SHOPPING_ICONS = [
 
   // 👶 Baby / Kids
   { name: 'baby-bottle', label: 'Baby' },
-  { name: 'toy', label: 'Toys' },
+  { name: 'toy-brick-outline', label: 'Toys' },
 
   // 📚 Books / Media
   { name: 'book', label: 'Books' },
@@ -84,7 +94,7 @@ export const SHOPPING_ICONS = [
   { name: 'cake', label: 'Cake' },
 
   // 🧳 Travel
-  { name: 'luggage', label: 'Travel' },
+  { name: 'bag-suitcase-outline', label: 'Travel' },
 
   // 🎁 General / Other
   { name: 'shopping', label: 'Shopping' },

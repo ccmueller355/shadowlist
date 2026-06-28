@@ -28,7 +28,10 @@ interface Props {
   onToggleCategory: (value: boolean) => void;
   onDietChange: (dietId: DietId | null) => void;
   onLangChange: (lang: AppLang) => void;
+  onAddDemoData?: () => void;
   onClearAll: () => void;
+  onGenerateTestData?: () => void;
+  onGenerateExtremeData?: (totalItems?: number) => number;
   onClose: () => void;
 }
 
@@ -42,7 +45,10 @@ export function SettingsModal({
   onToggleCategory,
   onDietChange,
   onLangChange,
+  onAddDemoData,
   onClearAll,
+  onGenerateTestData,
+  onGenerateExtremeData,
   onClose,
 }: Props) {
   const t = useAppTheme();
@@ -96,32 +102,32 @@ export function SettingsModal({
             </View>
 
             {/* Theme picker */}
-            <Text style={styles.sectionLabel}>THEME</Text>
+            <Text style={[styles.sectionLabel, { color: t.colors.textSecondary }]}>THEME</Text>
             {themeEntries.map(([key, theme]) => {
               const active = key === currentTheme;
               return (
                 <TouchableOpacity
                   key={key}
-                  style={[styles.themeRow, active && styles.themeRowActive]}
+                  style={[styles.themeRow, active && { backgroundColor: t.colors.checkedBg }]}
                   onPress={() => onThemeChange(key)}
-                  accessibilityLabel={`Theme: ${theme.label}`}
+                  accessibilityLabel={tr(('theme.' + String(key) + '.label') as any)}
                   accessibilityRole="radio"
                   accessibilityState={{ selected: active }}
                 >
                   <View style={styles.themeInfo}>
-                    <Text style={[styles.themeLabel, active && styles.themeLabelActive]}>
-                      {theme.label}
+                    <Text style={[styles.themeLabel, active && { color: t.colors.primary }]}>
+                      {tr(('theme.' + String(key) + '.label') as any)}
                     </Text>
-                    <Text style={styles.themeDesc}>{theme.description}</Text>
+                    <Text style={[styles.themeDesc, { color: t.colors.textSecondary }]}>{tr(('theme.' + String(key) + '.desc') as any)}</Text>
                   </View>
-                  <View style={[styles.radio, active && styles.radioActive]}>
-                    {active && <View style={styles.radioDot} />}
+                  <View style={[styles.radio, active && { borderColor: t.colors.primary }]}>
+                    {active && <View style={[styles.radioDot, { backgroundColor: t.colors.primary }]} />}
                   </View>
                 </TouchableOpacity>
               );
             })}
 
-            <View style={styles.divider} />
+            <View style={[styles.divider, { backgroundColor: t.colors.border }]} />
 
             {/* Sort by Category */}
             <View style={styles.row}>
@@ -131,7 +137,7 @@ export function SettingsModal({
                   size={22}
                   color={t.colors.primary}
                 />
-                <Text style={styles.rowLabel}>Sort by Category</Text>
+                <Text style={styles.rowLabel}>{tr('settings.sortByCategory')}</Text>
               </View>
               <Switch
                 value={sortByCategory}
@@ -141,29 +147,29 @@ export function SettingsModal({
                   true: t.colors.primary,
                 }}
                 thumbColor={t.colors.surface}
-                accessibilityLabel="Toggle sort by category"
+                accessibilityLabel={tr('settings.sortByCategory')}
               />
             </View>
 
-            <View style={styles.divider} />
+            <View style={[styles.divider, { backgroundColor: t.colors.border }]} />
 
             {/* Diet picker */}
-            <Text style={styles.sectionLabel}>{tr('settings.diet')}</Text>
+            <Text style={styles.sectionLabel}>{tr('settings.diet.label')}</Text>
             <TouchableOpacity
-              style={[styles.themeRow, activeDiet === null && styles.themeRowActive]}
+              style={[styles.themeRow, activeDiet === null && { backgroundColor: t.colors.checkedBg }]}
               onPress={() => onDietChange(null)}
-              accessibilityLabel="No diet selected"
+              accessibilityLabel={tr('settings.diet.none')}
               accessibilityRole="radio"
               accessibilityState={{ selected: activeDiet === null }}
             >
               <View style={styles.themeInfo}>
-                <Text style={[styles.themeLabel, activeDiet === null && styles.themeLabelActive]}>
+                <Text style={[styles.themeLabel, activeDiet === null && { color: t.colors.primary }]}>
                   {tr('settings.diet.none')}
                 </Text>
-                <Text style={styles.themeDesc}>No dietary restrictions</Text>
+                <Text style={[styles.themeDesc, { color: t.colors.textSecondary }]}>{tr('settings.diet.descNone')}</Text>
               </View>
-              <View style={[styles.radio, activeDiet === null && styles.radioActive]}>
-                {activeDiet === null && <View style={styles.radioDot} />}
+              <View style={[styles.radio, activeDiet === null && { borderColor: t.colors.primary }]}>
+                {activeDiet === null && <View style={[styles.radioDot, { backgroundColor: t.colors.primary }]} />}
               </View>
             </TouchableOpacity>
             {DIET_PROFILES.map((diet) => {
@@ -171,42 +177,42 @@ export function SettingsModal({
               return (
                 <TouchableOpacity
                   key={diet.id}
-                  style={[styles.themeRow, active && styles.themeRowActive]}
+                  style={[styles.themeRow, active && { backgroundColor: t.colors.checkedBg }]}
                   onPress={() => onDietChange(diet.id)}
                   accessibilityLabel={`Diet: ${tr(diet.nameKey as any)}`}
                   accessibilityRole="radio"
                   accessibilityState={{ selected: active }}
                 >
                   <View style={styles.themeInfo}>
-                    <Text style={[styles.themeLabel, active && styles.themeLabelActive]}>
+                    <Text style={[styles.themeLabel, active && { color: t.colors.primary }]}>
                       {tr(diet.nameKey as any)}
                     </Text>
                     <Text style={styles.themeDesc}>{tr(diet.descriptionKey as any)}</Text>
                   </View>
-                  <View style={[styles.radio, active && styles.radioActive]}>
-                    {active && <View style={styles.radioDot} />}
+                  <View style={[styles.radio, active && { borderColor: t.colors.primary }]}>
+                    {active && <View style={[styles.radioDot, { backgroundColor: t.colors.primary }]} />}
                   </View>
                 </TouchableOpacity>
               );
             })}
 
-            <View style={styles.divider} />
+            <View style={[styles.divider, { backgroundColor: t.colors.border }]} />
 
             {/* Language toggle */}
-            <Text style={styles.sectionLabel}>{tr('settings.language')}</Text>
+            <Text style={[styles.sectionLabel, { color: t.colors.textSecondary }]}>{tr('settings.language.label')}</Text>
             <View style={styles.langRow}>
               {langOptions.map((opt) => {
                 const active = lang === opt.key;
                 return (
                   <TouchableOpacity
                     key={opt.key}
-                    style={[styles.langChip, active && styles.langChipActive]}
+                    style={[styles.langChip, { borderColor: active ? t.colors.primary : t.colors.border, backgroundColor: active ? t.colors.checkedBg : 'transparent' }]}
                     onPress={() => onLangChange(opt.key)}
                     accessibilityLabel={`Language: ${opt.label}`}
                     accessibilityRole="radio"
                     accessibilityState={{ selected: active }}
                   >
-                    <Text style={[styles.langText, active && styles.langTextActive]}>
+                    <Text style={[styles.langText, active && { color: t.colors.primary }]}>
                       {opt.label}
                     </Text>
                   </TouchableOpacity>
@@ -214,13 +220,36 @@ export function SettingsModal({
               })}
             </View>
 
-            <View style={styles.divider} />
+            <View style={[styles.divider, { backgroundColor: t.colors.border }]} />
+
+            {/* Load Demo Data */}
+            {__DEV__ && onAddDemoData && (
+              <TouchableOpacity
+                style={styles.row}
+                onPress={() => { onAddDemoData(); Alert.alert('Demo Data', 'Demo lists loaded.'); }}
+                accessibilityLabel={tr('general.loadDemoData')}
+              >
+                <View style={styles.rowLeft}>
+                  <MaterialCommunityIcons
+                    name="database-outline"
+                    size={22}
+                    color={t.colors.primary}
+                  />
+                  <Text style={styles.rowLabel}>{tr('general.loadDemoData')}</Text>
+                </View>
+                <MaterialCommunityIcons
+                  name="chevron-right"
+                  size={22}
+                  color={t.colors.primary}
+                />
+              </TouchableOpacity>
+            )}
 
             {/* Clear All Data */}
             <TouchableOpacity
               style={styles.row}
               onPress={handleClearAll}
-              accessibilityLabel="Clear all data"
+              accessibilityLabel={tr('settings.clearAllData')}
             >
               <View style={styles.rowLeft}>
                 <MaterialCommunityIcons
@@ -228,7 +257,7 @@ export function SettingsModal({
                   size={22}
                   color={t.colors.danger}
                 />
-                <Text style={[styles.rowLabel, styles.dangerText]}>Clear All Data</Text>
+                <Text style={[styles.rowLabel, { color: t.colors.danger }]}>{tr('settings.clearAllData')}</Text>
               </View>
               <MaterialCommunityIcons
                 name="chevron-right"
@@ -237,7 +266,88 @@ export function SettingsModal({
               />
             </TouchableOpacity>
 
-            <Text style={styles.footer}>ShadowList v0.9.1</Text>
+            {__DEV__ && onGenerateTestData && (
+              <>
+                <View style={[styles.divider, { backgroundColor: t.colors.border }]} />
+                <TouchableOpacity
+                  style={styles.row}
+                  onPress={() => {
+                    const count = onGenerateTestData();
+                    Alert.alert(
+                      'Test Data',
+                      `${count} test lists generated with ${200}+ item pool.`,
+                    );
+                  }}
+                  accessibilityLabel={tr('general.generateTestData')}
+                >
+                  <View style={styles.rowLeft}>
+                    <MaterialCommunityIcons
+                      name="flask-outline"
+                      size={22}
+                      color={t.colors.primary}
+                    />
+                    <Text style={styles.rowLabel}>{tr('general.generateTestData')}</Text>
+                  </View>
+                  <MaterialCommunityIcons
+                    name="chevron-right"
+                    size={22}
+                    color={t.colors.primary}
+                  />
+                </TouchableOpacity>
+              </>
+            )}
+
+            {__DEV__ && onGenerateExtremeData && (
+              <>
+                <View style={[styles.divider, { backgroundColor: t.colors.border }]} />
+                <TouchableOpacity
+                  style={styles.row}
+                  onPress={() => {
+                    const count = onGenerateExtremeData(500);
+                    Alert.alert('Performance Test', `${count} lists generated with ~500 items.`);
+                  }}
+                  accessibilityLabel="Generate 500 test items"
+                >
+                  <View style={styles.rowLeft}>
+                    <MaterialCommunityIcons
+                      name="chart-bell-curve"
+                      size={22}
+                      color={t.colors.primary}
+                    />
+                    <Text style={styles.rowLabel}>Generate 500 Items</Text>
+                  </View>
+                  <MaterialCommunityIcons
+                    name="chevron-right"
+                    size={22}
+                    color={t.colors.primary}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.row}
+                  onPress={() => {
+                    const count = onGenerateExtremeData(5000);
+                    Alert.alert('Stress Data', `${count} lists generated with ~5,000 items.`);
+                  }}
+                  accessibilityLabel="Generate 5000 stress items"
+                >
+                  <View style={styles.rowLeft}>
+                    <MaterialCommunityIcons
+                      name="alert-octagon-outline"
+                      size={22}
+                      color={t.colors.danger}
+                    />
+                    <Text style={[styles.rowLabel, { color: t.colors.danger }]}>Generate 5,000 Items</Text>
+                  </View>
+                  <MaterialCommunityIcons
+                    name="chevron-right"
+                    size={22}
+                    color={t.colors.danger}
+                  />
+                </TouchableOpacity>
+              </>
+            )}
+
+            <Text style={[styles.footer, { color: t.colors.textSecondary }]}>ShadowList v0.10.0</Text>
           </View>
         </ScrollView>
       </View>
@@ -281,7 +391,6 @@ const styles = StyleSheet.create({
     fontFamily: 'monospace',
     fontSize: 11,
     fontWeight: 'bold',
-    color: '#888',
     letterSpacing: 1.5,
     marginBottom: 8,
     marginTop: 4,
@@ -294,9 +403,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginBottom: 4,
   },
-  themeRowActive: {
-    backgroundColor: '#f0f0ff',
-  },
   themeInfo: {
     flex: 1,
   },
@@ -305,13 +411,9 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: '600',
   },
-  themeLabelActive: {
-    color: '#6c5ce7',
-  },
   themeDesc: {
     fontFamily: 'monospace',
     fontSize: 12,
-    color: '#888',
     marginTop: 2,
   },
   radio: {
@@ -319,22 +421,16 @@ const styles = StyleSheet.create({
     height: 20,
     borderRadius: 10,
     borderWidth: 2,
-    borderColor: '#ccc',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  radioActive: {
-    borderColor: '#6c5ce7',
   },
   radioDot: {
     width: 10,
     height: 10,
     borderRadius: 5,
-    backgroundColor: '#6c5ce7',
   },
   divider: {
     height: 1,
-    backgroundColor: '#e0e0e0',
     marginVertical: 16,
   },
   row: {
@@ -352,9 +448,6 @@ const styles = StyleSheet.create({
     fontFamily: 'monospace',
     fontSize: 15,
   },
-  dangerText: {
-    color: '#e74c3c',
-  },
   langRow: {
     flexDirection: 'row',
     gap: 8,
@@ -364,25 +457,16 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#ccc',
     alignItems: 'center',
-  },
-  langChipActive: {
-    borderColor: '#6c5ce7',
-    backgroundColor: '#f0f0ff',
   },
   langText: {
     fontFamily: 'monospace',
     fontSize: 14,
     fontWeight: '600',
   },
-  langTextActive: {
-    color: '#6c5ce7',
-  },
   footer: {
     fontFamily: 'monospace',
     fontSize: 11,
-    color: '#aaa',
     textAlign: 'center',
     marginTop: 20,
   },

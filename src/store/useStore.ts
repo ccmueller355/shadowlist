@@ -1,9 +1,10 @@
 // ─── [ NEURAL DECK v4.6 $ AI::GENERATED :: NO COPYRIGHT ] ───
 import { create } from 'zustand';
 import { ShoppingList, ShoppingItem, AppSettings, NewItemParams, AppLang, DietId } from '../types';
-import { loadAllData, saveLists, saveItems, saveSettings, clearAllData } from '../storage/asyncStorage';
+import { runMigrations, loadAllData, saveLists, saveItems, saveSettings, clearAllData } from '../storage/asyncStorage';
 import { generateId } from '../utils/uuid';
 import { getDemoData } from '../constants/demoData';
+import { generateTestLists } from '../constants/testData';
 
 interface ShoppingState {
   lists: ShoppingList[];
@@ -34,8 +35,10 @@ interface ShoppingState {
   setActiveDiet: (dietId: DietId | null) => void;
   setLang: (lang: AppLang) => void;
 
-  // Demo / Danger
+  // Demo / Test Data / Danger
   addDemoData: () => void;
+  generateTestData: () => number;
+  generateExtremeData: (totalItems?: number) => number;
   clearAll: () => void;
 }
 
@@ -54,6 +57,7 @@ export const useStore = create<ShoppingState>((set, get) => ({
   hydrated: false,
 
   hydrate: async () => {
+    await runMigrations();
     const data = await loadAllData();
     set({
       lists: data.lists,
@@ -205,6 +209,62 @@ export const useStore = create<ShoppingState>((set, get) => ({
     const settings = { ...get().settings, lang };
     set({ settings });
     saveSettings(settings);
+  },
+
+  generateTestData: () => {
+    const { lists: newLists, items: newItems } = generateTestLists();
+    const lists = [...get().lists, ...newLists];
+    const items = [...get().items, ...newItems];
+    set({ lists, items });
+    saveLists(lists);
+    saveItems(items);
+    return newLists.length;
+  },
+
+  generateExtremeData: (totalItems = 5000) => {
+    const now = Date.now();
+    const newLists: ShoppingList[] = [];
+    const newItems: ShoppingItem[] = [];
+    const icons = ['cart', 'food-variant', 'pill', 'basket', 'coffee', 'carrot', 'cheese', 'paw', 'flower', 'lightbulb'];
+    const categories = ['Groceries', 'Beverages', 'Pharmacy', 'Household', 'Electronics'];
+    const foods = ['Milk', 'Bread', 'Cheese', 'Eggs', 'Apples', 'Rice', 'Pasta', 'Chicken', 'Fish', 'Butter'];
+    let itemId = 0;
+
+    // Distribute items across lists (10-30 items per list, scale number of lists to match totalItems)
+    const itemsPerList = Math.min(30, Math.max(10, Math.round(totalItems / 25)));
+    const listCount = Math.ceil(totalItems / itemsPerList);
+    for (let l = 0; l < listCount; l++) {
+      const listId = `extreme_list_${l}`;
+      newLists.push({
+        id: listId,
+        name: `Stress List ${l + 1}`,
+        createdAt: now,
+        updatedAt: now,
+      });
+      const itemsPerList = 80 + (l % 40); // 80-119 items per list
+      for (let i = 0; i < itemsPerList; i++) {
+        newItems.push({
+          id: `extreme_item_${itemId++}`,
+          listId,
+          description: `${foods[i % foods.length]} #${Math.floor(i / foods.length) + 1}`,
+          qualifier: '',
+          icon: icons[Math.floor(Math.random() * icons.length)],
+          foodType: null,
+          purchased: false,
+          order: i,
+          category: categories[Math.floor(Math.random() * categories.length)],
+          createdAt: now,
+          updatedAt: now,
+        });
+      }
+    }
+
+    const lists = [...get().lists, ...newLists];
+    const items = [...get().items, ...newItems];
+    set({ lists, items });
+    saveLists(lists);
+    saveItems(items);
+    return newLists.length;
   },
 
   addDemoData: () => {

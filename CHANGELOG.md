@@ -1,6 +1,64 @@
 # Changelog
 
+## v0.11.0 — 2026-06-28
+
+### Performance
+- **Compact default view** — loads only the last 50 items (TO SHOP + BOUGHT) on list entry, "View all" toggle for full list with drag-to-reorder (no lag with 5,000 items)
+- **Diet warnings** only compute for active items, not purchased history
+- **Scrolling fix** — DraggableFlatList no longer nested inside ScrollView (nested list no longer clips)
+
+### Icon Cleanup
+- All 12+ invalid MaterialCommunityIcons names fixed across `testData.ts` and `demoData.ts`
+- Food-specific icons added to icon picker grid (cheese, bread, meat, fish, fruit, veg, legume, bakery, grain)
+- Selected icon now shows accent border in picker
+
+### Demo Data
+- 3 new bilingual lists: Pharmacy & Health, Household & Cleaning, Pet Supplies (5 items each)
+- Demo data now spans 5 lists across 3 additional categories
+
+### Dev Tools
+- `generateExtremeData(totalItems)` store action with **__DEV__** buttons for 500 / 5,000 item stress tests
+- Settings modal consolidated to HomeScreen only (removed from ListDetailScreen)
+
+## v0.10.0 — 2026-06-28
+
+### Spec 003 — Demo Data & Test Generator (fully implemented)
+- **Bilingual demo data** — expanded to 18 items across 2 lists (FR-001, FR-002, FR-003)
+- **200-item grocery pool** — `src/constants/testData.ts` with 100 top-tier + 100+ long-tail items (FR-004, FR-005, FR-009)
+- **Statistical test list generator** — `generateTestLists()` with weighted tier selection, configurable params, no duplicates (FR-006, FR-007, FR-008, FR-010, FR-011)
+- **Store integration** — `generateTestData()` Zustand action (FR-012)
+- **`__DEV__`-gated Settings button** — "Generate Test Data" in Settings modal, visible in dev builds only
+- **29 new tests** — `demoData.test.ts` (11 tests), `testData.test.ts` (18 tests); 111 total, all passing
+- **i18n** — `settings.generateTestData`, `settings.testDataGenerated` in EN/DE
+
+### Spec 004 — Build Pipeline (implemented)
+- EAS project linked, `eas.json` with preview/production profiles
+- Build script with tsc + test gates (`scripts/build-android.sh`)
+- Config validation (`scripts/test-eas-config.sh`)
+- Config switcher for Expo Go vs APK (`scripts/switch-config.sh`)
+- SDK 56 upgrade (Expo 56, RN 0.85.3, jest-expo 56, all tests passing)
+- First APK built and installed on device
+
+### Spec 005 — Data Backup (spec only)
+- Specification written for export/import of all user data
+
+### Spec 006 — Public Release (spec only)
+- Specification written for GitHub Releases, F-Droid, IzzyOnDroid path
+
+### Other
+- Theme system redesign: Solarized-style 5-theme palette, live switching, WCAG contrast
+- AsynchStorage schema migration system with 9 tests
+- Splash: dark background (#121216) via expo-splash-screen plugin
+- Dependency cleanup: remove duplicates, pin SDK 56 versions
+- Build script updated with quota check, clean install, upgrade-sdk commands
+
+---
+
 ## v0.9.2 — 2026-06-22
+
+### Specs
+- **004-build-pipeline** — spec, research, data model, and implementation plan for EAS Build Android deployment pipeline (Expo SDK 54, two build profiles, CI gates, first APK)
+- **005-data-backup** — specification for export/import of all user data (lists, items, settings, learned name→food type mappings) with share sheet and file picker integration
 
 ### Added
 - **Bilingual demo data** — `src/constants/demoData.ts` now exports EN (`DEMO_LISTS_EN`/`DEMO_ITEMS_EN`) and DE (`DEMO_LISTS_DE`/`DEMO_ITEMS_DE`) sets

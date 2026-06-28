@@ -73,6 +73,16 @@ Before marking any task complete, pass these gates:
 3. `npm test` → all tests pass
 4. `vitepress build docs` → docs deployable
 
+## 4a. Feature Branch & PR Protocol
+
+- **Every feature gets a branch** (e.g. `NNN-feature-name`) and a corresponding GitHub Pull Request
+- **Never merge locally** — no `git checkout main && git merge feature`. Always use `gh pr create && gh pr merge`
+- **PR body** must summarize changes, link to the spec, and note any decisions made
+- **CI must be green** before merging — type-check, tests, coverage, docs build all pass
+- **Squash commits on merge** — `gh pr merge --squash --delete-branch`. One clean commit per feature on `main` keeps history readable and makes reverts easy. The full branch history lives locally.
+- **After merge**, the remote branch is auto-cleaned by GitHub via `--delete-branch`
+- **Rationale**: traceability — PRs are the permanent record of what landed, when, and why. Local merges leave zero audit trail.
+
 ---
 
 ## 5. SpecKit Workflow
