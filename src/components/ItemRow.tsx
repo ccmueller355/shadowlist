@@ -128,7 +128,7 @@ function ItemRowComponent({
 
       {/* Category badge (small) */}
       {item.category && (
-        <Text style={[styles.categoryBadge, { color: cyberpunkTheme.colors.secondary, backgroundColor: cyberpunkTheme.colors.background }]} numberOfLines={1}>
+        <Text style={[styles.categoryBadge, { color: cyberpunkTheme.colors.textSecondary, backgroundColor: cyberpunkTheme.colors.background }]} numberOfLines={1}>
           {tr(('category.' + item.category.replace(/[ &]/g, '')) as any)}
         </Text>
       )}
