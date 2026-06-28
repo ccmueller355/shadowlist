@@ -11,7 +11,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#121216",
+        "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/android-icon-foreground.png",
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
@@ -27,6 +27,15 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "owner": "aethelred-cybernetics"
+    "extra": {
+      "eas": {
+        "projectId": "d680bb7c-01bf-45a3-8d9f-200cd2d96f55"
+      }
+    },
+    "owner": "aethelred-cybernetics",
+    "plugins": [
+      "expo-font",
+      "expo-status-bar"
+    ]
   }
 }
