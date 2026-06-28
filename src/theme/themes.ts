@@ -5,19 +5,26 @@ export type ThemeName = AppSettings['theme'];
 
 export interface Theme {
   colors: {
-    primary: string;
-    secondary: string;
-    background: string;
-    surface: string;
-    textPrimary: string;
-    textSecondary: string;
-    border: string;
-    shadow: string;
-    danger: string;
-    headerBg: string;
-    headerText: string;
-    checkedBg: string;
-    sectionHeader: string;
+    // Core backgrounds
+    background: string;     // bg1 — main screen background
+    surface: string;        // bg2 — cards, list items, surfaces
+    headerBg: string;       // Header bar background
+
+    // Text
+    textPrimary: string;    // base — main text
+    textSecondary: string;  // muted — less important text
+    headerText: string;     // Header top bar text
+
+    // Accents
+    primary: string;        // accent1 — icons, checkboxes, buttons, active borders
+    secondary: string;      // accent2 — qualifier/amount, section headers, secondary highlights
+    sectionHeader: string;  // Section titles (TO SHOP, RECENTLY BOUGHT)
+
+    // States
+    danger: string;         // Destructive actions
+    border: string;         // Dividers, card borders, inactive states
+    checkedBg: string;      // Selected/active item background
+    shadow: string;         // Drop shadow / glow color
   };
   spacing: {
     xs: number;
@@ -45,24 +52,26 @@ const fontFamily = 'monospace' as const;
 
 // ═══════════════════════════════════════════
 //  A: Fixer's Notebook — warm paper noir
-//  Warm browns, muted rust-red, brass gold.
-//  Like an old leather journal under lamplight.
+//  b: dark leather, bg1: #1e1a15
+//  bg2: #2d2822, base: #e8dcc8
+//  accent1: #d4824a amber-orange
+//  accent2: #e0b85a brass gold
 // ═══════════════════════════════════════════
 export const fixerTheme: Theme = {
   colors: {
-    primary: '#d4824a',       // Warm amber-orange — vibrant for checkboxes and icons
-    secondary: '#b89a5a',     // Brass/gold — visible accent
-    background: '#1e1a15',    // Dark leather — warm background
-    surface: '#2d2822',       // Leather page — lighter for text contrast
-    textPrimary: '#e8dcc8',   // Ivory — warm readable white
-    textSecondary: '#9e9480', // Muted sand — readable
-    border: '#3d362e',        // Warm gray border
-    shadow: 'rgba(212,130,74,0.14)',
-    danger: '#b34444',        // Muted crimson
-    headerBg: '#15120f',      // Slightly darker than background
+    background: '#1e1a15',
+    surface: '#2d2822',
+    headerBg: '#15120f',
+    textPrimary: '#e8dcc8',
+    textSecondary: '#9e9480',
     headerText: '#e8dcc8',
-    checkedBg: '#352c24',     // Amber-tinted checked state
-    sectionHeader: '#e0b85a', // Bright brass gold — readable section headers
+    primary: '#d4824a',
+    secondary: '#e0b85a',
+    sectionHeader: '#e0b85a',
+    danger: '#b34444',
+    border: '#3d362e',
+    checkedBg: '#352c24',
+    shadow: 'rgba(212,130,74,0.14)',
   },
   spacing,
   borderRadius,
@@ -73,24 +82,26 @@ export const fixerTheme: Theme = {
 
 // ═══════════════════════════════════════════
 //  B: Stuffer Shack — aged parchment (LIGHT)
-//  Cream paper, dark ink, subdued red accent.
-//  Like a well-worn shopping list on a counter.
+//  bg1: #f3ecde cream, bg2: #faf5ed paper
+//  base: #2e241a dark ink
+//  accent1: #b8453a vibrant ink red
+//  accent2: #8c6a4a warm brown
 // ═══════════════════════════════════════════
 export const stufferTheme: Theme = {
   colors: {
-    primary: '#8c3a3a',       // Deep ink red — muted, not bright
-    secondary: '#6b5544',     // Dark sepia — like dried ink
-    background: '#f3ecde',    // Parchment base — warm, soft
-    surface: '#faf5ed',       // Paper white — subtle lift, never pure #fff
-    textPrimary: '#2e241a',   // Dark ink — black-brown, not pure #000
-    textSecondary: '#7a6e5e', // Faded ink — warm gray
-    border: '#e0d5c4',        // Parchment fold line
-    shadow: 'rgba(140,58,58,0.06)',
-    danger: '#b04444',        // Subdued red — warning that fits the palette
-    headerBg: '#2e241a',      // Dark ink band — anchors the top
+    background: '#f3ecde',
+    surface: '#faf5ed',
+    headerBg: '#2e241a',
+    textPrimary: '#2e241a',
+    textSecondary: '#7a6e5e',
     headerText: '#faf5ed',
-    checkedBg: '#f0e6d6',     // Slightly deeper paper — checked items
-    sectionHeader: '#8c3a3a', // Ink red matches primary
+    primary: '#b8453a',
+    secondary: '#8c6a4a',
+    sectionHeader: '#8c6a4a',
+    danger: '#b04444',
+    border: '#e0d5c4',
+    checkedBg: '#f0e6d6',
+    shadow: 'rgba(140,58,58,0.06)',
   },
   spacing,
   borderRadius,
@@ -101,24 +112,26 @@ export const stufferTheme: Theme = {
 
 // ═══════════════════════════════════════════
 //  C: Decker's Den — deep purple terminal
-//  Cool violet-black, soft lavender, muted violet.
-//  Like a synthwave terminal in a dark booth.
+//  bg1: #14101c, bg2: #1e1a28
+//  base: #e0d8ec
+//  accent1: #a888c0 soft lavender
+//  accent2: #c098d0 bright lavender
 // ═══════════════════════════════════════════
 export const deckerTheme: Theme = {
   colors: {
-    primary: '#a888c0',       // Soft lavender — gentle, not neon
-    secondary: '#7c5c96',     // Muted violet — depth without glare
-    background: '#14101c',    // Deep purple-black — cool, not harsh
-    surface: '#1e1a28',       // Dark violet card — subtle lift
-    textPrimary: '#e0d8ec',   // Pale purple-white — readable comfort
-    textSecondary: '#8c80a0', // Muted grape — subordinate text
-    border: '#2e2840',        // Purple-tinted divider
-    shadow: 'rgba(168,136,192,0.10)',
-    danger: '#c86060',        // Muted rose — warning that fits purple palette
-    headerBg: '#0e0b14',      // Deeper than background
+    background: '#14101c',
+    surface: '#1e1a28',
+    headerBg: '#0e0b14',
+    textPrimary: '#e0d8ec',
+    textSecondary: '#8c80a0',
     headerText: '#e0d8ec',
-    checkedBg: '#242030',     // Purple-tinted checked state
-    sectionHeader: '#a888c0', // Lavender matches primary
+    primary: '#a888c0',
+    secondary: '#c098d0',
+    sectionHeader: '#c098d0',
+    danger: '#c86060',
+    border: '#2e2840',
+    checkedBg: '#242030',
+    shadow: 'rgba(168,136,192,0.10)',
   },
   spacing,
   borderRadius,
@@ -129,24 +142,26 @@ export const deckerTheme: Theme = {
 
 // ═══════════════════════════════════════════
 //  D: Cyber Blue — deep ocean terminal
-//  Cool navy, calm cyan, muted steel blue.
-//  Like a corporate terminal at 3 AM.
+//  bg1: #101820, bg2: #1a2430
+//  base: #d8e8f0
+//  accent1: #64b8cc calm cyan
+//  accent2: #80c8d8 bright cyan
 // ═══════════════════════════════════════════
 export const cyberTheme: Theme = {
   colors: {
-    primary: '#64b8cc',       // Calm cyan-teal — readable, not blinding
-    secondary: '#4a80a0',     // Muted steel blue — depth
-    background: '#101820',    // Deep navy — cool, comfortable dark
-    surface: '#1a2430',       // Blue-tinted card — subtle lift
-    textPrimary: '#d8e8f0',   // Ice blue-white — soft on eyes
-    textSecondary: '#7090a8', // Muted blue-gray — subordinate
-    border: '#283848',        // Blue-tinted divider
-    shadow: 'rgba(100,184,204,0.10)',
-    danger: '#cc8866',        // Muted coral — warning that fits blue palette
-    headerBg: '#0a1018',      // Deeper than background
+    background: '#101820',
+    surface: '#1a2430',
+    headerBg: '#0a1018',
+    textPrimary: '#d8e8f0',
+    textSecondary: '#7090a8',
     headerText: '#d8e8f0',
-    checkedBg: '#202c38',     // Blue-tinted checked state
-    sectionHeader: '#64b8cc', // Cyan matches primary
+    primary: '#64b8cc',
+    secondary: '#80c8d8',
+    sectionHeader: '#80c8d8',
+    danger: '#cc8866',
+    border: '#283848',
+    checkedBg: '#202c38',
+    shadow: 'rgba(100,184,204,0.10)',
   },
   spacing,
   borderRadius,
@@ -157,24 +172,26 @@ export const cyberTheme: Theme = {
 
 // ═══════════════════════════════════════════
 //  E: Terminal Green — CRT phosphor
-//  Dark green-black, subdued phosphor, olive depth.
-//  Like a vintage monochrome monitor.
+//  bg1: #101810, bg2: #1a2418
+//  base: #d0e8c8
+//  accent1: #60b860 phosphor green
+//  accent2: #80d080 bright green
 // ═══════════════════════════════════════════
 export const terminalTheme: Theme = {
   colors: {
-    primary: '#60b860',       // Subdued phosphor green — readable, not neon
-    secondary: '#408848',     // Deeper pine — depth without glare
-    background: '#101810',    // Dark green-black — cool, comfortable
-    surface: '#1a2418',       // Green-tinted card — subtle lift
-    textPrimary: '#d0e8c8',   // Pale mint — soft glow on eyes
-    textSecondary: '#609060', // Muted olive — subordinate
-    border: '#284028',        // Green-tinted divider
-    shadow: 'rgba(96,184,96,0.10)',
-    danger: '#ccaa44',        // Muted amber — warning that fits green palette
-    headerBg: '#0a100a',      // Deeper than background
+    background: '#101810',
+    surface: '#1a2418',
+    headerBg: '#0a100a',
+    textPrimary: '#d0e8c8',
+    textSecondary: '#609060',
     headerText: '#d0e8c8',
-    checkedBg: '#202c20',     // Green-tinted checked state
-    sectionHeader: '#60b860', // Phosphor matches primary
+    primary: '#60b860',
+    secondary: '#80d080',
+    sectionHeader: '#80d080',
+    danger: '#ccaa44',
+    border: '#284028',
+    checkedBg: '#202c20',
+    shadow: 'rgba(96,184,96,0.10)',
   },
   spacing,
   borderRadius,
