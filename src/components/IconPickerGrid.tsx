@@ -21,7 +21,7 @@ export function IconPickerGrid({ selected, onSelect }: Props) {
             key={icon.name}
             style={[
               styles.iconButton,
-              isSelected && styles.selected,
+              isSelected && { borderColor: cyberpunkTheme.colors.danger, borderWidth: 2 },
             ]}
             onPress={() => onSelect(icon.name)}
           >
@@ -53,7 +53,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  selected: {
-    borderWidth: 2,
-  },
+
 });

@@ -1,5 +1,25 @@
 # Changelog
 
+## v0.11.0 — 2026-06-28
+
+### Performance
+- **Compact default view** — loads only the last 50 items (TO SHOP + BOUGHT) on list entry, "View all" toggle for full list with drag-to-reorder (no lag with 5,000 items)
+- **Diet warnings** only compute for active items, not purchased history
+- **Scrolling fix** — DraggableFlatList no longer nested inside ScrollView (nested list no longer clips)
+
+### Icon Cleanup
+- All 12+ invalid MaterialCommunityIcons names fixed across `testData.ts` and `demoData.ts`
+- Food-specific icons added to icon picker grid (cheese, bread, meat, fish, fruit, veg, legume, bakery, grain)
+- Selected icon now shows accent border in picker
+
+### Demo Data
+- 3 new bilingual lists: Pharmacy & Health, Household & Cleaning, Pet Supplies (5 items each)
+- Demo data now spans 5 lists across 3 additional categories
+
+### Dev Tools
+- `generateExtremeData(totalItems)` store action with **__DEV__** buttons for 500 / 5,000 item stress tests
+- Settings modal consolidated to HomeScreen only (removed from ListDetailScreen)
+
 ## v0.10.0 — 2026-06-28
 
 ### Spec 003 — Demo Data & Test Generator (fully implemented)

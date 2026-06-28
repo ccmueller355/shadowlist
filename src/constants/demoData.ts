@@ -18,6 +18,24 @@ export const DEMO_LISTS_EN: ShoppingList[] = [
     createdAt: now - 86400000,
     updatedAt: now,
   },
+  {
+    id: 'list_demo_3',
+    name: 'Pharmacy & Health',
+    createdAt: now - 86400000,
+    updatedAt: now,
+  },
+  {
+    id: 'list_demo_4',
+    name: 'Household & Cleaning',
+    createdAt: now - 86400000,
+    updatedAt: now,
+  },
+  {
+    id: 'list_demo_5',
+    name: 'Pet Supplies',
+    createdAt: now - 86400000,
+    updatedAt: now,
+  },
 ];
 
 export const DEMO_ITEMS_EN: ShoppingItem[] = [
@@ -39,11 +57,32 @@ export const DEMO_ITEMS_EN: ShoppingItem[] = [
 
   // --- Bakery & Snacks (To Shop) ---
   { id: 'item_demo_13', listId: 'list_demo_2', description: 'Croissant',    qualifier: '2x',    icon: 'bread-slice-outline',   foodType: 'grain',      purchased: false, order: 0, category: 'Groceries',  createdAt: now, updatedAt: now },
-  { id: 'item_demo_14', listId: 'list_demo_2', description: 'Bagels',       qualifier: '4x',    icon: 'bagel',                 foodType: 'grain',      purchased: false, order: 1, category: 'Groceries',  createdAt: now, updatedAt: now },
+  { id: 'item_demo_14', listId: 'list_demo_2', description: 'Bagels',       qualifier: '4x',    icon: 'baguette',                 foodType: 'grain',      purchased: false, order: 1, category: 'Groceries',  createdAt: now, updatedAt: now },
   { id: 'item_demo_15', listId: 'list_demo_2', description: 'Mixed Nuts',   qualifier: '200g',  icon: 'seed',                  foodType: 'legume',     purchased: false, order: 2, category: 'Snacks',     createdAt: now, updatedAt: now },
   { id: 'item_demo_16', listId: 'list_demo_2', description: 'Dark Chocolate', qualifier: '100g', icon: 'candy',                foodType: 'sugar',      purchased: false, order: 3, category: 'Snacks',     createdAt: now, updatedAt: now },
-  { id: 'item_demo_17', listId: 'list_demo_2', description: 'Organic Honey', qualifier: '1 jar', icon: 'honey',                 foodType: 'sugar',      purchased: true,  order: 4, category: 'Groceries',  createdAt: now - 86400000, updatedAt: now },
+  { id: 'item_demo_17', listId: 'list_demo_2', description: 'Organic Honey', qualifier: '1 jar', icon: 'bee',                 foodType: 'sugar',      purchased: true,  order: 4, category: 'Groceries',  createdAt: now - 86400000, updatedAt: now },
   { id: 'item_demo_18', listId: 'list_demo_2', description: 'Cheddar Crackers', qualifier: '1 box', icon: 'pizza',             foodType: 'grain',      purchased: true,  order: 5, category: 'Snacks',     createdAt: now - 86400000, updatedAt: now },
+
+  // --- Pharmacy & Health (To Shop) ---
+  { id: 'item_demo_19', listId: 'list_demo_3', description: 'Allergy Tablets', qualifier: '1 pack',  icon: 'pill',            foodType: 'supplement', purchased: false, order: 0, category: 'Pharmacy',   createdAt: now, updatedAt: now },
+  { id: 'item_demo_20', listId: 'list_demo_3', description: 'Band-Aids',       qualifier: '1 box',   icon: 'bandage',          foodType: 'supplement', purchased: false, order: 1, category: 'Pharmacy',   createdAt: now, updatedAt: now },
+  { id: 'item_demo_21', listId: 'list_demo_3', description: 'Vitamin C',       qualifier: '60 tabs', icon: 'medication',        foodType: 'supplement', purchased: false, order: 2, category: 'Pharmacy',   createdAt: now, updatedAt: now },
+  { id: 'item_demo_22', listId: 'list_demo_3', description: 'Lip Balm',        qualifier: '1x',      icon: 'lipstick',          foodType: 'supplement', purchased: false, order: 3, category: 'Beauty',     createdAt: now, updatedAt: now },
+  { id: 'item_demo_23', listId: 'list_demo_3', description: 'Toothbrush',      qualifier: '1x',      icon: 'toothbrush',        foodType: 'supplement', purchased: false, order: 4, category: 'Pharmacy',   createdAt: now, updatedAt: now },
+
+  // --- Household & Cleaning (To Shop) ---
+  { id: 'item_demo_24', listId: 'list_demo_4', description: 'Dish Soap',       qualifier: '1 bottle', icon: 'hand-wash-outline', foodType: 'non_food',   purchased: false, order: 0, category: 'Household',  createdAt: now, updatedAt: now },
+  { id: 'item_demo_25', listId: 'list_demo_4', description: 'Paper Towels',    qualifier: '3 rolls',  icon: 'toilet',            foodType: 'non_food',   purchased: false, order: 1, category: 'Household',  createdAt: now, updatedAt: now },
+  { id: 'item_demo_26', listId: 'list_demo_4', description: 'Lightbulbs',      qualifier: '4x',       icon: 'lightbulb',         foodType: 'non_food',   purchased: false, order: 2, category: 'Home & DIY', createdAt: now, updatedAt: now },
+  { id: 'item_demo_27', listId: 'list_demo_4', description: 'All-Purpose Cleaner', qualifier: '1x', icon: 'spray-bottle',       foodType: 'non_food',   purchased: false, order: 3, category: 'Household',  createdAt: now, updatedAt: now },
+  { id: 'item_demo_28', listId: 'list_demo_4', description: 'Batteries',       qualifier: '8 pack',  icon: 'battery',           foodType: 'non_food',   purchased: false, order: 4, category: 'Electronics', createdAt: now, updatedAt: now },
+
+  // --- Pet Supplies (To Shop) ---
+  { id: 'item_demo_29', listId: 'list_demo_5', description: 'Dog Food',        qualifier: '4 kg',    icon: 'paw',               foodType: 'non_food',   purchased: false, order: 0, category: 'Pets',       createdAt: now, updatedAt: now },
+  { id: 'item_demo_30', listId: 'list_demo_5', description: 'Cat Litter',      qualifier: '10 L',    icon: 'paw',               foodType: 'non_food',   purchased: false, order: 1, category: 'Pets',       createdAt: now, updatedAt: now },
+  { id: 'item_demo_31', listId: 'list_demo_5', description: 'Fish Food',       qualifier: '1 pack',  icon: 'fish',              foodType: 'non_food',   purchased: false, order: 2, category: 'Pets',       createdAt: now, updatedAt: now },
+  { id: 'item_demo_32', listId: 'list_demo_5', description: 'Pet Shampoo',     qualifier: '1x',      icon: 'hand-wash-outline', foodType: 'non_food',   purchased: false, order: 3, category: 'Pets',       createdAt: now, updatedAt: now },
+  { id: 'item_demo_33', listId: 'list_demo_5', description: 'Dog Treats',      qualifier: '1 bag',   icon: 'paw',               foodType: 'non_food',   purchased: false, order: 4, category: 'Pets',       createdAt: now, updatedAt: now },
 ];
 
 // ─── GERMAN DEMO DATA ───
@@ -58,6 +97,24 @@ export const DEMO_LISTS_DE: ShoppingList[] = [
   {
     id: 'list_demo_2',
     name: 'Bäckerei & Snacks',
+    createdAt: now - 86400000,
+    updatedAt: now,
+  },
+  {
+    id: 'list_demo_3',
+    name: 'Apotheke & Gesundheit',
+    createdAt: now - 86400000,
+    updatedAt: now,
+  },
+  {
+    id: 'list_demo_4',
+    name: 'Haushalt & Reinigung',
+    createdAt: now - 86400000,
+    updatedAt: now,
+  },
+  {
+    id: 'list_demo_5',
+    name: 'Tierbedarf',
     createdAt: now - 86400000,
     updatedAt: now,
   },
@@ -82,11 +139,32 @@ export const DEMO_ITEMS_DE: ShoppingItem[] = [
 
   // --- Bäckerei & Snacks (To Shop) ---
   { id: 'item_demo_13', listId: 'list_demo_2', description: 'Croissant',    qualifier: '2x',    icon: 'bread-slice-outline',   foodType: 'grain',      purchased: false, order: 0, category: 'Groceries',  createdAt: now, updatedAt: now },
-  { id: 'item_demo_14', listId: 'list_demo_2', description: 'Bagels',       qualifier: '4x',    icon: 'bagel',                 foodType: 'grain',      purchased: false, order: 1, category: 'Groceries',  createdAt: now, updatedAt: now },
+  { id: 'item_demo_14', listId: 'list_demo_2', description: 'Bagels',       qualifier: '4x',    icon: 'baguette',                 foodType: 'grain',      purchased: false, order: 1, category: 'Groceries',  createdAt: now, updatedAt: now },
   { id: 'item_demo_15', listId: 'list_demo_2', description: 'Nüsse gemischt', qualifier: '200g', icon: 'seed',                 foodType: 'legume',     purchased: false, order: 2, category: 'Snacks',     createdAt: now, updatedAt: now },
   { id: 'item_demo_16', listId: 'list_demo_2', description: 'Zartbitterschokolade', qualifier: '100g', icon: 'candy',       foodType: 'sugar',      purchased: false, order: 3, category: 'Snacks',     createdAt: now, updatedAt: now },
-  { id: 'item_demo_17', listId: 'list_demo_2', description: 'Waldhonig',    qualifier: '1 Glas', icon: 'honey',                foodType: 'sugar',      purchased: true,  order: 4, category: 'Groceries',  createdAt: now - 86400000, updatedAt: now },
+  { id: 'item_demo_17', listId: 'list_demo_2', description: 'Waldhonig',    qualifier: '1 Glas', icon: 'bee',                foodType: 'sugar',      purchased: true,  order: 4, category: 'Groceries',  createdAt: now - 86400000, updatedAt: now },
   { id: 'item_demo_18', listId: 'list_demo_2', description: 'Cheddar Cracker', qualifier: '1 Pack', icon: 'pizza',           foodType: 'grain',      purchased: true,  order: 5, category: 'Snacks',     createdAt: now - 86400000, updatedAt: now },
+
+  // --- Apotheke & Gesundheit (To Shop) ---
+  { id: 'item_demo_19', listId: 'list_demo_3', description: 'Allergietabletten', qualifier: '1 Pack',  icon: 'pill',        foodType: 'supplement', purchased: false, order: 0, category: 'Pharmacy',   createdAt: now, updatedAt: now },
+  { id: 'item_demo_20', listId: 'list_demo_3', description: 'Pflaster',          qualifier: '1 Box',   icon: 'bandage',      foodType: 'supplement', purchased: false, order: 1, category: 'Pharmacy',   createdAt: now, updatedAt: now },
+  { id: 'item_demo_21', listId: 'list_demo_3', description: 'Vitamin C',         qualifier: '60 Tab.', icon: 'medication',   foodType: 'supplement', purchased: false, order: 2, category: 'Pharmacy',   createdAt: now, updatedAt: now },
+  { id: 'item_demo_22', listId: 'list_demo_3', description: 'Lippenbalsam',      qualifier: '1x',      icon: 'lipstick',     foodType: 'supplement', purchased: false, order: 3, category: 'Beauty',     createdAt: now, updatedAt: now },
+  { id: 'item_demo_23', listId: 'list_demo_3', description: 'Zahnbürste',        qualifier: '1x',      icon: 'toothbrush',   foodType: 'supplement', purchased: false, order: 4, category: 'Pharmacy',   createdAt: now, updatedAt: now },
+
+  // --- Haushalt & Reinigung (To Shop) ---
+  { id: 'item_demo_24', listId: 'list_demo_4', description: 'Spülmittel',        qualifier: '1 Flasche', icon: 'hand-wash-outline', foodType: 'non_food', purchased: false, order: 0, category: 'Household',  createdAt: now, updatedAt: now },
+  { id: 'item_demo_25', listId: 'list_demo_4', description: 'Küchenrolle',       qualifier: '3 Rollen',  icon: 'toilet',            foodType: 'non_food', purchased: false, order: 1, category: 'Household',  createdAt: now, updatedAt: now },
+  { id: 'item_demo_26', listId: 'list_demo_4', description: 'Glühbirnen',        qualifier: '4x',        icon: 'lightbulb',         foodType: 'non_food', purchased: false, order: 2, category: 'Home & DIY', createdAt: now, updatedAt: now },
+  { id: 'item_demo_27', listId: 'list_demo_4', description: 'Allzweckreiniger',  qualifier: '1x',        icon: 'spray-bottle',      foodType: 'non_food', purchased: false, order: 3, category: 'Household',  createdAt: now, updatedAt: now },
+  { id: 'item_demo_28', listId: 'list_demo_4', description: 'Batterien',         qualifier: '8er Pack',  icon: 'battery',           foodType: 'non_food', purchased: false, order: 4, category: 'Electronics', createdAt: now, updatedAt: now },
+
+  // --- Tierbedarf (To Shop) ---
+  { id: 'item_demo_29', listId: 'list_demo_5', description: 'Hundefutter',       qualifier: '4 kg',     icon: 'paw',               foodType: 'non_food', purchased: false, order: 0, category: 'Pets',       createdAt: now, updatedAt: now },
+  { id: 'item_demo_30', listId: 'list_demo_5', description: 'Katzenstreu',       qualifier: '10 L',     icon: 'paw',               foodType: 'non_food', purchased: false, order: 1, category: 'Pets',       createdAt: now, updatedAt: now },
+  { id: 'item_demo_31', listId: 'list_demo_5', description: 'Fischfutter',       qualifier: '1 Pack',   icon: 'fish',              foodType: 'non_food', purchased: false, order: 2, category: 'Pets',       createdAt: now, updatedAt: now },
+  { id: 'item_demo_32', listId: 'list_demo_5', description: 'Tiershampoo',       qualifier: '1x',       icon: 'hand-wash-outline', foodType: 'non_food', purchased: false, order: 3, category: 'Pets',       createdAt: now, updatedAt: now },
+  { id: 'item_demo_33', listId: 'list_demo_5', description: 'Hundeleckerli',     qualifier: '1 Tüte',   icon: 'paw',               foodType: 'non_food', purchased: false, order: 4, category: 'Pets',       createdAt: now, updatedAt: now },
 ];
 
 // ─── LANGUAGE SELECTION ───

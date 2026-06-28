@@ -31,6 +31,7 @@ interface Props {
   onAddDemoData?: () => void;
   onClearAll: () => void;
   onGenerateTestData?: () => void;
+  onGenerateExtremeData?: (totalItems?: number) => number;
   onClose: () => void;
 }
 
@@ -47,6 +48,7 @@ export function SettingsModal({
   onAddDemoData,
   onClearAll,
   onGenerateTestData,
+  onGenerateExtremeData,
   onClose,
 }: Props) {
   const t = useAppTheme();
@@ -290,6 +292,56 @@ export function SettingsModal({
                     name="chevron-right"
                     size={22}
                     color={t.colors.primary}
+                  />
+                </TouchableOpacity>
+              </>
+            )}
+
+            {__DEV__ && onGenerateExtremeData && (
+              <>
+                <View style={[styles.divider, { backgroundColor: t.colors.border }]} />
+                <TouchableOpacity
+                  style={styles.row}
+                  onPress={() => {
+                    const count = onGenerateExtremeData(500);
+                    Alert.alert('Performance Test', `${count} lists generated with ~500 items.`);
+                  }}
+                  accessibilityLabel="Generate 500 test items"
+                >
+                  <View style={styles.rowLeft}>
+                    <MaterialCommunityIcons
+                      name="chart-bell-curve"
+                      size={22}
+                      color={t.colors.primary}
+                    />
+                    <Text style={styles.rowLabel}>Generate 500 Items</Text>
+                  </View>
+                  <MaterialCommunityIcons
+                    name="chevron-right"
+                    size={22}
+                    color={t.colors.primary}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.row}
+                  onPress={() => {
+                    const count = onGenerateExtremeData(5000);
+                    Alert.alert('Stress Data', `${count} lists generated with ~5,000 items.`);
+                  }}
+                  accessibilityLabel="Generate 5000 stress items"
+                >
+                  <View style={styles.rowLeft}>
+                    <MaterialCommunityIcons
+                      name="alert-octagon-outline"
+                      size={22}
+                      color={t.colors.danger}
+                    />
+                    <Text style={[styles.rowLabel, { color: t.colors.danger }]}>Generate 5,000 Items</Text>
+                  </View>
+                  <MaterialCommunityIcons
+                    name="chevron-right"
+                    size={22}
+                    color={t.colors.danger}
                   />
                 </TouchableOpacity>
               </>

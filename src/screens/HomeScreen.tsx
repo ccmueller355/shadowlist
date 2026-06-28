@@ -39,6 +39,7 @@ export function HomeScreen({ navigation }: Props) {
   const setActiveDiet = useStore((s) => s.setActiveDiet);
   const setLang = useStore((s) => s.setLang);
   const clearAll = useStore((s) => s.clearAll);
+  const generateExtremeData = useStore((s) => s.generateExtremeData);
 
   const [showNewListInput, setShowNewListInput] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
@@ -175,6 +176,7 @@ export function HomeScreen({ navigation }: Props) {
         onAddDemoData={addDemoData}
         onClearAll={clearAll}
         onGenerateTestData={generateTestData}
+        onGenerateExtremeData={generateExtremeData}
         onClose={() => setShowSettings(false)}
       />
     </KeyboardAvoidingView>

@@ -22,7 +22,6 @@ import { FoodType, ShoppingItem } from '../types';
 import { AddItemBar } from '../components/AddItemBar';
 import { ItemRow } from '../components/ItemRow';
 import { EditModal } from '../components/EditModal';
-import { SettingsModal } from '../components/SettingsModal';
 import { SuggestionDialog } from '../components/SuggestionDialog';
 import { EmptyPlaceholder } from '../components/EmptyPlaceholder';
 import { checkItem, CheckResult } from '../utils/dietEngine';
@@ -46,11 +45,7 @@ export function ListDetailScreen({ route, navigation }: Props) {
   const togglePurchased = useStore((s) => s.togglePurchased);
   const moveToShop = useStore((s) => s.moveToShop);
   const reorderItems = useStore((s) => s.reorderItems);
-  const setSortByCategory = useStore((s) => s.setSortByCategory);
-  const setTheme = useStore((s) => s.setTheme);
-  const setActiveDiet = useStore((s) => s.setActiveDiet);
-  const setLang = useStore((s) => s.setLang);
-  const clearAll = useStore((s) => s.clearAll);
+
 
   const { t: tr } = useTranslation();
   const cyberpunkTheme = useAppTheme();
@@ -58,8 +53,12 @@ export function ListDetailScreen({ route, navigation }: Props) {
   const [search, setSearch] = useState('');
   const [editItem, setEditItem] = useState<ShoppingItem | null>(null);
   const [showEdit, setShowEdit] = useState(false);
-  const [showSettings, setShowSettings] = useState(false);
+  const [showAllItems, setShowAllItems] = useState(false);
+  const [showAllBought, setShowAllBought] = useState(false);
   const [warningItem, setWarningItem] = useState<{ name: string; dietName: string; foodType: FoodType } | null>(null);
+
+  const MAX_COMPACT_ITEMS = 50;
+  const MAX_VISIBLE_BOUGHT = 20;
   const insets = useSafeAreaInsets();
   const ts = useThemeStyles();
 
@@ -67,12 +66,11 @@ export function ListDetailScreen({ route, navigation }: Props) {
   useEffect(() => {
     const handler = () => {
       if (showEdit) { setShowEdit(false); setEditItem(null); return true; }
-      if (showSettings) { setShowSettings(false); return true; }
       return false;
     };
     const sub = BackHandler.addEventListener('hardwareBackPress', handler);
     return () => sub.remove();
-  }, [showEdit, showSettings]);
+  }, [showEdit]);
 
   // Get current list name
   const currentList = lists.find((l) => l.id === listId);
@@ -92,13 +90,29 @@ export function ListDetailScreen({ route, navigation }: Props) {
     [listItems]
   );
 
+  // Only keep last 200 purchased items — enough for "View all", fast enough to sort
+  const MAX_BOUGHT_HISTORY = 200;
+  const allPurchased = useMemo(
+    () => listItems.filter((i) => i.purchased),
+    [listItems]
+  );
+
   const boughtItems = useMemo(
     () =>
-      listItems
-        .filter((i) => i.purchased)
-        .sort((a, b) => b.updatedAt - a.updatedAt) // Most recent first
-        .slice(0, 50), // Keep last 50
-    [listItems]
+      allPurchased
+        .sort((a, b) => b.updatedAt - a.updatedAt)
+        .slice(0, MAX_BOUGHT_HISTORY),
+    [allPurchased]
+  );
+
+  // Compact default view — up to 50 items total: active first, then bought
+  const compactActive = useMemo(
+    () => activeItems.slice(0, MAX_COMPACT_ITEMS),
+    [activeItems]
+  );
+  const compactBought = useMemo(
+    () => boughtItems.slice(0, MAX_COMPACT_ITEMS - compactActive.length),
+    [boughtItems, compactActive.length]
   );
 
   // Search filter
@@ -114,16 +128,23 @@ export function ListDetailScreen({ route, navigation }: Props) {
     return boughtItems.filter((i) => i.description.toLowerCase().includes(q));
   }, [boughtItems, search]);
 
+  const displayBought = useMemo(
+    () => showAllBought ? filteredBought : filteredBought.slice(0, MAX_VISIBLE_BOUGHT),
+    [filteredBought, showAllBought]
+  );
+
+  const hasMoreBought = !showAllBought && boughtItems.length > MAX_VISIBLE_BOUGHT;
+
   // Active diet profile
   const activeDiet = settings.activeDiet
     ? DIET_PROFILES.find((d) => d.id === settings.activeDiet) ?? null
     : null;
 
-  // Diet check cache — which items have warnings
+  // Diet check cache — only compute for active (visible) items
   const dietWarnings = useMemo(() => {
     if (!activeDiet) return new Map<string, CheckResult>();
     const map = new Map<string, CheckResult>();
-    listItems.forEach((item) => {
+    activeItems.forEach((item) => {
       if (item.foodType && item.foodType !== 'non_food') {
         const result = checkItem(activeDiet, item.foodType);
         if (!result.compatible) {
@@ -132,7 +153,7 @@ export function ListDetailScreen({ route, navigation }: Props) {
       }
     });
     return map;
-  }, [activeDiet, listItems]);
+  }, [activeDiet, activeItems]);
 
   // Category grouping
   const groupedActive = useMemo(() => {
@@ -149,7 +170,7 @@ export function ListDetailScreen({ route, navigation }: Props) {
   const groupedBought = useMemo(() => {
     if (!settings.sortByCategory) return null;
     const groups: Record<string, ShoppingItem[]> = {};
-    filteredBought.forEach((item) => {
+    displayBought.forEach((item) => {
       const cat = item.category || 'Other';
       if (!groups[cat]) groups[cat] = [];
       groups[cat].push(item);
@@ -270,14 +291,11 @@ export function ListDetailScreen({ route, navigation }: Props) {
   return (
     <View style={[styles.container, ts.bg]}>
       {/* Header */}
-      <View style={[styles.header, ts.header]}>
+      <View style={[styles.header, { backgroundColor: cyberpunkTheme.colors.background }]}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <MaterialCommunityIcons name="arrow-left" size={24} color={cyberpunkTheme.colors.headerText} />
         </TouchableOpacity>
         <Text style={[styles.headerTitle, { color: cyberpunkTheme.colors.headerText }]} numberOfLines={1}>{displayName}</Text>
-        <TouchableOpacity onPress={() => setShowSettings(true)}>
-          <MaterialCommunityIcons name="cog" size={24} color={cyberpunkTheme.colors.headerText} />
-        </TouchableOpacity>
       </View>
 
       {/* Active diet header indicator */}
@@ -294,80 +312,56 @@ export function ListDetailScreen({ route, navigation }: Props) {
           )}
         </View>
       )}
-
-      {/* Content */}
-      <ScrollView
-        style={styles.scrollArea}
-        contentContainerStyle={styles.scrollContent}
-        keyboardShouldPersistTaps="handled"
-      >
-        {/* ===== TO SHOP SECTION ===== */}
-        {activeItems.length > 0 && (
-          <>
-            <View style={[{ backgroundColor: cyberpunkTheme.colors.surface, borderTopWidth: 1, borderTopColor: cyberpunkTheme.colors.border }]}>
-            <Text style={[styles.sectionHeader, { color: cyberpunkTheme.colors.sectionHeader }]}>
-              TO SHOP
-              <Text style={[styles.sectionCount, { color: cyberpunkTheme.colors.textSecondary }]}> ({activeItems.length})</Text>
-            </Text>
-            </View>
-
-            {settings.sortByCategory && groupedActive ? (
-              // Category grouped view
-              renderCategoryGroup(groupedActive, togglePurchased, handleLongPress, moveToShop, updateItem, false)
-            ) : (
-              // Draggable list for active items
-              <DraggableFlatList
-                data={filteredActive}
-                renderItem={({ item, drag, isActive }: RenderItemParams<ShoppingItem>) => (
-                  <ScaleDecorator>
-                    <View style={isActive ? styles.dragging : undefined}>
-                      <ItemRow
-                        item={item}
-                        drag={drag}
-                        isActive={isActive}
-                        showDietWarning={dietWarnings.has(item.id)}
-                        onDietWarningPress={() => {
-                          if (activeDiet && item.foodType) {
-                            setWarningItem({
-                              name: item.description,
-                              dietName: tr(activeDiet.nameKey as any),
-                              foodType: item.foodType,
-                            });
-                          }
-                        }}
-                        onTogglePurchased={togglePurchased}
-                        onLongPress={handleLongPress}
-                        onTapBought={moveToShop}
-                        onUpdateItem={updateItem}
-                      />
-                    </View>
-                  </ScaleDecorator>
-                )}
-                keyExtractor={(item) => item.id}
-                onDragEnd={handleDragEnd}
-                scrollEnabled={false}
-              />
-            )}
-          </>
-        )}
-
-        {/* ===== RECENTLY BOUGHT SECTION ===== */}
-        {boughtItems.length > 0 && (
-          <>
-            <View style={styles.divider}>
-              <MaterialCommunityIcons name="check-circle-outline" size={16} color={cyberpunkTheme.colors.sectionHeader} />
+      {/* Content — Compact or Full view */}
+      {!showAllItems ? (
+        // ── COMPACT VIEW — Last 50 items (mix of active + bought) ──
+        <ScrollView
+          style={styles.scrollArea}
+          contentContainerStyle={styles.scrollContent}
+          keyboardShouldPersistTaps="handled"
+        >
+          {/* ===== TO SHOP (compact) ===== */}
+          {compactActive.length > 0 && (
+            <>
               <View style={[{ backgroundColor: cyberpunkTheme.colors.surface, borderTopWidth: 1, borderTopColor: cyberpunkTheme.colors.border }]}>
               <Text style={[styles.sectionHeader, { color: cyberpunkTheme.colors.sectionHeader }]}>
-                RECENTLY BOUGHT
-                <Text style={[styles.sectionCount, { color: cyberpunkTheme.colors.textSecondary }]}> ({boughtItems.length})</Text>
+                TO SHOP
+                <Text style={[styles.sectionCount, { color: cyberpunkTheme.colors.textSecondary }]}> ({compactActive.length} of {listItems.length})</Text>
               </Text>
               </View>
-            </View>
+              {compactActive.map((item) => (
+                <ItemRow
+                  key={item.id}
+                  item={item}
+                  onTogglePurchased={togglePurchased}
+                  onLongPress={handleLongPress}
+                  onTapBought={moveToShop}
+                  onUpdateItem={updateItem}
+                  showDietWarning={dietWarnings.has(item.id)}
+                  onDietWarningPress={() => {
+                    if (activeDiet && item.foodType) {
+                      setWarningItem({
+                        name: item.description,
+                        dietName: tr(activeDiet.nameKey as any),
+                        foodType: item.foodType,
+                      });
+                    }
+                  }}
+                />
+              ))}
+            </>
+          )}
 
-            {settings.sortByCategory && groupedBought ? (
-              renderCategoryGroup(groupedBought, togglePurchased, handleLongPress, moveToShop, updateItem, true)
-            ) : (
-              filteredBought.map((item) => (
+          {/* ===== RECENTLY BOUGHT (compact) ===== */}
+          {compactBought.length > 0 && (
+            <>
+              <View style={[styles.divider, { backgroundColor: cyberpunkTheme.colors.surface, borderTopWidth: 1, borderTopColor: cyberpunkTheme.colors.border }]}>
+              <Text style={[styles.sectionHeader, { color: cyberpunkTheme.colors.sectionHeader }]}>
+                RECENTLY BOUGHT
+                <Text style={[styles.sectionCount, { color: cyberpunkTheme.colors.textSecondary }]}> ({compactBought.length})</Text>
+              </Text>
+              </View>
+              {compactBought.map((item) => (
                 <ItemRow
                   key={item.id}
                   item={item}
@@ -376,21 +370,215 @@ export function ListDetailScreen({ route, navigation }: Props) {
                   onTapBought={moveToShop}
                   onUpdateItem={updateItem}
                 />
-              ))
+              ))}
+            </>
+          )}
+
+          {listItems.length > MAX_COMPACT_ITEMS && (
+            <TouchableOpacity
+              style={[styles.viewAllButton, { borderColor: cyberpunkTheme.colors.border }]}
+              onPress={() => setShowAllItems(true)}
+            >
+              <Text style={[styles.viewAllText, { color: cyberpunkTheme.colors.primary }]}>
+                View all {listItems.length} items →
+              </Text>
+            </TouchableOpacity>
+          )}
+
+          {listItems.length === 0 && (
+            <EmptyPlaceholder
+              message={tr('general.emptyListMessage')}
+              icon="cart-outline"
+            />
+          )}
+
+          <View style={styles.bottomSpacer} />
+        </ScrollView>
+      ) : showAllItems && settings.sortByCategory ? (
+        // ── FULL VIEW — Category sorted ──
+        <ScrollView
+          style={styles.scrollArea}
+          contentContainerStyle={styles.scrollContent}
+          keyboardShouldPersistTaps="handled"
+        >
+          <TouchableOpacity
+            style={[styles.viewAllButton, { borderColor: cyberpunkTheme.colors.border }]}
+            onPress={() => setShowAllItems(false)}
+          >
+            <Text style={[styles.viewAllText, { color: cyberpunkTheme.colors.textSecondary }]}>
+              ↑ Show compact view
+            </Text>
+          </TouchableOpacity>
+
+          {/* ===== TO SHOP SECTION ===== */}
+          {activeItems.length > 0 && (
+            <>
+              <View style={[{ backgroundColor: cyberpunkTheme.colors.surface, borderTopWidth: 1, borderTopColor: cyberpunkTheme.colors.border }]}>
+              <Text style={[styles.sectionHeader, { color: cyberpunkTheme.colors.sectionHeader }]}>
+                TO SHOP
+                <Text style={[styles.sectionCount, { color: cyberpunkTheme.colors.textSecondary }]}> ({activeItems.length})</Text>
+              </Text>
+              </View>
+              {groupedActive && renderCategoryGroup(groupedActive, togglePurchased, handleLongPress, moveToShop, updateItem, false)}
+            </>
+          )}
+
+          {/* ===== RECENTLY BOUGHT SECTION ===== */}
+          {boughtItems.length > 0 && (
+            <>
+              <View style={styles.divider}>
+                <MaterialCommunityIcons name="check-circle-outline" size={16} color={cyberpunkTheme.colors.sectionHeader} />
+                <View style={[{ backgroundColor: cyberpunkTheme.colors.surface, borderTopWidth: 1, borderTopColor: cyberpunkTheme.colors.border }]}>
+                <Text style={[styles.sectionHeader, { color: cyberpunkTheme.colors.sectionHeader }]}>
+                  RECENTLY BOUGHT
+                  <Text style={[styles.sectionCount, { color: cyberpunkTheme.colors.textSecondary }]}> ({displayBought.length} of {boughtItems.length})</Text>
+                </Text>
+                </View>
+              </View>
+              {groupedBought && renderCategoryGroup(groupedBought, togglePurchased, handleLongPress, moveToShop, updateItem, true)}
+              {hasMoreBought && (
+                <TouchableOpacity
+                  style={[styles.viewAllButton, { borderColor: cyberpunkTheme.colors.border }]}
+                  onPress={() => setShowAllBought(true)}
+                >
+                  <Text style={[styles.viewAllText, { color: cyberpunkTheme.colors.primary }]}>
+                    View all {boughtItems.length - MAX_VISIBLE_BOUGHT} purchased items →
+                  </Text>
+                </TouchableOpacity>
+              )}
+              {showAllBought && (
+                <TouchableOpacity
+                  style={[styles.viewAllButton, { borderColor: cyberpunkTheme.colors.border }]}
+                  onPress={() => setShowAllBought(false)}
+                >
+                  <Text style={[styles.viewAllText, { color: cyberpunkTheme.colors.textSecondary }]}>
+                    ↑ Show less
+                  </Text>
+                </TouchableOpacity>
+              )}
+            </>
+          )}
+
+          {/* Empty state */}
+          {activeItems.length === 0 && boughtItems.length === 0 && (
+            <EmptyPlaceholder
+              message={tr('general.emptyListMessage')}
+              icon="cart-outline"
+            />
+          )}
+
+          <View style={styles.bottomSpacer} />
+        </ScrollView>
+      ) : (
+        // ── FULL VIEW — Draggable ──
+        <View style={styles.scrollArea}>
+          <TouchableOpacity
+            style={[styles.viewAllButton, { borderColor: cyberpunkTheme.colors.border }]}
+            onPress={() => setShowAllItems(false)}
+          >
+            <Text style={[styles.viewAllText, { color: cyberpunkTheme.colors.textSecondary }]}>
+              ↑ Show compact view
+            </Text>
+          </TouchableOpacity>
+
+          {/* TO SHOP HEADER */}
+          {activeItems.length > 0 && (
+            <View style={[{ backgroundColor: cyberpunkTheme.colors.surface, borderTopWidth: 1, borderTopColor: cyberpunkTheme.colors.border }]}>
+              <Text style={[styles.sectionHeader, { color: cyberpunkTheme.colors.sectionHeader, paddingHorizontal: 8 }]}>
+                TO SHOP
+                <Text style={[styles.sectionCount, { color: cyberpunkTheme.colors.textSecondary }]}> ({activeItems.length})</Text>
+              </Text>
+            </View>
+          )}
+
+          <DraggableFlatList
+            data={filteredActive}
+            renderItem={({ item, drag, isActive }: RenderItemParams<ShoppingItem>) => (
+              <ScaleDecorator>
+                <View style={isActive ? styles.dragging : undefined}>
+                  <ItemRow
+                    item={item}
+                    drag={drag}
+                    isActive={isActive}
+                    showDietWarning={dietWarnings.has(item.id)}
+                    onDietWarningPress={() => {
+                      if (activeDiet && item.foodType) {
+                        setWarningItem({
+                          name: item.description,
+                          dietName: tr(activeDiet.nameKey as any),
+                          foodType: item.foodType,
+                        });
+                      }
+                    }}
+                    onTogglePurchased={togglePurchased}
+                    onLongPress={handleLongPress}
+                    onTapBought={moveToShop}
+                    onUpdateItem={updateItem}
+                  />
+                </View>
+              </ScaleDecorator>
             )}
-          </>
-        )}
-
-        {/* Empty state */}
-        {activeItems.length === 0 && boughtItems.length === 0 && (
-          <EmptyPlaceholder
-            message={tr('general.emptyListMessage')}
-            icon="cart-outline"
+            keyExtractor={(item) => item.id}
+            onDragEnd={handleDragEnd}
+            keyboardShouldPersistTaps="handled"
+            contentContainerStyle={styles.scrollContent}
+            ListFooterComponent={boughtItems.length > 0 ? (
+              <View>
+                <View style={styles.divider}>
+                  <MaterialCommunityIcons name="check-circle-outline" size={16} color={cyberpunkTheme.colors.sectionHeader} />
+                  <View style={[{ backgroundColor: cyberpunkTheme.colors.surface, borderTopWidth: 1, borderTopColor: cyberpunkTheme.colors.border }]}>
+                  <Text style={[styles.sectionHeader, { color: cyberpunkTheme.colors.sectionHeader }]}>
+                    RECENTLY BOUGHT
+                    <Text style={[styles.sectionCount, { color: cyberpunkTheme.colors.textSecondary }]}> ({displayBought.length} of {boughtItems.length})</Text>
+                  </Text>
+                  </View>
+                </View>
+                {displayBought.map((item) => (
+                  <ItemRow
+                    key={item.id}
+                    item={item}
+                    onTogglePurchased={togglePurchased}
+                    onLongPress={handleLongPress}
+                    onTapBought={moveToShop}
+                    onUpdateItem={updateItem}
+                  />
+                ))}
+                {hasMoreBought && (
+                  <TouchableOpacity
+                    style={[styles.viewAllButton, { borderColor: cyberpunkTheme.colors.border }]}
+                    onPress={() => setShowAllBought(true)}
+                  >
+                    <Text style={[styles.viewAllText, { color: cyberpunkTheme.colors.primary }]}>
+                      View all {boughtItems.length - MAX_VISIBLE_BOUGHT} purchased items →
+                    </Text>
+                  </TouchableOpacity>
+                )}
+                {showAllBought && (
+                  <TouchableOpacity
+                    style={[styles.viewAllButton, { borderColor: cyberpunkTheme.colors.border }]}
+                    onPress={() => setShowAllBought(false)}
+                  >
+                    <Text style={[styles.viewAllText, { color: cyberpunkTheme.colors.textSecondary }]}>
+                      ↑ Show less
+                    </Text>
+                  </TouchableOpacity>
+                )}
+                <View style={styles.bottomSpacer} />
+              </View>
+            ) : (
+              <View style={styles.bottomSpacer} />
+            )}
+            ListEmptyComponent={
+              activeItems.length === 0 && boughtItems.length === 0 ? (
+                <EmptyPlaceholder
+                  message={tr('general.emptyListMessage')}
+                  icon="cart-outline"
+                />
+              ) : null
+            }
           />
-        )}
-
-        <View style={styles.bottomSpacer} />
-      </ScrollView>
+        </View>
+      )}
 
       {/* Bottom add/search bar */}
       <View style={[styles.bottomBar, { paddingBottom: insets.bottom + 8 }]}>
@@ -410,20 +598,6 @@ export function ListDetailScreen({ route, navigation }: Props) {
         onSave={handleSaveEdit}
         onDelete={handleDeleteItem}
         onClose={() => { setShowEdit(false); setEditItem(null); }}
-      />
-
-      <SettingsModal
-        visible={showSettings}
-        currentTheme={settings.theme}
-        sortByCategory={settings.sortByCategory}
-        activeDiet={settings.activeDiet ?? null}
-        lang={settings.lang}
-        onThemeChange={setTheme}
-        onToggleCategory={setSortByCategory}
-        onDietChange={setActiveDiet}
-        onLangChange={setLang}
-        onClearAll={clearAll}
-        onClose={() => setShowSettings(false)}
       />
 
       {/* Diet warning suggestion dialog */}
@@ -528,6 +702,19 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.4,
     shadowRadius: 8,
     elevation: 6,
+  },
+  viewAllButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    marginTop: 4,
+    borderTopWidth: 1,
+  },
+  viewAllText: {
+    fontFamily: 'monospace',
+    fontSize: 12,
+    fontWeight: '600',
   },
   bottomSpacer: {
     height: 80,
