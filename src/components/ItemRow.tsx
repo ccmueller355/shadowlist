@@ -152,7 +152,7 @@ function ItemRowComponent({
         hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
       >
         {isBought ? (
-          <MaterialCommunityIcons name="check-bold" size={16} color={cyberpunkTheme.colors.primary} />
+          <MaterialCommunityIcons name="check-bold" size={16} color={cyberpunkTheme.colors.danger} />
         ) : null}
       </TouchableOpacity>
 

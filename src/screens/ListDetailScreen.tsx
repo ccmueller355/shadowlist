@@ -287,7 +287,7 @@ export function ListDetailScreen({ route, navigation }: Props) {
             {tr(activeDiet.nameKey as any)}
           </Text>
           {dietWarnings.size > 0 && (
-            <Text style={styles.dietWarningsText}>
+            <Text style={[styles.dietWarningsText, { color: cyberpunkTheme.colors.danger }]}>
               {dietWarnings.size} warning{dietWarnings.size !== 1 ? 's' : ''}
             </Text>
           )}
