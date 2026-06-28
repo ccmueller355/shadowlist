@@ -67,6 +67,7 @@ Once a GitHub Release is published, the APK is also available on IzzyOnDroid (a 
 - **Local build fails**: `expo prebuild` requires all native deps resolvable at runtime — if a package lacks Android native support, the Gradle build fails. Fallback: build via EAS.
 - **F-Droid license check**: F-Droid requires a recognized FOSS license. We have `LICENSE` (MIT) — this should be fine.
 - **Play Store requirement**: Not in scope for v1.0 — would need `$25` and store screenshots.
+- **Splash branding**: Consider branded splash image (dark bg + centered logo + "Aethelred Cybernetics" in blue + "shadowlist v0.x.x" below icon). Would require a single 1242×2436 PNG splash asset created externally and configured via `expo-splash-screen` plugin's `image` parameter.
 - **iOS**: Not in scope for v1.0 — requires Mac + Apple Developer membership.
 - **Version skew between stores**: Each store will have slightly different timing for release approval. Track the version across all stores to ensure consistency.
 
