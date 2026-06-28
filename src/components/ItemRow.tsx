@@ -3,6 +3,7 @@ import React, { memo, useState, useRef } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { ShoppingItem } from '../types';
+import { useTranslation } from '../i18n/useTranslation';
 import { cyberpunkTheme } from '../theme/cyberpunkTheme';
 import { useAppTheme } from '../theme/useTheme';
 
@@ -30,6 +31,7 @@ function ItemRowComponent({
   onUpdateItem,
 }: Props) {
   const cyberpunkTheme = useAppTheme();
+  const { t: tr } = useTranslation();
   const isBought = item.purchased;
   const [editingQualifier, setEditingQualifier] = useState(false);
   const [qualifierDraft, setQualifierDraft] = useState('');
@@ -112,7 +114,7 @@ function ItemRowComponent({
             />
           ) : item.qualifier ? (
             <TouchableOpacity onPress={startEditingQualifier}>
-              <Text style={[styles.qualifier, isBought && styles.qualifierBought]}>
+              <Text style={[styles.qualifier, { color: cyberpunkTheme.colors.secondary }, isBought && { color: cyberpunkTheme.colors.textSecondary }]}>
                 {item.qualifier}
               </Text>
             </TouchableOpacity>
@@ -126,8 +128,8 @@ function ItemRowComponent({
 
       {/* Category badge (small) */}
       {item.category && (
-        <Text style={styles.categoryBadge} numberOfLines={1}>
-          {item.category}
+        <Text style={[styles.categoryBadge, { color: cyberpunkTheme.colors.secondary, backgroundColor: cyberpunkTheme.colors.background }]} numberOfLines={1}>
+          {tr(('category.' + item.category.replace(/[ &]/g, '')) as any)}
         </Text>
       )}
 
@@ -146,7 +148,7 @@ function ItemRowComponent({
       {/* Checkbox */}
       <TouchableOpacity
         onPress={() => onTogglePurchased(item.id)}
-        style={[styles.checkbox, isBought && styles.checkboxChecked]}
+        style={[styles.checkbox, { borderColor: cyberpunkTheme.colors.sectionHeader }, isBought && { backgroundColor: cyberpunkTheme.colors.checkedBg }]}
         hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
       >
         {isBought ? (

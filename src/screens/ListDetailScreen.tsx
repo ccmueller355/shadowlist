@@ -273,7 +273,7 @@ export function ListDetailScreen({ route, navigation }: Props) {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <MaterialCommunityIcons name="arrow-left" size={24} color={cyberpunkTheme.colors.headerText} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle} numberOfLines={1}>{displayName}</Text>
+        <Text style={[styles.headerTitle, { color: cyberpunkTheme.colors.headerText }]} numberOfLines={1}>{displayName}</Text>
         <TouchableOpacity onPress={() => setShowSettings(true)}>
           <MaterialCommunityIcons name="cog" size={24} color={cyberpunkTheme.colors.headerText} />
         </TouchableOpacity>

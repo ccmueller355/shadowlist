@@ -83,7 +83,7 @@ export const de = {
     save: 'Speichern',
     cancel: 'Abbrechen',
     delete: 'Löschen',
-    addItemPlaceholder: 'Suchen oder Artikel hinzufügen...',
+    addItemPlaceholder: 'Suchen oder hinzufügen...',
     emptyListMessage: 'Deine Einkaufsliste ist leer — füge unten Artikel hinzu',
   },
   theme: {
