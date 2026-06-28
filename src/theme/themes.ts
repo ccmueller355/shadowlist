@@ -50,19 +50,19 @@ const fontFamily = 'monospace' as const;
 // ═══════════════════════════════════════════
 export const fixerTheme: Theme = {
   colors: {
-    primary: '#c46a4a',       // Aged leather — warm rust, not fire-engine red
-    secondary: '#b8a066',     // Brass/gold — muted, not bright yellow
-    background: '#1c1915',    // Dark leather — warm, never pure black
-    surface: '#282420',       // Leather page — subtle lift from background
-    textPrimary: '#e4d6c0',   // Ivory — soft warm white, not harsh #fff
-    textSecondary: '#8c8474', // Muted sand — readable but subordinate
-    border: '#38322c',        // Warm dark gray — visible but not intrusive
-    shadow: 'rgba(196,106,74,0.12)',
-    danger: '#b34444',        // Muted crimson — warning without shouting
-    headerBg: '#15120f',      // Slightly deeper than background
-    headerText: '#e4d6c0',
-    checkedBg: '#2e2a24',     // Between surface and background
-    sectionHeader: '#b8a066', // Brass matches secondary
+    primary: '#d4824a',       // Warm amber-orange — vibrant for checkboxes and icons
+    secondary: '#b89a5a',     // Brass/gold — visible accent
+    background: '#1e1a15',    // Dark leather — warm background
+    surface: '#2d2822',       // Leather page — lighter for text contrast
+    textPrimary: '#e8dcc8',   // Ivory — warm readable white
+    textSecondary: '#9e9480', // Muted sand — readable
+    border: '#3d362e',        // Warm gray border
+    shadow: 'rgba(212,130,74,0.14)',
+    danger: '#b34444',        // Muted crimson
+    headerBg: '#15120f',      // Slightly darker than background
+    headerText: '#e8dcc8',
+    checkedBg: '#352c24',     // Amber-tinted checked state
+    sectionHeader: '#e0b85a', // Bright brass gold — readable section headers
   },
   spacing,
   borderRadius,
