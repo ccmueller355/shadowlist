@@ -65,7 +65,7 @@ After the user closes a session with changes, a subtle reminder suggests exporti
 - **File too large**: What happens if the backup file is abnormally large (unlikely for a list app, but guard against GB-sized attack files)?
 - **Partial corruption**: JSON parses but some items have missing fields — skip bad items, restore good ones, report count
 - **Version mismatch**: Backup from a newer app version contains fields the current version doesn't understand — ignore unknown fields gracefully
-- **Duplicate IDs**: Imported data has IDs that conflict with existing data — [NEEDS CLARIFICATION: overwrite, skip, or prefix?]
+- **Duplicate IDs**: Resolved by FR-007 — import is full restore, existing data is cleared before import, so no ID conflicts occur. Overwrite semantics apply.
 - **Empty import**: User imports a file with no valid data — toast "No data found in file"
 - **Permission denied**: User denies file access permission — toast explaining why import failed and link to settings
 
@@ -86,7 +86,8 @@ After the user closes a session with changes, a subtle reminder suggests exporti
 
 ### Key Entities
 
-- **BackupPayload**: JSON structure containing `{ lists: ShoppingList[], items: ShoppingItem[], settings: AppSettings, learnedMappings: Record<string, LearnedMapping> }`
+- **BackupPayload**: JSON structure containing `{ version: number, lists: ShoppingList[], items: ShoppingItem[], settings: AppSettings, learnedMappings: Record<string, LearnedMapping> }`
+  - `version` field set to `1` for initial format. Future schema changes increment this number, allowing the import parser to handle backward compatibility (unknown fields ignored).
 - **LearnedMapping**: `{ foodType: FoodType, icon: string, count: number }` — the learned name→food type association per canonical item name
 - **ShareSheet**: System-native file sharing UI (via `expo-sharing`)
 - **FilePicker**: System-native file selection UI (via `expo-document-picker`)
