@@ -4,6 +4,7 @@ import { ShoppingList, ShoppingItem, AppSettings, NewItemParams, AppLang, DietId
 import { runMigrations, loadAllData, saveLists, saveItems, saveSettings, clearAllData } from '../storage/asyncStorage';
 import { generateId } from '../utils/uuid';
 import { getDemoData } from '../constants/demoData';
+import { generateTestLists } from '../constants/testData';
 
 interface ShoppingState {
   lists: ShoppingList[];
@@ -34,8 +35,9 @@ interface ShoppingState {
   setActiveDiet: (dietId: DietId | null) => void;
   setLang: (lang: AppLang) => void;
 
-  // Demo / Danger
+  // Demo / Test Data / Danger
   addDemoData: () => void;
+  generateTestData: () => number;
   clearAll: () => void;
 }
 
@@ -206,6 +208,16 @@ export const useStore = create<ShoppingState>((set, get) => ({
     const settings = { ...get().settings, lang };
     set({ settings });
     saveSettings(settings);
+  },
+
+  generateTestData: () => {
+    const { lists: newLists, items: newItems } = generateTestLists();
+    const lists = [...get().lists, ...newLists];
+    const items = [...get().items, ...newItems];
+    set({ lists, items });
+    saveLists(lists);
+    saveItems(items);
+    return newLists.length;
   },
 
   addDemoData: () => {

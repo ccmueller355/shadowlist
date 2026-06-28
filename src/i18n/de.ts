@@ -83,6 +83,8 @@ export const de = {
     save: 'Speichern',
     cancel: 'Abbrechen',
     delete: 'Löschen',
+    generateTestData: 'Testdaten generieren',
+    testDataGenerated: '{n} Testlisten erstellt',
     addItemPlaceholder: 'Suchen oder hinzufügen...',
     emptyListMessage: 'Deine Einkaufsliste ist leer — füge unten Artikel hinzu',
   },

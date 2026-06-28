@@ -83,6 +83,8 @@ export const en = {
     save: 'Save',
     cancel: 'Cancel',
     delete: 'Delete',
+    generateTestData: 'Generate Test Data',
+    testDataGenerated: '{n} test lists generated',
     addItemPlaceholder: 'Search or add item...',
     emptyListMessage: 'Your shopping list is empty — add items below',
   },
