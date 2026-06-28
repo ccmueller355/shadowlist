@@ -174,6 +174,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: cyberpunkTheme.colors.textPrimary,
     paddingVertical: 10,
+    minWidth: 0,
   },
   clearButton: {
     padding: 2,
