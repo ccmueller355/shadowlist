@@ -281,9 +281,9 @@ export function ListDetailScreen({ route, navigation }: Props) {
 
       {/* Active diet header indicator */}
       {activeDiet && (
-        <View style={styles.dietHeader}>
+        <View style={[styles.dietHeader, { backgroundColor: cyberpunkTheme.colors.surface, borderBottomColor: cyberpunkTheme.colors.border }]}>
           <MaterialCommunityIcons name="food-apple" size={16} color={cyberpunkTheme.colors.primary} />
-          <Text style={styles.dietHeaderText}>
+          <Text style={[styles.dietHeaderText, { color: cyberpunkTheme.colors.primary }]}>
             {tr(activeDiet.nameKey as any)}
           </Text>
           {dietWarnings.size > 0 && (
