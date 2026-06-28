@@ -91,7 +91,7 @@ export const de = {
     stuffer: { label: 'Stuffer Shack', desc: 'Altes Pergament mit dunkler Tinte' },
     decker: { label: 'Deckers Versteck', desc: 'Tiefes Lila mit Lavendelschimmer' },
     cyber: { label: 'Cyber Blau', desc: 'Tiefblaue Nacht mit Cyan-Neon' },
-    terminal: { label: 'Terminal Grün', desc: 'CRT-Monitor Phosphorgrün' },
+    terminal: { label: 'Fiddlers Grün', desc: 'Ewige grüne Felder des Dreamings' },
   },
   category: {
     Groceries: 'Lebensmittel',

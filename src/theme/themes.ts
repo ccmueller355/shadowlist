@@ -171,7 +171,7 @@ export const cyberTheme: Theme = {
 };
 
 // ═══════════════════════════════════════════
-//  E: Terminal Green — CRT phosphor
+//  E: Fiddler's Green — CRT phosphor
 //  bg1: #101810, bg2: #1a2418
 //  base: #d0e8c8
 //  accent1: #60b860 phosphor green
@@ -196,8 +196,8 @@ export const terminalTheme: Theme = {
   spacing,
   borderRadius,
   fontFamily,
-  label: 'Terminal Green',
-  description: 'Subdued phosphor green on dark monitor',
+  label: "Fiddler's Green",
+  description: 'Eternal green fields of the Dreaming',
 };
 
 export const themes: Record<ThemeName, Theme> = {

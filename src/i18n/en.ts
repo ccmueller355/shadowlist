@@ -91,7 +91,7 @@ export const en = {
     stuffer: { label: 'Stuffer Shack', desc: 'Aged parchment & dark ink' },
     decker: { label: "Decker's Den", desc: 'Deep purple with lavender glow' },
     cyber: { label: 'Cyber Blue', desc: 'Deep blue night with cyan neon' },
-    terminal: { label: 'Terminal Green', desc: 'CRT monitor phosphor green' },
+    terminal: { label: "Fiddler's Green", desc: 'Eternal green fields of the Dreaming' },
   },
   category: {
     Groceries: 'Groceries',
