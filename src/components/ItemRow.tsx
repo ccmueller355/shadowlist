@@ -148,7 +148,7 @@ function ItemRowComponent({
       {/* Checkbox */}
       <TouchableOpacity
         onPress={() => onTogglePurchased(item.id)}
-        style={[styles.checkbox, { borderColor: cyberpunkTheme.colors.sectionHeader }, isBought && { backgroundColor: cyberpunkTheme.colors.checkedBg }]}
+        style={[styles.checkbox, { borderColor: cyberpunkTheme.colors.primary }, isBought && { backgroundColor: cyberpunkTheme.colors.checkedBg }]}
         hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
       >
         {isBought ? (
