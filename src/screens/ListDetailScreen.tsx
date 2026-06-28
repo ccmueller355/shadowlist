@@ -303,10 +303,12 @@ export function ListDetailScreen({ route, navigation }: Props) {
         {/* ===== TO SHOP SECTION ===== */}
         {activeItems.length > 0 && (
           <>
+            <View style={[{ backgroundColor: cyberpunkTheme.colors.surface, borderTopWidth: 1, borderTopColor: cyberpunkTheme.colors.border }]}>
             <Text style={[styles.sectionHeader, { color: cyberpunkTheme.colors.sectionHeader }]}>
               TO SHOP
               <Text style={[styles.sectionCount, { color: cyberpunkTheme.colors.textSecondary }]}> ({activeItems.length})</Text>
             </Text>
+            </View>
 
             {settings.sortByCategory && groupedActive ? (
               // Category grouped view
@@ -353,10 +355,12 @@ export function ListDetailScreen({ route, navigation }: Props) {
           <>
             <View style={styles.divider}>
               <MaterialCommunityIcons name="check-circle-outline" size={16} color={cyberpunkTheme.colors.sectionHeader} />
+              <View style={[{ backgroundColor: cyberpunkTheme.colors.surface, borderTopWidth: 1, borderTopColor: cyberpunkTheme.colors.border }]}>
               <Text style={[styles.sectionHeader, { color: cyberpunkTheme.colors.sectionHeader }]}>
                 RECENTLY BOUGHT
                 <Text style={[styles.sectionCount, { color: cyberpunkTheme.colors.textSecondary }]}> ({boughtItems.length})</Text>
               </Text>
+              </View>
             </View>
 
             {settings.sortByCategory && groupedBought ? (
