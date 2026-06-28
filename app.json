@@ -35,11 +35,7 @@
     "owner": "aethelred-cybernetics",
     "plugins": [
       "expo-font",
-      "expo-status-bar",
-      ["expo-splash-screen", {
-  "backgroundColor": "#121216",
-  "resizeMode": "contain"
-}]
+      "expo-status-bar"
     ]
   }
 }
