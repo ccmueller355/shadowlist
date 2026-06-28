@@ -29,6 +29,7 @@ interface Props {
   onDietChange: (dietId: DietId | null) => void;
   onLangChange: (lang: AppLang) => void;
   onClearAll: () => void;
+  onGenerateTestData?: () => void;
   onClose: () => void;
 }
 
@@ -43,6 +44,7 @@ export function SettingsModal({
   onDietChange,
   onLangChange,
   onClearAll,
+  onGenerateTestData,
   onClose,
 }: Props) {
   const t = useAppTheme();
@@ -237,7 +239,38 @@ export function SettingsModal({
               />
             </TouchableOpacity>
 
-            <Text style={[styles.footer, { color: t.colors.textSecondary }]}>ShadowList v0.9.1</Text>
+            {__DEV__ && onGenerateTestData && (
+              <>
+                <View style={[styles.divider, { backgroundColor: t.colors.border }]} />
+                <TouchableOpacity
+                  style={styles.row}
+                  onPress={() => {
+                    const count = onGenerateTestData();
+                    Alert.alert(
+                      'Test Data',
+                      `${count} test lists generated with ${200}+ item pool.`,
+                    );
+                  }}
+                  accessibilityLabel={tr('general.generateTestData')}
+                >
+                  <View style={styles.rowLeft}>
+                    <MaterialCommunityIcons
+                      name="flask-outline"
+                      size={22}
+                      color={t.colors.primary}
+                    />
+                    <Text style={styles.rowLabel}>{tr('general.generateTestData')}</Text>
+                  </View>
+                  <MaterialCommunityIcons
+                    name="chevron-right"
+                    size={22}
+                    color={t.colors.primary}
+                  />
+                </TouchableOpacity>
+              </>
+            )}
+
+            <Text style={[styles.footer, { color: t.colors.textSecondary }]}>ShadowList v0.10.0</Text>
           </View>
         </ScrollView>
       </View>

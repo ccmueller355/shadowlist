@@ -33,6 +33,7 @@ export function HomeScreen({ navigation }: Props) {
   const hydrated = useStore((s) => s.hydrated);
   const addDemoData = useStore((s) => s.addDemoData);
   const settings = useStore((s) => s.settings);
+  const generateTestData = useStore((s) => s.generateTestData);
   const setTheme = useStore((s) => s.setTheme);
   const setSortByCategory = useStore((s) => s.setSortByCategory);
   const setActiveDiet = useStore((s) => s.setActiveDiet);
@@ -172,6 +173,7 @@ export function HomeScreen({ navigation }: Props) {
         onDietChange={setActiveDiet}
         onLangChange={setLang}
         onClearAll={clearAll}
+        onGenerateTestData={generateTestData}
         onClose={() => setShowSettings(false)}
       />
     </KeyboardAvoidingView>
