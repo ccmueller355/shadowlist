@@ -10,6 +10,7 @@
     "@types/react": "~19.2.14",
     "babel-preset-expo": "~56.0.0",
     "expo": "^56",
+    "expo-dev-client": "~56.0.20",
     "expo-font": "~56.0.7",
     "expo-splash-screen": "~56.0.10",
     "expo-status-bar": "~56.0.4",
