@@ -6,6 +6,7 @@ on:
     paths:
       - 'docs/**'
       - 'src/**'
+      - 'package.json'
       - '.github/workflows/deploy-docs.yml'
 
 concurrency:
