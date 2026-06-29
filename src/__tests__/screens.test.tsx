@@ -1,7 +1,7 @@
 // ─── [ NEURAL DECK v4.6 $ AI::GENERATED :: NO COPYRIGHT ] ───
 import './component-test-setup';
 import React from 'react';
-import { render, screen } from '@testing-library/react-native';
+import { render, screen, fireEvent } from '@testing-library/react-native';
 
 // Mock react-native-draggable-flatlist (must be before component imports)
 jest.mock('react-native-draggable-flatlist', () => {
@@ -153,7 +153,7 @@ describe('ListDetailScreen', () => {
       hydrated: true,
     });
     render(<ListDetailScreen route={{ ...route, params: { listId: 'list-1', listName: 'Empty List' } }} navigation={navigation} />);
-    expect(screen.getByText('No items yet! Add something to your list')).toBeTruthy();
+    expect(screen.getByText('Your shopping list is empty — add items below')).toBeTruthy();
   });
 
   it('US: User adds an item via the AddItemBar', () => {
