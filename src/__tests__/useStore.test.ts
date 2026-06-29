@@ -159,6 +159,80 @@ describe('useStore', () => {
       useStore.getState().setDefaultIcon('food-variant')
       expect(useStore.getState().settings.defaultIcon).toBe('food-variant')
     })
+
+    it('US: User changes active diet to Keto', () => {
+      useStore.getState().setActiveDiet('keto')
+      expect(useStore.getState().settings.activeDiet).toBe('keto')
+    })
+
+    it('US: User disables diet after having set one', () => {
+      useStore.getState().setActiveDiet('keto')
+      useStore.getState().setActiveDiet(null)
+      expect(useStore.getState().settings.activeDiet).toBeNull()
+    })
+
+    it('US: User switches app language to Deutsch', () => {
+      useStore.getState().setLang('de')
+      expect(useStore.getState().settings.lang).toBe('de')
+    })
+
+    it('US: User switches language back to English', () => {
+      useStore.getState().setLang('de')
+      useStore.getState().setLang('en')
+      expect(useStore.getState().settings.lang).toBe('en')
+    })
+  })
+
+  describe('danger zone — user clears all data', () => {
+    beforeEach(() => {
+      resetStore()
+      useStore.getState().addList('Weekly')
+      useStore.getState().addItem({ listId: useStore.getState().lists[0]!.id, description: 'Milk' })
+    })
+
+    it('US: User clears all lists and items', async () => {
+      expect(useStore.getState().lists.length).toBeGreaterThan(0)
+      expect(useStore.getState().items.length).toBeGreaterThan(0)
+      await useStore.getState().clearAll()
+      expect(useStore.getState().lists).toHaveLength(0)
+      expect(useStore.getState().items).toHaveLength(0)
+    })
+
+    it('US: Clearing all data resets settings to defaults', async () => {
+      useStore.getState().setTheme('decker')
+      useStore.getState().setActiveDiet('keto')
+      useStore.getState().setLang('de')
+
+      await useStore.getState().clearAll()
+      const s = useStore.getState().settings
+      expect(s.theme).toBe('fixer')
+      expect(s.activeDiet).toBeNull()
+      expect(s.lang).toBe('en')
+    })
+  })
+
+  describe('demo/test data — user loading flows', () => {
+    beforeEach(() => {
+      resetStore()
+    })
+
+    it('US: User loads demo data, gets lists and items', () => {
+      useStore.getState().addDemoData()
+      expect(useStore.getState().lists.length).toBeGreaterThan(0)
+      expect(useStore.getState().items.length).toBeGreaterThan(0)
+    })
+
+    it('US: User generates test data', () => {
+      const count = useStore.getState().generateTestData()
+      expect(count).toBeGreaterThan(0)
+      expect(useStore.getState().lists.length).toBeGreaterThan(0)
+    })
+
+    it('US: User generates extreme stress test data (5000 items)', () => {
+      const count = useStore.getState().generateExtremeData(5000)
+      expect(count).toBeGreaterThan(0)
+      expect(useStore.getState().items.length).toBeGreaterThanOrEqual(5000)
+    })
   })
 
   describe('hydrated flag', () => {
