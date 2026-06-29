@@ -156,12 +156,17 @@ describe('ListDetailScreen', () => {
     expect(screen.getByText('Your shopping list is empty — add items below')).toBeTruthy();
   });
 
-  it('US: User adds an item via the AddItemBar', () => {
+  it('US: User adds an item via the AddItemBar (opens EditModal, then saves)', () => {
     seedStoreWithItems();
     render(<ListDetailScreen route={route} navigation={navigation} />);
     const input = screen.getByPlaceholderText('Search or add item...');
     fireEvent.changeText(input, 'Cheese');
     fireEvent(input, 'submitEditing');
+    // EditModal should now be visible — the add flow opens the modal for food type selection
+    // Press the save button (check icon) to confirm
+    const saveButton = screen.getByText('[icon:check]');
+    fireEvent.press(saveButton);
+    // Item should now exist in the store
     const store = useStore.getState();
     const cheese = store.items.find((i) => i.description === 'Cheese');
     expect(cheese).toBeTruthy();

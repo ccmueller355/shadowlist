@@ -52,6 +52,7 @@ const defaultStoreState = {
   items: [],
   settings: { theme: 'fixer' as const, sortByCategory: false, defaultIcon: 'cart', activeDiet: null, lang: 'en' as const },
   hydrated: true,
+  foodNameIndex: new Map(),
 };
 
 export function resetStore() {
@@ -78,5 +79,6 @@ export function resetStore() {
     generateTestData: actions.generateTestData,
     generateExtremeData: actions.generateExtremeData,
     clearAll: actions.clearAll,
+    rebuildNameIndex: actions.rebuildNameIndex,
   });
 }

@@ -76,6 +76,43 @@ describe('EditModal', () => {
     fireEvent.press(screen.getByText('Cancel'));
     expect(onClose).toHaveBeenCalled();
   });
+
+  // T039 — EditModal with initialFoodType pre-selects the food type
+  it('renders with pre-selected foodType when initialFoodType is provided (no item)', () => {
+    render(
+      <EditModal
+        visible={true}
+        item={null}
+        initialFoodType="dairy"
+        initialIcon="cheese"
+        onSave={jest.fn()}
+        onDelete={jest.fn()}
+        onClose={jest.fn()}
+      />
+    );
+    // The dairy food type label should render — labelKey is 'foodType.dairy'
+    expect(screen.getByText('Dairy')).toBeTruthy();
+    // There may be multiple [icon:cheese] elements (picker grid + food type chip),
+    // but at least one should exist
+    const cheeseIcons = screen.getAllByText('[icon:cheese]');
+    expect(cheeseIcons.length).toBeGreaterThanOrEqual(1);
+  });
+
+  // T040 — Opens fresh when initialFoodType is not provided (regression)
+  it('opens fresh (no pre-selection) when initialFoodType is undefined', () => {
+    render(
+      <EditModal
+        visible={true}
+        item={null}
+        onSave={jest.fn()}
+        onDelete={jest.fn()}
+        onClose={jest.fn()}
+      />
+    );
+    // Null guard: when no item and no initial props, modal renders nothing
+    expect(screen.queryByText('[icon:cart]')).toBeNull();
+    expect(screen.queryByText('Dairy')).toBeNull();
+  });
 });
 
 describe('SettingsModal', () => {

@@ -18,20 +18,20 @@
 
 > **Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T001 **[P]** **[US3]** Write test: `EN_LOOKUP` has 200+ entries — `foodLookup.test.ts`
-- [ ] T002 **[P]** **[US3]** Write test: `DE_LOOKUP` has 200+ entries — `foodLookup.test.ts`
-- [ ] T003 **[P]** **[US3]** Write test: all EN entries have non-null `foodType` and non-empty `icon` — `foodLookup.test.ts`
-- [ ] T004 **[P]** **[US3]** Write test: all DE entries have non-null `foodType` and non-empty `icon` — `foodLookup.test.ts`
-- [ ] T005 **[P]** **[US4]** Write test: regex patterns match expected compounds (e.g., `/käse$/i` matches "Hüttenkäse") — `foodLookup.test.ts`
-- [ ] T006 **[P]** **[US4]** Write test: regex patterns do NOT match known false positives — `foodLookup.test.ts`
+- [x] T001 **[P]** **[US3]** Write test: `EN_LOOKUP` has 200+ entries — `foodLookup.test.ts`
+- [x] T002 **[P]** **[US3]** Write test: `DE_LOOKUP` has 200+ entries — `foodLookup.test.ts`
+- [x] T003 **[P]** **[US3]** Write test: all EN entries have non-null `foodType` and non-empty `icon` — `foodLookup.test.ts`
+- [x] T004 **[P]** **[US3]** Write test: all DE entries have non-null `foodType` and non-empty `icon` — `foodLookup.test.ts`
+- [x] T005 **[P]** **[US4]** Write test: regex patterns match expected compounds (e.g., `/käse$/i` matches "Hüttenkäse") — `foodLookup.test.ts`
+- [x] T006 **[P]** **[US4]** Write test: regex patterns do NOT match known false positives — `foodLookup.test.ts`
 
 ### Implementation for Phase 1
 
-- [ ] T007 Create `src/constants/foodLookup.ts` with `StaticLookupEntry` interface and `EN_LOOKUP`, `DE_LOOKUP`, `EN_REGEX`, `DE_REGEX` arrays
-- [ ] T008 **[P]** **[US3]** Derive `EN_LOOKUP` from TIER_1_ITEMS + TIER_2_ITEMS — each item's `nameEn` becomes a keyword, `foodType` and `icon` map directly
-- [ ] T009 **[P]** **[US3]** Derive `DE_LOOKUP` from same pool — each item's `nameDe` becomes keyword
-- [ ] T010 **[P]** **[US4]** Add German regex patterns: `/käse$/i`, `/milch$/i`, `/brot$/i`, `/fleisch$/i`, `/wurst$/i`, `/saft$/i`, `/wasser$/i`, `/öl$/i`, `/nudeln/i` — each mapping to the appropriate foodType
-- [ ] T011 Run Phase 1 tests (T001-T006) — all pass
+- [x] T007 Create `src/constants/foodLookup.ts` with `StaticLookupEntry` interface and `EN_LOOKUP`, `DE_LOOKUP`, `EN_REGEX`, `DE_REGEX` arrays
+- [x] T008 **[P]** **[US3]** Derive `EN_LOOKUP` from TIER_1_ITEMS + TIER_2_ITEMS — each item's `nameEn` becomes a keyword, `foodType` and `icon` map directly
+- [x] T009 **[P]** **[US3]** Derive `DE_LOOKUP` from same pool — each item's `nameDe` becomes keyword
+- [x] T010 **[P]** **[US4]** Add German regex patterns: `/käse$/i`, `/milch$/i`, `/brot$/i`, `/fleisch$/i`, `/wurst$/i`, `/saft$/i`, `/wasser$/i`, `/öl$/i`, `/nudeln/i` — each mapping to the appropriate foodType
+- [x] T011 Run Phase 1 tests (T001-T006) — all pass
 
 **Checkpoint**: FR-007 (200 EN entries), FR-008 (200 DE entries), FR-009 (typed), FR-010 (regex) all satisfied.
 
@@ -45,18 +45,18 @@
 
 > **Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T012 Write test: `rebuildNameIndex()` creates a Map with correct size from mock items — `foodLookup.test.ts`
-- [ ] T013 Write test: index keys are normalized (lowercase, trimmed) — `foodLookup.test.ts`
-- [ ] T014 Write test: items with `foodType: null` are skipped in the index — `foodLookup.test.ts`
-- [ ] T015 Write test: duplicate normalized names resolve to the last item's values — `foodLookup.test.ts`
-- [ ] T016 Write test: index is populated after `hydrate()` completes (integration, store mock) — `foodLookup.test.ts`
+- [x] T012 Write test: `rebuildNameIndex()` creates a Map with correct size from mock items — `foodLookup.test.ts`
+- [x] T013 Write test: index keys are normalized (lowercase, trimmed) — `foodLookup.test.ts`
+- [x] T014 Write test: items with `foodType: null` are skipped in the index — `foodLookup.test.ts`
+- [x] T015 Write test: duplicate normalized names resolve to the last item's values — `foodLookup.test.ts`
+- [x] T016 Write test: index is populated after `hydrate()` completes (integration, store mock) — `foodLookup.test.ts`
 
 ### Implementation for Phase 2
 
-- [ ] T017 Add `foodNameIndex` state field of type `Map<string, { foodType: FoodType | null; icon: string }>` to Zustand store
-- [ ] T018 Add `rebuildNameIndex()` action to store — scan all items → build Map, skip null foodType entries
-- [ ] T019 Call `rebuildNameIndex()` at the end of the `hydrate()` function (after data loads)
-- [ ] T020 Run Phase 2 tests (T012-T016) — all pass
+- [x] T017 Add `foodNameIndex` state field of type `Map<string, { foodType: FoodType | null; icon: string }>` to Zustand store
+- [x] T018 Add `rebuildNameIndex()` action to store — scan all items → build Map, skip null foodType entries
+- [x] T019 Call `rebuildNameIndex()` at the end of the `hydrate()` function (after data loads)
+- [x] T020 Run Phase 2 tests (T012-T016) — all pass
 
 **Checkpoint**: FR-005 (derived from items), FR-013 (rebuilt on boot) satisfied.
 
@@ -70,27 +70,27 @@
 
 > **Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T021 **[US1]** Write test: `resolveName()` returns learned match first when name exists in index — `foodLookup.test.ts`
-- [ ] T022 **[US1]** Write test: `resolveName()` falls through to static exact match when no learned match — `foodLookup.test.ts`
-- [ ] T023 **[US1]** Write test: `resolveName()` falls through to static regex when no exact static match — `foodLookup.test.ts`
-- [ ] T024 **[US1]** Write test: `resolveName()` returns `source: 'none'` for completely unknown names — `foodLookup.test.ts`
-- [ ] T025 **[US2]** Write test: `resolveName()` normalizes input (lowercase + trim) before lookup — `foodLookup.test.ts`
-- [ ] T026 **[US3]** Write test: `resolveName('de', ...)` checks DE lookup when lang='de' — `foodLookup.test.ts`
-- [ ] T027 **[US3]** Write test: cross-language fallback works when current lang has no match — `foodLookup.test.ts`
-- [ ] T028 **[US3]** Write test: exact keyword match wins over regex when both match — `foodLookup.test.ts`
-- [ ] T029 **[US1]** Write test: learned match wins over both static and regex (FR-015) — `foodLookup.test.ts`
-- [ ] T030 **[US2]** Write test: `resolveName()` returns `source: 'learned'` with correct foodType and icon — `foodLookup.test.ts`
+- [x] T021 **[US1]** Write test: `resolveName()` returns learned match first when name exists in index — `foodLookup.test.ts`
+- [x] T022 **[US1]** Write test: `resolveName()` falls through to static exact match when no learned match — `foodLookup.test.ts`
+- [x] T023 **[US1]** Write test: `resolveName()` falls through to static regex when no exact static match — `foodLookup.test.ts`
+- [x] T024 **[US1]** Write test: `resolveName()` returns `source: 'none'` for completely unknown names — `foodLookup.test.ts`
+- [x] T025 **[US2]** Write test: `resolveName()` normalizes input (lowercase + trim) before lookup — `foodLookup.test.ts`
+- [x] T026 **[US3]** Write test: `resolveName('de', ...)` checks DE lookup when lang='de' — `foodLookup.test.ts`
+- [x] T027 **[US3]** Write test: cross-language fallback works when current lang has no match — `foodLookup.test.ts`
+- [x] T028 **[US3]** Write test: exact keyword match wins over regex when both match — `foodLookup.test.ts`
+- [x] T029 **[US1]** Write test: learned match wins over both static and regex (FR-015) — `foodLookup.test.ts`
+- [x] T030 **[US2]** Write test: `resolveName()` returns `source: 'learned'` with correct foodType and icon — `foodLookup.test.ts`
 
 ### Implementation for Phase 3
 
-- [ ] T031 Implement `resolveName(name: string, lang: AppLang, foodNameIndex: FoodNameIndex): ResolutionResult` in `foodLookup.ts`
-- [ ] T032 Normalize step: `name.trim().toLowerCase()`
-- [ ] T033 Layer 1 — Learned: `foodNameIndex.get(normalized)` → if found and foodType !== null → return
-- [ ] T034 Layer 2 — Static exact: check `keywords` arrays in `EN_LOOKUP` / `DE_LOOKUP` for normalized name
-- [ ] T035 Layer 3 — Static regex: test `EN_REGEX` / `DE_REGEX` patterns against normalized name
-- [ ] T036 Layer 4 — Cross-language fallback: repeat layers 2+3 with the other language
-- [ ] T037 Layer 5 — No match: return `{ foodType: null, icon: null, source: 'none' }`
-- [ ] T038 Run Phase 3 tests (T021-T030) — all pass
+- [x] T031 Implement `resolveName(name: string, lang: AppLang, foodNameIndex: FoodNameIndex): ResolutionResult` in `foodLookup.ts`
+- [x] T032 Normalize step: `name.trim().toLowerCase()`
+- [x] T033 Layer 1 — Learned: `foodNameIndex.get(normalized)` → if found and foodType !== null → return
+- [x] T034 Layer 2 — Static exact: check `keywords` arrays in `EN_LOOKUP` / `DE_LOOKUP` for normalized name
+- [x] T035 Layer 3 — Static regex: test `EN_REGEX` / `DE_REGEX` patterns against normalized name
+- [x] T036 Layer 4 — Cross-language fallback: repeat layers 2+3 with the other language
+- [x] T037 Layer 5 — No match: return `{ foodType: null, icon: null, source: 'none' }`
+- [x] T038 Run Phase 3 tests (T021-T030) — all pass
 
 **Checkpoint**: FR-001 (pre-select from name), FR-002 (3-layer chain), FR-003 (offline), FR-004 (normalization), FR-011 (cross-language), FR-012 (exact before regex), FR-015 (language priority) all satisfied.
 
@@ -104,16 +104,16 @@
 
 > **Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T039 Write test: EditModal renders with pre-selected foodType when `initialFoodType` prop is provided (component mount test) — `foodLookup.test.ts` or component test
-- [ ] T040 Write test: EditModal opens fresh (no pre-selection) when `initialFoodType` is undefined — regression check — `foodLookup.test.ts`
+- [x] T039 Write test: EditModal renders with pre-selected foodType when `initialFoodType` prop is provided (component mount test) — `foodLookup.test.ts` or component test
+- [x] T040 Write test: EditModal opens fresh (no pre-selection) when `initialFoodType` is undefined — regression check — `foodLookup.test.ts`
 
 ### Implementation for Phase 4
 
-- [ ] T041 Add optional `initialFoodType?: FoodType` and `initialIcon?: string` props to `EditModal`
-- [ ] T042 When props are provided, pre-select the matching food type tab in the icon picker grid
-- [ ] T043 When props are provided, highlight the matching icon in the grid
-- [ ] T044 When props are not provided, existing behavior is preserved (no regression)
-- [ ] T045 Run Phase 4 tests (T039-T040) — all pass
+- [x] T041 Add optional `initialFoodType?: FoodType` and `initialIcon?: string` props to `EditModal`
+- [x] T042 When props are provided, pre-select the matching food type tab in the icon picker grid
+- [x] T043 When props are provided, highlight the matching icon in the grid
+- [x] T044 When props are not provided, existing behavior is preserved (no regression)
+- [x] T045 Run Phase 4 tests (T039-T040) — all pass
 
 **Checkpoint**: FR-014 (icon picker always available for override) satisfied.
 
@@ -127,15 +127,15 @@
 
 > **Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T046 Write test: add-item flow calls `resolveName()` with the typed description — integration test with store mock — `foodLookup.test.ts`
-- [ ] T047 Write test: when user overrides pre-selection, the item is saved with the overridden values — `foodLookup.test.ts`
+- [x] T046 Write test: add-item flow calls `resolveName()` with the typed description — integration test with store mock — `foodLookup.test.ts`
+- [x] T047 Write test: when user overrides pre-selection, the item is saved with the overridden values — `foodLookup.test.ts`
 
 ### Implementation for Phase 5
 
-- [ ] T048 In ListDetailScreen's "add item" handler, call `resolveName(description, lang, foodNameIndex)` before opening EditModal
-- [ ] T049 Pass the `ResolutionResult.foodType` and `ResolutionResult.icon` as `initialFoodType` and `initialIcon` to EditModal
-- [ ] T050 User override is handled naturally — item saves whatever values the user chooses in the modal
-- [ ] T051 Run Phase 5 tests (T046-T047) — all pass
+- [x] T048 In ListDetailScreen's "add item" handler, call `resolveName(description, lang, foodNameIndex)` before opening EditModal
+- [x] T049 Pass the `ResolutionResult.foodType` and `ResolutionResult.icon` as `initialFoodType` and `initialIcon` to EditModal
+- [x] T050 User override is handled naturally — item saves whatever values the user chooses in the modal
+- [x] T051 Run Phase 5 tests (T046-T047) — all pass
 
 **Checkpoint**: FR-006 (override saved back) satisfied.
 
@@ -145,12 +145,12 @@
 
 **Purpose**: Final verification, full test suite, docs.
 
-- [ ] T052 Run full test suite: `npm test` — all tests pass (111 + ~20 new = ~131)
-- [ ] T053 Run TypeScript: `npx tsc --noEmit` — clean
-- [ ] T054 Run coverage: `npm run test:coverage` — verify threshold
-- [ ] T055 Run docs build: `npm run docs:build` — clean
-- [ ] T056 Update `CHANGELOG.md` with spec 002 entry
-- [ ] T057 Commit all changes to branch
+- [x] T052 Run full test suite: `npm test` — all tests pass (244 tests, 19 suites)
+- [x] T053 Run TypeScript: `npx tsc --noEmit` — clean
+- [x] T054 Run coverage: `npm run test:coverage` — threshold met (94.81% useStore, 75%+ overall)
+- [x] T055 Run docs build: `npm run docs:build` — clean
+- [x] T056 Update `CHANGELOG.md` with spec 002 entry
+- [ ] T057 Commit all changes to branch — **WAITING ON USER APPROVAL**
 
 **Checkpoint**: Full verification gates pass, branch ready for PR.
 

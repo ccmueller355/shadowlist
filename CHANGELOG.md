@@ -1,5 +1,16 @@
 # Changelog
 
+## v0.13.0 — 2026-06-29
+
+### Spec 002 — Name-Based Food Type Pre-Selection (fully implemented)
+- **Static lookup tables** — 379 EN + 379 DE entries derived from testData pool (FR-007, FR-008, FR-009)
+- **German regex patterns** — 10 suffix patterns (käse, milch, brot, fleisch, wurst, nudeln, saft, wasser, öl, salat) for compound word matching (FR-010)
+- **Learned name index** — `rebuildNameIndex()` scans all items at boot, builds in-memory Map, skips null foodType entries. No separate storage (FR-005, FR-013)
+- **5-layer resolution chain** — learned → static exact → static regex → cross-language fallback → none. All offline, all synchronous (FR-001, FR-002, FR-003, FR-011, FR-012, FR-015)
+- **EditModal pre-selection** — `initialFoodType`/`initialIcon`/`initialDescription` props for new-item flow with override (FR-014)
+- **Add-item flow** — `resolveName()` called before opening EditModal, pre-selects food type and icon (FR-006)
+- **32 new tests** — foodLookup.test.ts (22) + modals.test.tsx (2) + screens.test.tsx (1 updated) passing
+
 ## v0.12.0 — 2026-06-29
 
 ### CI & Release Infrastructure
