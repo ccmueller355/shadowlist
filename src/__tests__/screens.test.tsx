@@ -189,4 +189,42 @@ describe('ListDetailScreen', () => {
     render(<ListDetailScreen route={route} navigation={navigation} />);
     expect(screen.getByText(/1 warning/)).toBeTruthy();
   });
+
+  // T046 — add-item flow calls resolveName() with the typed description
+  it('T046: add-item flow resolves name and opens EditModal with pre-selected foodType', () => {
+    seedStoreWithItems();
+    render(<ListDetailScreen route={route} navigation={navigation} />);
+    const input = screen.getByPlaceholderText('Search or add item...');
+    // "Carrot" is in the EN static lookup → resolves to vegetable
+    fireEvent.changeText(input, 'Carrot');
+    fireEvent(input, 'submitEditing');
+    // EditModal opens with pre-selected food type
+    expect(screen.getByText('Vegetable')).toBeTruthy();
+    // Save
+    fireEvent.press(screen.getByText('[icon:check]'));
+    const store = useStore.getState();
+    const carrot = store.items.find((i) => i.description === 'Carrot');
+    expect(carrot).toBeTruthy();
+    expect(carrot?.foodType).toBe('vegetable');
+  });
+
+  // T047 — user override of pre-selection is saved to the item
+  it('T047: user override of pre-selection is saved to the item', () => {
+    seedStoreWithItems();
+    render(<ListDetailScreen route={route} navigation={navigation} />);
+    const input = screen.getByPlaceholderText('Search or add item...');
+    // "Carrot" resolves to vegetable, but user can override by choosing a different food type
+    fireEvent.changeText(input, 'Carrot');
+    fireEvent(input, 'submitEditing');
+    // EditModal opens — pre-selected vegetable is shown, but user can change
+    // Press "None" to clear the food type override
+    fireEvent.press(screen.getByText('Not classified'));
+    // Then press save
+    fireEvent.press(screen.getByText('[icon:check]'));
+    const store = useStore.getState();
+    const carrot = store.items.find((i) => i.description === 'Carrot');
+    expect(carrot).toBeTruthy();
+    // User explicitly chose "Not classified" → foodType should be null
+    expect(carrot?.foodType).toBeNull();
+  });
 });
