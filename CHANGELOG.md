@@ -1,5 +1,20 @@
 # Changelog
 
+## v0.12.0 — 2026-06-29
+
+### CI & Release Infrastructure
+- **Release branch** — `release` branch triggers EAS preview builds via `eas-build.yml` workflow
+- **CI coverage threshold** — raised from 15% to 70% lines / 60% branches / 55% functions / 70% statements
+- **EAS profiles** — `image: latest` added to all build profiles
+- **Release docs** — `docs/release/workflow.md` documents branch strategy, dev client, and store matrix
+
+### Test Coverage
+- **Component tests** — 9 component files covered with smoke + interaction tests
+- **User-story tests** — diet change, language switch, clear data, demo/test data flows, purchase toggle, diet warnings
+- **Utility tests** — debounce, uuid (including crypto.randomUUID fallback), i18n
+- **Screen tests** — HomeScreen and ListDetailScreen rendering and interactions
+- Coverage: **22.64% → 75% lines** (user-facing stories, not coverage-filling)
+
 ## v0.11.0 — 2026-06-28
 
 ### Performance
