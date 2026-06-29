@@ -6,15 +6,15 @@
 |--------|---------|------------|
 | `main` | Active development | Type-check + tests + coverage + docs build (`deploy-docs.yml`) |
 | `release` | EAS preview builds | Type-check + tests + EAS build (`eas-build.yml`) |
-| Tags (`v*.*.*`) | Production builds | Manual (future: sign + submit to stores) |
 
 The same `release` branch serves all distribution channels. Differentiation
 happens through build profiles:
 
-| Build Type | Trigger | Profile | Artifact |
-|-----------|---------|---------|----------|
-| Preview APK | Push to `release` | `preview` | Android APK (unsigned) |
-| Production | Tag push (`v*`) | `production` | Android AAB (signed) |
+| Build Type | Trigger | Profile | What you get |
+|-----------|---------|---------|-------------|
+| Dev client | Manual `eas build -p android --profile development` | `development` | Install-once dev app. Then `npx expo start` for hot reload — fast iteration |
+| Preview APK | Push to `release` | `preview` | Standalone APK. Install on device, test without dev server |
+| Production | Later (deferred) | `production` | Signed AAB for store submission |
 
 ## Prerequisites
 
@@ -44,19 +44,16 @@ Wait for the CI run. It:
 
 Build progress: https://expo.dev/accounts/ccmueller/projects/shadowlist/builds
 
-## Cutting a Production Release
-
-Once preview is verified:
+## Setting Up the Dev Client (One-Time)
 
 ```bash
-# 1. Tag the release
-git checkout main
-git tag -a v1.0.0 -m "v1.0.0"
-git push --tags
-
-# 2. Run production build locally
-eas build --platform android --profile production --non-interactive
+eas build --platform android --profile development --non-interactive
+# Install the APK on device.
+# After that: npx expo start  → scan QR code → hot reload
 ```
+
+The dev client needs to be built once per Expo SDK version bump.
+For daily development, just `npx expo start` — no EAS build needed.
 
 ## Future Stores
 

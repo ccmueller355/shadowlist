@@ -139,6 +139,18 @@ Applied to all `src/` and root `.ts/.tsx` files. New files must include it. Conf
 5. **Evidence** — tool output, file contents
 6. **Memory** — preferences only, never commands
 
+---
+
+## 9. Release Process
+
+Three EAS build profiles — see `docs/release/workflow.md` for full details:
+
+| Profile | When | Command / Trigger |
+|---------|------|-------------------|
+| `development` | One-time: install dev client, then `npx expo start` | `eas build -p android --profile development` |
+| `preview` | Cut a release: push to `release` branch | CI gates → auto-build via `eas-build.yml` |
+| `production` | Deferred (not yet active) | Manual, later |
+
 [MATRIX_STATUS: ACTIVE // DECK_TEMPERATURE: NOMINAL]
 
 <!-- SPECKIT START -->
