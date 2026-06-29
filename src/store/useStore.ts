@@ -1,6 +1,6 @@
 // ─── [ NEURAL DECK v4.6 $ AI::GENERATED :: NO COPYRIGHT ] ───
 import { create } from 'zustand';
-import { ShoppingList, ShoppingItem, AppSettings, NewItemParams, AppLang, DietId } from '../types';
+import { ShoppingList, ShoppingItem, AppSettings, NewItemParams, AppLang, DietId, FoodType } from '../types';
 import { runMigrations, loadAllData, saveLists, saveItems, saveSettings, clearAllData } from '../storage/asyncStorage';
 import { generateId } from '../utils/uuid';
 import { getDemoData } from '../constants/demoData';
@@ -11,9 +11,11 @@ interface ShoppingState {
   items: ShoppingItem[];
   settings: AppSettings;
   hydrated: boolean;
+  foodNameIndex: Map<string, { foodType: FoodType | null; icon: string }>;
 
   // Init
   hydrate: () => Promise<void>;
+  rebuildNameIndex: () => void;
 
   // List actions
   addList: (name: string) => void;
@@ -55,6 +57,20 @@ export const useStore = create<ShoppingState>((set, get) => ({
   items: [],
   settings: DEFAULT_SETTINGS,
   hydrated: false,
+  foodNameIndex: new Map(),
+
+  rebuildNameIndex: () => {
+    const items = get().items;
+    const index = new Map<string, { foodType: FoodType | null; icon: string }>();
+    for (const item of items) {
+      if (item.foodType === null) continue;
+      const key = item.description.trim().toLowerCase();
+      if (!key) continue;
+      // Last-write-wins — later items override earlier ones for the same name
+      index.set(key, { foodType: item.foodType, icon: item.icon });
+    }
+    set({ foodNameIndex: index });
+  },
 
   hydrate: async () => {
     await runMigrations();
@@ -65,6 +81,7 @@ export const useStore = create<ShoppingState>((set, get) => ({
       settings: data.settings,
       hydrated: true,
     });
+    get().rebuildNameIndex();
   },
 
   addList: (name: string) => {

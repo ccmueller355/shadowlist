@@ -26,6 +26,7 @@ import { SuggestionDialog } from '../components/SuggestionDialog';
 import { EmptyPlaceholder } from '../components/EmptyPlaceholder';
 import { checkItem, CheckResult } from '../utils/dietEngine';
 import { DIET_PROFILES } from '../constants/diets';
+import { resolveName } from '../constants/foodLookup';
 import { useTranslation } from '../i18n/useTranslation';
 import { useAppTheme } from '../theme/useTheme';
 import { useThemeStyles } from '../theme/useThemeStyles';
@@ -45,7 +46,7 @@ export function ListDetailScreen({ route, navigation }: Props) {
   const togglePurchased = useStore((s) => s.togglePurchased);
   const moveToShop = useStore((s) => s.moveToShop);
   const reorderItems = useStore((s) => s.reorderItems);
-
+  const foodNameIndex = useStore((s) => s.foodNameIndex);
 
   const { t: tr } = useTranslation();
   const cyberpunkTheme = useAppTheme();
@@ -56,6 +57,9 @@ export function ListDetailScreen({ route, navigation }: Props) {
   const [showAllItems, setShowAllItems] = useState(false);
   const [showAllBought, setShowAllBought] = useState(false);
   const [warningItem, setWarningItem] = useState<{ name: string; dietName: string; foodType: FoodType } | null>(null);
+  const [addItemFoodType, setAddItemFoodType] = useState<FoodType | null | undefined>(undefined);
+  const [addItemIcon, setAddItemIcon] = useState<string | undefined>(undefined);
+  const [addItemDescription, setAddItemDescription] = useState<string | undefined>(undefined);
 
   const MAX_COMPACT_ITEMS = 50;
   const MAX_VISIBLE_BOUGHT = 20;
@@ -207,11 +211,20 @@ export function ListDetailScreen({ route, navigation }: Props) {
         }
         return;
       }
-      // 3. New item — create
-      addItem({ listId, description });
-      Toast.show({ type: 'success', text1: `Added "${description}"`, position: 'bottom' });
+      // 3. New item — resolve name + open EditModal for food type selection
+      const resolution = resolveName(description, settings.lang, foodNameIndex);
+      if (resolution.source !== 'none') {
+        setAddItemFoodType(resolution.foodType);
+        setAddItemIcon(resolution.icon ?? undefined);
+      } else {
+        setAddItemFoodType(undefined);
+        setAddItemIcon(undefined);
+      }
+      setAddItemDescription(description);
+      setEditItem(null);
+      setShowEdit(true);
     },
-    [listId, activeItems, boughtItems, addItem, moveToShop, activeDiet]
+    [listId, activeItems, boughtItems, addItem, moveToShop, activeDiet, settings.lang, foodNameIndex]
   );
 
   // Tap suggestion in AddItemBar → re-add from bought, preserving icon/qualifier
@@ -238,6 +251,21 @@ export function ListDetailScreen({ route, navigation }: Props) {
   const handleSaveEdit = (id: string, updates: Partial<ShoppingItem>) => {
     updateItem(id, updates);
     Toast.show({ type: 'success', text1: 'Item updated', position: 'bottom' });
+  };
+
+  const handleAddNewItem = (params: { listId: string; description: string; qualifier: string; icon: string; category: string | null; foodType: FoodType | null }) => {
+    const newItem = addItem({
+      listId,
+      description: params.description,
+      qualifier: params.qualifier,
+      icon: params.icon,
+      category: params.category,
+    });
+    // Update foodType separately if provided
+    if (params.foodType) {
+      updateItem(newItem.id, { foodType: params.foodType });
+    }
+    Toast.show({ type: 'success', text1: `Added "${params.description}"`, position: 'bottom' });
   };
 
   const handleDeleteItem = (id: string) => {
@@ -597,7 +625,17 @@ export function ListDetailScreen({ route, navigation }: Props) {
         item={editItem}
         onSave={handleSaveEdit}
         onDelete={handleDeleteItem}
-        onClose={() => { setShowEdit(false); setEditItem(null); }}
+        onAdd={handleAddNewItem}
+        initialDescription={editItem ? undefined : addItemDescription}
+        initialFoodType={editItem ? undefined : addItemFoodType}
+        initialIcon={editItem ? undefined : addItemIcon}
+        onClose={() => {
+          setShowEdit(false);
+          setEditItem(null);
+          setAddItemDescription(undefined);
+          setAddItemFoodType(undefined);
+          setAddItemIcon(undefined);
+        }}
       />
 
       {/* Diet warning suggestion dialog */}

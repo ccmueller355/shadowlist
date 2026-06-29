@@ -27,9 +27,13 @@ interface Props {
   onSave: (id: string, updates: Partial<ShoppingItem>) => void;
   onDelete: (id: string) => void;
   onClose: () => void;
+  onAdd?: (params: { listId: string; description: string; qualifier: string; icon: string; category: string | null; foodType: FoodType | null }) => void;
+  initialDescription?: string;
+  initialFoodType?: FoodType | null;
+  initialIcon?: string;
 }
 
-export function EditModal({ visible, item, onSave, onDelete, onClose }: Props) {
+export function EditModal({ visible, item, onSave, onDelete, onClose, onAdd, initialDescription, initialFoodType, initialIcon }: Props) {
   const cyberpunkTheme = useAppTheme();
   const [description, setDescription] = useState('');
   const [qualifier, setQualifier] = useState('');
@@ -54,22 +58,37 @@ export function EditModal({ visible, item, onSave, onDelete, onClose }: Props) {
       setIcon(item.icon);
       setCategory(item.category);
       setFoodType(item.foodType ?? null);
+    } else if (initialFoodType !== undefined || initialIcon !== undefined || initialDescription !== undefined) {
+      setDescription(initialDescription || '');
+      setIcon(initialIcon || 'cart');
+      setFoodType(initialFoodType ?? null);
     }
-  }, [item]);
+  }, [item, initialFoodType, initialIcon, initialDescription]);
 
   const handleSave = () => {
-    if (!item || !description.trim()) return;
-    onSave(item.id, {
-      description: description.trim(),
-      qualifier: qualifier.trim(),
-      icon,
-      category,
-      foodType,
-    });
+    if (!description.trim()) return;
+    if (item) {
+      onSave(item.id, {
+        description: description.trim(),
+        qualifier: qualifier.trim(),
+        icon,
+        category,
+        foodType,
+      });
+    } else if (onAdd) {
+      onAdd({
+        listId: '',
+        description: description.trim(),
+        qualifier: qualifier.trim(),
+        icon,
+        category,
+        foodType,
+      });
+    }
     onClose();
   };
 
-  if (!item) return null;
+  if (!item && initialFoodType === undefined && initialIcon === undefined && initialDescription === undefined) return null;
 
   return (
     <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
