@@ -1,5 +1,6 @@
 // ─── [ NEURAL DECK v4.6 $ AI::GENERATED :: NO COPYRIGHT ] ───
 import { create } from 'zustand';
+import { InteractionManager } from 'react-native';
 import { ShoppingList, ShoppingItem, AppSettings, NewItemParams, AppLang, DietId, FoodType } from '../types';
 import { runMigrations, loadAllData, saveLists, saveItems, saveSettings, clearAllData } from '../storage/asyncStorage';
 import { generateId } from '../utils/uuid';
@@ -153,21 +154,22 @@ export const useStore = create<ShoppingState>((set, get) => ({
 
   togglePurchased: (id: string) => {
     const now = Date.now();
-    const items = get().items.map((i) => {
+    const allItems = get().items;
+    // Find the target item first to get its listId and current state
+    const targetItem = allItems.find((i) => i.id === id);
+    if (!targetItem) return;
+    const newPurchased = !targetItem.purchased;
+    // Pre-compute the new order once — avoids filter() inside map()
+    const listItems = allItems.filter((x) => x.listId === targetItem.listId);
+    const newOrder = newPurchased
+      ? listItems.filter((x) => x.purchased).length
+      : listItems.filter((x) => !x.purchased).length;
+    const items = allItems.map((i) => {
       if (i.id !== id) return i;
-      const newPurchased = !i.purchased;
-      return {
-        ...i,
-        purchased: newPurchased,
-        // When moving to purchased, preserve order within purchased section
-        order: newPurchased
-          ? get().items.filter((x) => x.listId === i.listId && x.purchased).length
-          : get().items.filter((x) => x.listId === i.listId && !x.purchased).length,
-        updatedAt: now,
-      };
+      return { ...i, purchased: newPurchased, order: newOrder, updatedAt: now };
     });
     set({ items });
-    saveItems(items);
+    InteractionManager.runAfterInteractions(() => saveItems(items));
   },
 
   moveToShop: (id: string) => {
@@ -185,7 +187,7 @@ export const useStore = create<ShoppingState>((set, get) => ({
       };
     });
     set({ items });
-    saveItems(items);
+    InteractionManager.runAfterInteractions(() => saveItems(items));
   },
 
   reorderItems: (listId: string, orderedIds: string[]) => {
