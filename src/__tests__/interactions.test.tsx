@@ -73,6 +73,13 @@ describe('AddItemBar', () => {
     fireEvent.press(screen.getByText('[icon:close-circle]'));
     expect(onSearchChange).toHaveBeenCalledWith('');
   });
+
+  it('disables keyboard-native autocomplete so the built-in suggestion dropdown takes precedence', () => {
+    render(<AddItemBar {...defaultProps} />);
+    const input = screen.getByPlaceholderText('Search or add item...');
+    expect(input.props.autoComplete).toBe('off');
+    expect(input.props.autoCorrect).toBe(false);
+  });
 });
 
 describe('ItemRow', () => {

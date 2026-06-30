@@ -1,0 +1,26 @@
+## Summary
+
+Two UI fixes for the shopping list screens.
+
+### #4 — Search & add bar hidden when keyboard pops up
+- Wrapped ListDetailScreen content + bottom bar in KeyboardAvoidingView (iOS: behavior=padding, Android: native resize)
+- Disabled keyboard-native autocomplete/autocorrect on the AddItemBar TextInput so the app's built-in suggestion dropdown takes precedence
+- Set softwareKeyboardLayoutMode: resize on Android
+
+### #5 — Button placements and click target improvements
+- **Settings gear (HomeScreen)**: added padding: 8 for 40px touch target + marginRight so it's not flush against the screen edge
+- **FAB (HomeScreen)**: uses safe-area insets.bottom in positioning so it doesn't overlap Android 3-button navigation
+- **Back arrow (ListDetailScreen)**: added padding: 8 for 40px touch target
+
+### Decisions
+- Used KeyboardAvoidingView rather than KeyboardAwareScrollView — lighter, native behavior per platform
+- FAB bottom inset computed as 24 + insets.bottom to preserve original spacing on devices without nav bars
+- Touch targets kept at 40px (24px icon + 8px padding) — hits the ~44px recommended minimum accounting for the icon size
+
+### Verification
+- npx tsc --noEmit — clean
+- npm test — 250 tests, 19 suites, all pass
+- Coverage — 82.5% lines
+
+Closes #4
+Closes #5

@@ -2,6 +2,7 @@
 import React, { useState, useMemo, useCallback, useEffect, useRef, memo } from 'react';
 import {
   View,
+  KeyboardAvoidingView,
   Text,
   TextInput,
   ScrollView,
@@ -423,7 +424,7 @@ export function ListDetailScreen({ route, navigation }: Props) {
     <View style={[styles.container, ts.bg]}>
       {/* Header */}
       <View style={[styles.header, { backgroundColor: cyberpunkTheme.colors.background }]}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={{ padding: 8, marginLeft: -4 }}>
           <MaterialCommunityIcons name="arrow-left" size={24} color={cyberpunkTheme.colors.headerText} />
         </TouchableOpacity>
         <Text style={[styles.headerTitle, { color: cyberpunkTheme.colors.headerText }]} numberOfLines={1}>{displayName}</Text>
@@ -443,6 +444,10 @@ export function ListDetailScreen({ route, navigation }: Props) {
           )}
         </View>
       )}
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      >
       {/* Content — Compact or Full view */}
       {!showAllItems ? (
         // ── COMPACT VIEW — Last 50 items (mix of active + bought) ──
@@ -698,6 +703,7 @@ export function ListDetailScreen({ route, navigation }: Props) {
           onSearchChange={setSearch}
         />
       </View>
+      </KeyboardAvoidingView>
 
       {/* Modals */}
       <EditModal

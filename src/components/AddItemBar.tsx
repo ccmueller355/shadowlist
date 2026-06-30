@@ -104,6 +104,8 @@ export function AddItemBar({ listId, recentBought, onAddItem, onReAddItem, onSea
           onChangeText={handleChange}
           onSubmitEditing={handleSubmit}
           returnKeyType="done"
+          autoComplete="off"
+          autoCorrect={false}
           onFocus={() => setFocused(true)}
           onBlur={() => {
             setFocused(false);

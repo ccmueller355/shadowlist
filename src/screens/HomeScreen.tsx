@@ -12,6 +12,7 @@ import {
   Platform,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useStore } from '../store/useStore';
 import { ListCard } from '../components/ListCard';
@@ -26,6 +27,7 @@ type Props = NativeStackScreenProps<any, 'Home'>;
 
 export function HomeScreen({ navigation }: Props) {
   const cyberpunkTheme = useAppTheme();
+  const insets = useSafeAreaInsets();
   const lists = useStore((s) => s.lists);
   const items = useStore((s) => s.items);
   const addList = useStore((s) => s.addList);
@@ -102,7 +104,10 @@ export function HomeScreen({ navigation }: Props) {
       <View style={[styles.header, { backgroundColor: cyberpunkTheme.colors.headerBg }]}>
         <MaterialCommunityIcons name="cart-outline" size={28} color={cyberpunkTheme.colors.headerText} />
         <Text style={[styles.headerTitle, { color: cyberpunkTheme.colors.headerText }]}>ShadowList</Text>
-        <TouchableOpacity onPress={() => setShowSettings(true)}>
+        <TouchableOpacity
+          onPress={() => setShowSettings(true)}
+          style={{ padding: 8, marginRight: 4 }}
+        >
           <MaterialCommunityIcons name="cog" size={24} color={cyberpunkTheme.colors.headerText} />
         </TouchableOpacity>
       </View>
@@ -154,7 +159,7 @@ export function HomeScreen({ navigation }: Props) {
 
       {/* FAB */}
       <TouchableOpacity
-        style={[styles.fab, { backgroundColor: cyberpunkTheme.colors.primary, shadowColor: cyberpunkTheme.colors.primary }]}
+        style={[styles.fab, { backgroundColor: cyberpunkTheme.colors.primary, shadowColor: cyberpunkTheme.colors.primary, bottom: 24 + insets.bottom }]}
         onPress={() => {
           setShowNewListInput(true);
           setTimeout(() => inputRef.current?.focus(), 100);
