@@ -1,5 +1,5 @@
 // ─── [ NEURAL DECK v4.6 $ AI::GENERATED :: NO COPYRIGHT ] ───
-import React, { useState, useMemo, useCallback, useEffect } from 'react';
+import React, { useState, useMemo, useCallback, useEffect, useRef, memo } from 'react';
 import {
   View,
   Text,
@@ -9,6 +9,8 @@ import {
   StyleSheet,
   Alert,
   BackHandler,
+  LayoutAnimation,
+  Platform,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -32,6 +34,102 @@ import { useAppTheme } from '../theme/useTheme';
 import { useThemeStyles } from '../theme/useThemeStyles';
 import Toast from 'react-native-toast-message';
 
+// ── Memoized section components to localize re-renders ─────────
+
+const ToShopSection = memo(function ToShopSection({
+  items,
+  total,
+  handleTogglePurchased,
+  handleLongPress,
+  moveToShop,
+  updateItem,
+  dietWarnings,
+  activeDiet,
+  setWarningItem,
+  tr,
+  cyberpunkTheme,
+}: {
+  items: ShoppingItem[];
+  total: number;
+  handleTogglePurchased: (id: string) => void;
+  handleLongPress: (item: ShoppingItem) => void;
+  moveToShop: (id: string) => void;
+  updateItem: (id: string, updates: Partial<ShoppingItem>) => void;
+  dietWarnings: Map<string, CheckResult>;
+  activeDiet: { nameKey: string } | null;
+  setWarningItem: (item: { name: string; dietName: string; foodType: FoodType } | null) => void;
+  tr: (key: any) => string;
+  cyberpunkTheme: any;
+}) {
+  return (
+    <>
+      <View style={[{ backgroundColor: cyberpunkTheme.colors.surface, borderTopWidth: 1, borderTopColor: cyberpunkTheme.colors.border }]}>
+      <Text style={[styles.sectionHeader, { color: cyberpunkTheme.colors.sectionHeader }]}>
+        TO SHOP
+        <Text style={[styles.sectionCount, { color: cyberpunkTheme.colors.textSecondary }]}> ({items.length} of {total})</Text>
+      </Text>
+      </View>
+      {items.map((item) => (
+        <ItemRow
+          key={item.id}
+          item={item}
+          onTogglePurchased={handleTogglePurchased}
+          onLongPress={handleLongPress}
+          onTapBought={moveToShop}
+          onUpdateItem={updateItem}
+          showDietWarning={dietWarnings.has(item.id)}
+          onDietWarningPress={() => {
+            if (activeDiet && item.foodType) {
+              setWarningItem({
+                name: item.description,
+                dietName: tr(activeDiet.nameKey as any),
+                foodType: item.foodType,
+              });
+            }
+          }}
+        />
+      ))}
+    </>
+  );
+});
+
+const BoughtSection = memo(function BoughtSection({
+  items,
+  handleTogglePurchased,
+  handleLongPress,
+  moveToShop,
+  updateItem,
+  cyberpunkTheme,
+}: {
+  items: ShoppingItem[];
+  handleTogglePurchased: (id: string) => void;
+  handleLongPress: (item: ShoppingItem) => void;
+  moveToShop: (id: string) => void;
+  updateItem: (id: string, updates: Partial<ShoppingItem>) => void;
+  cyberpunkTheme: any;
+}) {
+  return (
+    <>
+      <View style={[styles.divider, { backgroundColor: cyberpunkTheme.colors.surface, borderTopWidth: 1, borderTopColor: cyberpunkTheme.colors.border }]}>
+      <Text style={[styles.sectionHeader, { color: cyberpunkTheme.colors.sectionHeader }]}>
+        RECENTLY BOUGHT
+        <Text style={[styles.sectionCount, { color: cyberpunkTheme.colors.textSecondary }]}> ({items.length})</Text>
+      </Text>
+      </View>
+      {items.map((item) => (
+        <ItemRow
+          key={item.id}
+          item={item}
+          onTogglePurchased={handleTogglePurchased}
+          onLongPress={handleLongPress}
+          onTapBought={moveToShop}
+          onUpdateItem={updateItem}
+        />
+      ))}
+    </>
+  );
+});
+
 type Props = NativeStackScreenProps<any, 'ListDetail'>;
 
 export function ListDetailScreen({ route, navigation }: Props) {
@@ -43,7 +141,11 @@ export function ListDetailScreen({ route, navigation }: Props) {
   const addItem = useStore((s) => s.addItem);
   const updateItem = useStore((s) => s.updateItem);
   const deleteItem = useStore((s) => s.deleteItem);
-  const togglePurchased = useStore((s) => s.togglePurchased);
+  const storeTogglePurchased = useStore((s) => s.togglePurchased);
+  const handleTogglePurchased = useCallback((id: string) => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    storeTogglePurchased(id);
+  }, [storeTogglePurchased]);
   const moveToShop = useStore((s) => s.moveToShop);
   const reorderItems = useStore((s) => s.reorderItems);
   const foodNameIndex = useStore((s) => s.foodNameIndex);
@@ -61,10 +163,11 @@ export function ListDetailScreen({ route, navigation }: Props) {
   const [addItemIcon, setAddItemIcon] = useState<string | undefined>(undefined);
   const [addItemDescription, setAddItemDescription] = useState<string | undefined>(undefined);
 
-  const MAX_COMPACT_ITEMS = 50;
+  const MAX_COMPACT_ITEMS = 40;
   const MAX_VISIBLE_BOUGHT = 20;
   const insets = useSafeAreaInsets();
   const ts = useThemeStyles();
+
 
   // Back button: close open modal, else navigate away
   useEffect(() => {
@@ -347,59 +450,35 @@ export function ListDetailScreen({ route, navigation }: Props) {
           style={styles.scrollArea}
           contentContainerStyle={styles.scrollContent}
           keyboardShouldPersistTaps="handled"
+          removeClippedSubviews={true}
         >
           {/* ===== TO SHOP (compact) ===== */}
           {compactActive.length > 0 && (
-            <>
-              <View style={[{ backgroundColor: cyberpunkTheme.colors.surface, borderTopWidth: 1, borderTopColor: cyberpunkTheme.colors.border }]}>
-              <Text style={[styles.sectionHeader, { color: cyberpunkTheme.colors.sectionHeader }]}>
-                TO SHOP
-                <Text style={[styles.sectionCount, { color: cyberpunkTheme.colors.textSecondary }]}> ({compactActive.length} of {listItems.length})</Text>
-              </Text>
-              </View>
-              {compactActive.map((item) => (
-                <ItemRow
-                  key={item.id}
-                  item={item}
-                  onTogglePurchased={togglePurchased}
-                  onLongPress={handleLongPress}
-                  onTapBought={moveToShop}
-                  onUpdateItem={updateItem}
-                  showDietWarning={dietWarnings.has(item.id)}
-                  onDietWarningPress={() => {
-                    if (activeDiet && item.foodType) {
-                      setWarningItem({
-                        name: item.description,
-                        dietName: tr(activeDiet.nameKey as any),
-                        foodType: item.foodType,
-                      });
-                    }
-                  }}
-                />
-              ))}
-            </>
-          )}
+            <ToShopSection
+              items={compactActive}
+              total={activeItems.length}
+               handleTogglePurchased={handleTogglePurchased}
+               handleLongPress={handleLongPress}
+               moveToShop={moveToShop}
+               updateItem={updateItem}
+               dietWarnings={dietWarnings}
+               activeDiet={activeDiet}
+               setWarningItem={setWarningItem}
+               tr={tr}
+               cyberpunkTheme={cyberpunkTheme}
+             />
+           )}
 
-          {/* ===== RECENTLY BOUGHT (compact) ===== */}
-          {compactBought.length > 0 && (
-            <>
-              <View style={[styles.divider, { backgroundColor: cyberpunkTheme.colors.surface, borderTopWidth: 1, borderTopColor: cyberpunkTheme.colors.border }]}>
-              <Text style={[styles.sectionHeader, { color: cyberpunkTheme.colors.sectionHeader }]}>
-                RECENTLY BOUGHT
-                <Text style={[styles.sectionCount, { color: cyberpunkTheme.colors.textSecondary }]}> ({compactBought.length})</Text>
-              </Text>
-              </View>
-              {compactBought.map((item) => (
-                <ItemRow
-                  key={item.id}
-                  item={item}
-                  onTogglePurchased={togglePurchased}
-                  onLongPress={handleLongPress}
-                  onTapBought={moveToShop}
-                  onUpdateItem={updateItem}
-                />
-              ))}
-            </>
+           {/* ===== RECENTLY BOUGHT (compact) ===== */}
+           {compactBought.length > 0 && (
+             <BoughtSection
+               items={compactBought}
+               handleTogglePurchased={handleTogglePurchased}
+              handleLongPress={handleLongPress}
+              moveToShop={moveToShop}
+              updateItem={updateItem}
+              cyberpunkTheme={cyberpunkTheme}
+            />
           )}
 
           {listItems.length > MAX_COMPACT_ITEMS && (
@@ -428,6 +507,7 @@ export function ListDetailScreen({ route, navigation }: Props) {
           style={styles.scrollArea}
           contentContainerStyle={styles.scrollContent}
           keyboardShouldPersistTaps="handled"
+          removeClippedSubviews={true}
         >
           <TouchableOpacity
             style={[styles.viewAllButton, { borderColor: cyberpunkTheme.colors.border }]}
@@ -447,7 +527,7 @@ export function ListDetailScreen({ route, navigation }: Props) {
                 <Text style={[styles.sectionCount, { color: cyberpunkTheme.colors.textSecondary }]}> ({activeItems.length})</Text>
               </Text>
               </View>
-              {groupedActive && renderCategoryGroup(groupedActive, togglePurchased, handleLongPress, moveToShop, updateItem, false)}
+              {groupedActive && renderCategoryGroup(groupedActive, handleTogglePurchased, handleLongPress, moveToShop, updateItem, false)}
             </>
           )}
 
@@ -463,7 +543,7 @@ export function ListDetailScreen({ route, navigation }: Props) {
                 </Text>
                 </View>
               </View>
-              {groupedBought && renderCategoryGroup(groupedBought, togglePurchased, handleLongPress, moveToShop, updateItem, true)}
+              {groupedBought && renderCategoryGroup(groupedBought, handleTogglePurchased, handleLongPress, moveToShop, updateItem, true)}
               {hasMoreBought && (
                 <TouchableOpacity
                   style={[styles.viewAllButton, { borderColor: cyberpunkTheme.colors.border }]}
@@ -538,7 +618,7 @@ export function ListDetailScreen({ route, navigation }: Props) {
                         });
                       }
                     }}
-                    onTogglePurchased={togglePurchased}
+                    onTogglePurchased={handleTogglePurchased}
                     onLongPress={handleLongPress}
                     onTapBought={moveToShop}
                     onUpdateItem={updateItem}
@@ -565,7 +645,7 @@ export function ListDetailScreen({ route, navigation }: Props) {
                   <ItemRow
                     key={item.id}
                     item={item}
-                    onTogglePurchased={togglePurchased}
+                    onTogglePurchased={handleTogglePurchased}
                     onLongPress={handleLongPress}
                     onTapBought={moveToShop}
                     onUpdateItem={updateItem}
