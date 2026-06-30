@@ -2,6 +2,7 @@
 import React, { useState, useMemo, useCallback, useEffect, useRef, memo } from 'react';
 import {
   View,
+  KeyboardAvoidingView,
   Text,
   TextInput,
   ScrollView,
@@ -443,6 +444,10 @@ export function ListDetailScreen({ route, navigation }: Props) {
           )}
         </View>
       )}
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      >
       {/* Content — Compact or Full view */}
       {!showAllItems ? (
         // ── COMPACT VIEW — Last 50 items (mix of active + bought) ──
@@ -698,6 +703,7 @@ export function ListDetailScreen({ route, navigation }: Props) {
           onSearchChange={setSearch}
         />
       </View>
+      </KeyboardAvoidingView>
 
       {/* Modals */}
       <EditModal
