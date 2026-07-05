@@ -49,7 +49,7 @@ describe('migration system', () => {
     it('does nothing on fresh install (version 0 → 1, no-op)', async () => {
       await runMigrations();
       const version = await getSchemaVersion();
-      expect(version).toBe(1);
+      expect(version).toBe(2);
     });
 
     it('does nothing if already at current version', async () => {
@@ -59,7 +59,7 @@ describe('migration system', () => {
       await runMigrations();
 
       const version = await getSchemaVersion();
-      expect(version).toBe(1);
+      expect(version).toBe(2);
 
       // No new keys written beyond what was there
       const storeKeysAfter = [...mockMemory.keys()].filter(k => k.startsWith('@shadowlist/'));
@@ -73,7 +73,7 @@ describe('migration system', () => {
       ];
       const existingItems = [
         { id: 'item_1', listId: 'list_1', description: 'Milk', qualifier: '1L',
-          icon: 'cart', purchased: false, order: 0, category: null, foodType: null,
+          icon: 'cart', purchased: false, order: 0, category: null, foodType: 'non_food',
           createdAt: 100, updatedAt: 100 },
       ];
       mockMemory.set('@shadowlist/lists', JSON.stringify(existingLists));
@@ -83,7 +83,7 @@ describe('migration system', () => {
 
       // Version should be bumped
       const version = await getSchemaVersion();
-      expect(version).toBe(1);
+      expect(version).toBe(2);
 
       // Data should still be readable after migration
       const data = await loadAllData();
@@ -101,12 +101,12 @@ describe('migration system', () => {
 
       await runMigrations();
       const version1 = await getSchemaVersion();
-      expect(version1).toBe(1);
+      expect(version1).toBe(2);
 
       // Call again
       await runMigrations();
       const version2 = await getSchemaVersion();
-      expect(version2).toBe(1);
+      expect(version2).toBe(2);
 
       // Data still intact
       const data = await loadAllData();

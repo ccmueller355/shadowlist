@@ -67,14 +67,14 @@ export const DE_REGEX: RegexEntry[] = [
 // --- Resolution result type -----------------------------------------------
 
 export interface ResolutionResult {
-  foodType: FoodType | null;
+  foodType: FoodType;
   icon: string | null;
   source: 'learned' | 'static_exact' | 'static_regex' | 'cross_lang' | 'none';
 }
 
 // --- Name resolver ---------------------------------------------------------
 
-type FoodNameIndex = Map<string, { foodType: FoodType | null; icon: string }>;
+type FoodNameIndex = Map<string, { foodType: FoodType; icon: string }>;
 
 function matchExact(
   normalized: string,
@@ -117,12 +117,12 @@ export function resolveName(
 ): ResolutionResult {
   const normalized = name.trim().toLowerCase();
   if (!normalized) {
-    return { foodType: null, icon: null, source: 'none' };
+    return { foodType: 'non_food', icon: null, source: 'none' };
   }
 
   // Layer 1 — Learned
   const learned = foodNameIndex.get(normalized);
-  if (learned && learned.foodType !== null) {
+  if (learned) {
     return { foodType: learned.foodType, icon: learned.icon, source: 'learned' };
   }
 
@@ -154,5 +154,5 @@ export function resolveName(
   }
 
   // Layer 5 — No match
-  return { foodType: null, icon: null, source: 'none' };
+  return { foodType: 'non_food', icon: null, source: 'none' };
 }

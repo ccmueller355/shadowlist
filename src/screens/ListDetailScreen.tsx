@@ -161,7 +161,7 @@ export function ListDetailScreen({ route, navigation }: Props) {
   const [showAllItems, setShowAllItems] = useState(false);
   const [showAllBought, setShowAllBought] = useState(false);
   const [warningItem, setWarningItem] = useState<{ name: string; dietName: string; foodType: FoodType } | null>(null);
-  const [addItemFoodType, setAddItemFoodType] = useState<FoodType | null | undefined>(undefined);
+  const [addItemFoodType, setAddItemFoodType] = useState<FoodType | undefined>(undefined);
   const [addItemIcon, setAddItemIcon] = useState<string | undefined>(undefined);
   const [addItemDescription, setAddItemDescription] = useState<string | undefined>(undefined);
   const [addItemCategory, setAddItemCategory] = useState<string | null | undefined>(undefined);
@@ -361,7 +361,7 @@ export function ListDetailScreen({ route, navigation }: Props) {
     Toast.show({ type: 'success', text1: 'Item updated', position: 'bottom' });
   };
 
-  const handleAddNewItem = (params: { listId: string; description: string; qualifier: string; icon: string; category: string | null; foodType: FoodType | null }) => {
+  const handleAddNewItem = (params: { listId: string; description: string; qualifier: string; icon: string; category: string | null; foodType: FoodType }) => {
     const newItem = addItem({
       listId,
       description: params.description,
@@ -427,7 +427,7 @@ export function ListDetailScreen({ route, navigation }: Props) {
   return (
     <View style={[styles.container, ts.bg]}>
       {/* Header */}
-      <View style={[styles.header, { backgroundColor: cyberpunkTheme.colors.background }]}>
+      <View style={[styles.header, { backgroundColor: cyberpunkTheme.colors.headerBg }]}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={{ padding: 8, marginLeft: -4 }}>
           <MaterialCommunityIcons name="arrow-left" size={24} color={cyberpunkTheme.colors.headerText} />
         </TouchableOpacity>

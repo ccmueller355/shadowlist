@@ -116,7 +116,7 @@ import { resetStore } from './component-test-setup';
 function makeMockItem(
   id: string,
   description: string,
-  foodType: FoodType | null,
+  foodType: FoodType,
   icon: string
 ): ShoppingItem {
   return {
@@ -162,17 +162,17 @@ it('index keys are normalized (lowercase, trimmed)', () => {
 });
 
 // T014
-it('items with foodType: null are skipped in the index', () => {
+it('all items are included in the name index (no null foodType)', () => {
   const store = useStore.getState();
   store.items = [
     makeMockItem('1', 'Milk', 'dairy', 'cheese'),
-    makeMockItem('2', 'Unknown Item', null, 'cart'),
+    makeMockItem('2', 'Unknown Item', 'non_food', 'cart'),
     makeMockItem('3', 'Bread', 'grain', 'bread-slice-outline'),
   ];
   store.rebuildNameIndex();
   const state = useStore.getState();
-  expect(state.foodNameIndex.size).toBe(2);
-  expect(state.foodNameIndex.has('unknown item')).toBe(false);
+  expect(state.foodNameIndex.size).toBe(3);
+  expect(state.foodNameIndex.has('unknown item')).toBe(true);
 });
 
 // T015
@@ -239,7 +239,7 @@ it('resolveName returns source: none for completely unknown names', () => {
   const index = new Map();
   const result = resolveName('xyznonexistent123', 'en', index);
   expect(result.source).toBe('none');
-  expect(result.foodType).toBeNull();
+  expect(result.foodType).toBe('non_food');
   expect(result.icon).toBeNull();
 });
 
@@ -368,10 +368,10 @@ describe('FOOD_TYPE_TO_CATEGORY mapping', () => {
   });
 
   // T040 — resolveName with no match → null category
-  it('unmatched name returns source "none" and foodType null → category null', () => {
+  it('unmatched name returns source "none" and foodType non_food → category null', () => {
     const result = resolveName('XyzzyPlugh', 'de', new Map());
     expect(result.source).toBe('none');
-    expect(result.foodType).toBeNull();
+    expect(result.foodType).toBe('non_food');
     const category = result.foodType ? FOOD_TYPE_TO_CATEGORY[result.foodType] : null;
     expect(category).toBeNull();
   });

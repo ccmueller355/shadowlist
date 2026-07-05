@@ -194,7 +194,7 @@ describe('Type definitions', () => {
       expect(item.foodType).toBe('meat')
     })
 
-    it('allows foodType to be null', () => {
+    it('defaults foodType to non_food', () => {
       const item: ShoppingItem = {
         id: 'item-4',
         listId: 'list-1',
@@ -204,11 +204,11 @@ describe('Type definitions', () => {
         purchased: false,
         order: 1,
         category: null,
-        foodType: null,
+        foodType: 'non_food',
         createdAt: 1000,
         updatedAt: 1000,
       }
-      expect(item.foodType).toBeNull()
+      expect(item.foodType).toBe('non_food')
     })
   })
 })

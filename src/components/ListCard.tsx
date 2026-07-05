@@ -11,12 +11,13 @@ interface Props {
   itemCount: number;
   onPress: () => void;
   onDelete: () => void;
+  onLongPress?: () => void;
 }
 
-export function ListCard({ list, itemCount, onPress, onDelete }: Props) {
+export function ListCard({ list, itemCount, onPress, onDelete, onLongPress }: Props) {
   const cyberpunkTheme = useAppTheme();
   return (
-    <TouchableOpacity onPress={onPress} activeOpacity={0.7}>
+    <TouchableOpacity onPress={onPress} onLongPress={onLongPress} activeOpacity={0.7}>
       <CyberpunkCard style={styles.card}>
         <View style={styles.row}>
           <View style={styles.left}>

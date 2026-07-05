@@ -232,15 +232,14 @@ describe('ListDetailScreen', () => {
     // "Carrot" resolves to vegetable, but user can override by choosing a different food type
     fireEvent.changeText(input, 'Carrot');
     fireEvent(input, 'submitEditing');
-    // EditModal opens — pre-selected vegetable is shown, but user can change
-    // Press "None" to clear the food type override
-    fireEvent.press(screen.getByText('Not classified'));
+    // EditModal opens — pre-selected vegetable is shown, but user overrides to meat
+    fireEvent.press(screen.getByLabelText('Meat'));
     // Then press save
     fireEvent.press(screen.getByText('[icon:check]'));
     const store = useStore.getState();
     const carrot = store.items.find((i) => i.description === 'Carrot');
     expect(carrot).toBeTruthy();
-    // User explicitly chose "Not classified" → foodType should be null
-    expect(carrot?.foodType).toBeNull();
+    // User explicitly chose "Meat" → foodType should be meat
+    expect(carrot?.foodType).toBe('meat');
   });
 });

@@ -3,7 +3,6 @@ import React, { useState, useCallback, useRef } from 'react';
 import {
   View,
   Text,
-  FlatList,
   TouchableOpacity,
   TextInput,
   StyleSheet,
@@ -14,6 +13,7 @@ import {
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import DraggableFlatList, { RenderItemParams, ScaleDecorator } from 'react-native-draggable-flatlist';
 import { useStore } from '../store/useStore';
 import { ListCard } from '../components/ListCard';
 import { EmptyPlaceholder } from '../components/EmptyPlaceholder';
@@ -42,6 +42,7 @@ export function HomeScreen({ navigation }: Props) {
   const setLang = useStore((s) => s.setLang);
   const clearAll = useStore((s) => s.clearAll);
   const generateExtremeData = useStore((s) => s.generateExtremeData);
+  const reorderLists = useStore((s) => s.reorderLists);
 
   const [showNewListInput, setShowNewListInput] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
@@ -137,18 +138,24 @@ export function HomeScreen({ navigation }: Props) {
       )}
 
       {/* List of lists */}
-      <FlatList
+      <DraggableFlatList
         data={lists}
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.listContent}
-        renderItem={({ item }) => (
-          <ListCard
-            list={item}
-            itemCount={getItemCount(item.id)}
-            onPress={() => navigation.navigate('ListDetail', { listId: item.id, listName: item.name })}
-            onDelete={() => handleDeleteList(item.id, item.name)}
-          />
+        renderItem={({ item, drag, isActive }: RenderItemParams<typeof lists[number]>) => (
+          <ScaleDecorator>
+            <View style={isActive ? styles.dragging : undefined}>
+              <ListCard
+                list={item}
+                itemCount={getItemCount(item.id)}
+                onPress={() => navigation.navigate('ListDetail', { listId: item.id, listName: item.name })}
+                onDelete={() => handleDeleteList(item.id, item.name)}
+                onLongPress={drag}
+              />
+            </View>
+          </ScaleDecorator>
         )}
+        onDragEnd={({ data }) => reorderLists(data.map((l) => l.id))}
         ListEmptyComponent={
           <EmptyPlaceholder
             message="Create your first shopping list"
@@ -262,6 +269,12 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowRadius: 8,
     shadowOffset: { width: 0, height: 4 },
+    elevation: 6,
+  },
+  dragging: {
+    opacity: 0.8,
+    shadowOpacity: 0.4,
+    shadowRadius: 8,
     elevation: 6,
   },
 });
