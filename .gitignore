@@ -56,7 +56,10 @@ coverage/
 .specify/
 
 # MemPalace
+.mempalace/
 entities.json
+chroma.sqlite3
+b6d1e2c9-5c4e-4f38-a34d-612606e04378/
 
 # Operator scripts (user-executed, not tracked)
 operator-execute.sh

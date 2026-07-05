@@ -31,9 +31,10 @@ interface Props {
   initialDescription?: string;
   initialFoodType?: FoodType | null;
   initialIcon?: string;
+  initialCategory?: string | null;
 }
 
-export function EditModal({ visible, item, onSave, onDelete, onClose, onAdd, initialDescription, initialFoodType, initialIcon }: Props) {
+export function EditModal({ visible, item, onSave, onDelete, onClose, onAdd, initialDescription, initialFoodType, initialIcon, initialCategory }: Props) {
   const cyberpunkTheme = useAppTheme();
   const [description, setDescription] = useState('');
   const [qualifier, setQualifier] = useState('');
@@ -58,12 +59,13 @@ export function EditModal({ visible, item, onSave, onDelete, onClose, onAdd, ini
       setIcon(item.icon);
       setCategory(item.category);
       setFoodType(item.foodType ?? null);
-    } else if (initialFoodType !== undefined || initialIcon !== undefined || initialDescription !== undefined) {
+    } else if (initialFoodType !== undefined || initialIcon !== undefined || initialDescription !== undefined || initialCategory !== undefined) {
       setDescription(initialDescription || '');
       setIcon(initialIcon || 'cart');
       setFoodType(initialFoodType ?? null);
+      setCategory(initialCategory ?? null);
     }
-  }, [item, initialFoodType, initialIcon, initialDescription]);
+  }, [item, initialFoodType, initialIcon, initialDescription, initialCategory]);
 
   const handleSave = () => {
     if (!description.trim()) return;

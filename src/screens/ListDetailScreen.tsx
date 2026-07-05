@@ -30,6 +30,7 @@ import { EmptyPlaceholder } from '../components/EmptyPlaceholder';
 import { checkItem, CheckResult } from '../utils/dietEngine';
 import { DIET_PROFILES } from '../constants/diets';
 import { resolveName } from '../constants/foodLookup';
+import { FOOD_TYPE_TO_CATEGORY } from '../constants/foodTypes';
 import { useTranslation } from '../i18n/useTranslation';
 import { useAppTheme } from '../theme/useTheme';
 import { useThemeStyles } from '../theme/useThemeStyles';
@@ -163,6 +164,7 @@ export function ListDetailScreen({ route, navigation }: Props) {
   const [addItemFoodType, setAddItemFoodType] = useState<FoodType | null | undefined>(undefined);
   const [addItemIcon, setAddItemIcon] = useState<string | undefined>(undefined);
   const [addItemDescription, setAddItemDescription] = useState<string | undefined>(undefined);
+  const [addItemCategory, setAddItemCategory] = useState<string | null | undefined>(undefined);
 
   const MAX_COMPACT_ITEMS = 40;
   const MAX_VISIBLE_BOUGHT = 20;
@@ -320,9 +322,11 @@ export function ListDetailScreen({ route, navigation }: Props) {
       if (resolution.source !== 'none') {
         setAddItemFoodType(resolution.foodType);
         setAddItemIcon(resolution.icon ?? undefined);
+        setAddItemCategory(resolution.foodType ? FOOD_TYPE_TO_CATEGORY[resolution.foodType] : null);
       } else {
         setAddItemFoodType(undefined);
         setAddItemIcon(undefined);
+        setAddItemCategory(undefined);
       }
       setAddItemDescription(description);
       setEditItem(null);
@@ -449,7 +453,7 @@ export function ListDetailScreen({ route, navigation }: Props) {
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       >
       {/* Content — Compact or Full view */}
-      {!showAllItems ? (
+      {!showAllItems && !settings.sortByCategory ? (
         // ── COMPACT VIEW — Last 50 items (mix of active + bought) ──
         <ScrollView
           style={styles.scrollArea}
@@ -506,7 +510,7 @@ export function ListDetailScreen({ route, navigation }: Props) {
 
           <View style={styles.bottomSpacer} />
         </ScrollView>
-      ) : showAllItems && settings.sortByCategory ? (
+      ) : settings.sortByCategory ? (
         // ── FULL VIEW — Category sorted ──
         <ScrollView
           style={styles.scrollArea}
@@ -715,12 +719,14 @@ export function ListDetailScreen({ route, navigation }: Props) {
         initialDescription={editItem ? undefined : addItemDescription}
         initialFoodType={editItem ? undefined : addItemFoodType}
         initialIcon={editItem ? undefined : addItemIcon}
+        initialCategory={editItem ? undefined : addItemCategory}
         onClose={() => {
           setShowEdit(false);
           setEditItem(null);
           setAddItemDescription(undefined);
           setAddItemFoodType(undefined);
           setAddItemIcon(undefined);
+          setAddItemCategory(undefined);
         }}
       />
 
