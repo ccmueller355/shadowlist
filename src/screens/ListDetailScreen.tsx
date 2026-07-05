@@ -427,7 +427,7 @@ export function ListDetailScreen({ route, navigation }: Props) {
   return (
     <View style={[styles.container, ts.bg]}>
       {/* Header */}
-      <View style={[styles.header, { backgroundColor: cyberpunkTheme.colors.background }]}>
+      <View style={[styles.header, { backgroundColor: cyberpunkTheme.colors.headerBg }]}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={{ padding: 8, marginLeft: -4 }}>
           <MaterialCommunityIcons name="arrow-left" size={24} color={cyberpunkTheme.colors.headerText} />
         </TouchableOpacity>
