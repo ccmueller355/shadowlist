@@ -17,6 +17,7 @@ import { useAppTheme } from '../theme/useTheme';
 import { themes } from '../theme/themes';
 import { DIET_PROFILES } from '../constants/diets';
 import { useTranslation } from '../i18n/useTranslation';
+import Constants from 'expo-constants';
 
 interface Props {
   visible: boolean;
@@ -347,7 +348,7 @@ export function SettingsModal({
               </>
             )}
 
-            <Text style={[styles.footer, { color: t.colors.textSecondary }]}>ShadowList v0.10.0</Text>
+            <Text style={[styles.footer, { color: t.colors.textSecondary }]}>ShadowList v{Constants.expoConfig?.version ?? '0.0.0'}</Text>
           </View>
         </ScrollView>
       </View>
