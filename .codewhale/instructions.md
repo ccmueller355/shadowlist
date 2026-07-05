@@ -26,7 +26,10 @@ This file is Tier 5 Local Law — subordinate to the Constitution, Statutes, and
 
 ## 2. MemPalace Integration
 
-- Session start: `mempalace wake-up` → scan L0 + L1 context
+### Dual-Palace Setup
+- **Local palace** (`.mempalace/`): project code context, session logs — `mempalace --palace .mempalace wake-up`
+- **Global palace** (`~/.mempalace/`): cross-project learnings, tools, patterns — `mempalace search "LEARNING:"` + `mempalace search "TOOL:"`
+- Session start: run both local wake-up AND global searches (see Wake-Up Routine in mempalace skill)
 - Milestones: `mempalace mine .` — log payload into palace drawers
 - Recall: `mempalace search "<query>"` — cross-session retrieval
 
