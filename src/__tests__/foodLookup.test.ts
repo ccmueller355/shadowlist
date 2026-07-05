@@ -296,3 +296,58 @@ it('resolveName returns learned source with correct foodType and icon', () => {
   expect(result.foodType).toBe('fruit');
   expect(result.icon).toBe('fruit-cherries');
 });
+
+// ── FOOD_TYPE_TO_CATEGORY mapping tests (#10) ───────────────────────
+
+import { FOOD_TYPE_TO_CATEGORY } from '../constants/foodTypes';
+
+describe('FOOD_TYPE_TO_CATEGORY mapping', () => {
+  // T031 — food types map to expected categories
+  it('meat, fish, egg, dairy, grain, sugar map to Groceries', () => {
+    expect(FOOD_TYPE_TO_CATEGORY.meat).toBe('Groceries');
+    expect(FOOD_TYPE_TO_CATEGORY.fish).toBe('Groceries');
+    expect(FOOD_TYPE_TO_CATEGORY.egg).toBe('Groceries');
+    expect(FOOD_TYPE_TO_CATEGORY.dairy).toBe('Groceries');
+    expect(FOOD_TYPE_TO_CATEGORY.grain).toBe('Groceries');
+    expect(FOOD_TYPE_TO_CATEGORY.sugar).toBe('Groceries');
+  });
+
+  // T032
+  it('fruit, vegetable, legume, fat map to Groceries', () => {
+    expect(FOOD_TYPE_TO_CATEGORY.fruit).toBe('Groceries');
+    expect(FOOD_TYPE_TO_CATEGORY.vegetable).toBe('Groceries');
+    expect(FOOD_TYPE_TO_CATEGORY.legume).toBe('Groceries');
+    expect(FOOD_TYPE_TO_CATEGORY.fat).toBe('Groceries');
+  });
+
+  // T033
+  it('beverage maps to Beverages', () => {
+    expect(FOOD_TYPE_TO_CATEGORY.beverage).toBe('Beverages');
+  });
+
+  // T034
+  it('supplement maps to Pharmacy', () => {
+    expect(FOOD_TYPE_TO_CATEGORY.supplement).toBe('Pharmacy');
+  });
+
+  // T035
+  it('non_food maps to null', () => {
+    expect(FOOD_TYPE_TO_CATEGORY.non_food).toBeNull();
+  });
+
+  // T036 — resolveName on known item + FOOD_TYPE_TO_CATEGORY yields a category
+  it('resolved foodType "dairy" yields category "Groceries"', () => {
+    const result = resolveName('Milch', 'de', new Map());
+    expect(result.foodType).toBe('dairy');
+    const category = result.foodType ? FOOD_TYPE_TO_CATEGORY[result.foodType] : null;
+    expect(category).toBe('Groceries');
+  });
+
+  // T037 — resolveName on bread → grain → Groceries
+  it('resolved foodType "grain" yields category "Groceries"', () => {
+    const result = resolveName('Vollkornbrot', 'de', new Map());
+    expect(result.foodType).toBe('grain');
+    const category = result.foodType ? FOOD_TYPE_TO_CATEGORY[result.foodType] : null;
+    expect(category).toBe('Groceries');
+  });
+});

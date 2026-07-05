@@ -16,3 +16,24 @@ export const FOOD_TYPES: FoodTypeInfo[] = [
   { id: 'supplement', labelKey: 'foodType.supplement', icon: 'pill' },
   { id: 'non_food',   labelKey: 'foodType.nonFood',    icon: 'package-variant' },
 ];
+
+/**
+ * Maps each FoodType to a default shopping category.
+ * Used for auto-pre-selection when the name resolver matches a food type.
+ * non_food → null — no automatic categorization for non-food items.
+ */
+export const FOOD_TYPE_TO_CATEGORY: Record<FoodType, string | null> = {
+  meat:       'Groceries',
+  fish:       'Groceries',
+  egg:        'Groceries',
+  dairy:      'Groceries',
+  grain:      'Groceries',
+  sugar:      'Groceries',
+  fruit:      'Groceries',
+  vegetable:  'Groceries',
+  legume:     'Groceries',
+  fat:        'Groceries',
+  beverage:   'Beverages',
+  supplement: 'Pharmacy',
+  non_food:   null,
+};
