@@ -27,9 +27,9 @@ interface Props {
   onSave: (id: string, updates: Partial<ShoppingItem>) => void;
   onDelete: (id: string) => void;
   onClose: () => void;
-  onAdd?: (params: { listId: string; description: string; qualifier: string; icon: string; category: string | null; foodType: FoodType | null }) => void;
+  onAdd?: (params: { listId: string; description: string; qualifier: string; icon: string; category: string | null; foodType: FoodType }) => void;
   initialDescription?: string;
-  initialFoodType?: FoodType | null;
+  initialFoodType?: FoodType;
   initialIcon?: string;
   initialCategory?: string | null;
 }
@@ -40,7 +40,7 @@ export function EditModal({ visible, item, onSave, onDelete, onClose, onAdd, ini
   const [qualifier, setQualifier] = useState('');
   const [icon, setIcon] = useState('cart');
   const [category, setCategory] = useState<string | null>(null);
-  const [foodType, setFoodType] = useState<FoodType | null>(null);
+  const [foodType, setFoodType] = useState<FoodType>('non_food');
   const insets = useSafeAreaInsets();
   const { t: tr } = useTranslation();
 
@@ -58,11 +58,11 @@ export function EditModal({ visible, item, onSave, onDelete, onClose, onAdd, ini
       setQualifier(item.qualifier);
       setIcon(item.icon);
       setCategory(item.category);
-      setFoodType(item.foodType ?? null);
+      setFoodType(item.foodType);
     } else if (initialFoodType !== undefined || initialIcon !== undefined || initialDescription !== undefined || initialCategory !== undefined) {
       setDescription(initialDescription || '');
       setIcon(initialIcon || 'cart');
-      setFoodType(initialFoodType ?? null);
+      setFoodType(initialFoodType ?? 'non_food');
       setCategory(initialCategory ?? null);
     }
   }, [item, initialFoodType, initialIcon, initialDescription, initialCategory]);
@@ -155,17 +155,6 @@ export function EditModal({ visible, item, onSave, onDelete, onClose, onAdd, ini
             {/* Food Type */}
             <Text style={[styles.label, { color: cyberpunkTheme.colors.primary }]}>{tr('edit.foodType.label')}</Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.categoryRow}>
-              <TouchableOpacity
-                style={[styles.categoryChip, { borderColor: foodType === null ? cyberpunkTheme.colors.primary : cyberpunkTheme.colors.border, backgroundColor: foodType === null ? cyberpunkTheme.colors.checkedBg : cyberpunkTheme.colors.background }]}
-                onPress={() => setFoodType(null)}
-                accessibilityLabel={tr('edit.foodType.none')}
-                accessibilityRole="radio"
-                accessibilityState={{ selected: foodType === null }}
-              >
-                <Text style={[styles.categoryText, { color: foodType === null ? cyberpunkTheme.colors.primary : cyberpunkTheme.colors.textSecondary }, foodType === null && styles.categoryTextSelected]}>
-                  {tr('edit.foodType.none')}
-                </Text>
-              </TouchableOpacity>
               {FOOD_TYPES.map((ft) => (
                 <TouchableOpacity
                   key={ft.id}

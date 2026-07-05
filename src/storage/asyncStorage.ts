@@ -11,7 +11,7 @@ const KEYS = {
 
 // ── Schema Versioning & Migration ──
 
-const CURRENT_SCHEMA_VERSION = 1;
+const CURRENT_SCHEMA_VERSION = 2;
 
 type Migration = () => Promise<void>;
 
@@ -21,10 +21,26 @@ type Migration = () => Promise<void>;
  * Only write ONE-STEP migrations. The runner chains them.
  */
 const MIGRATIONS: Migration[] = [
-  // v0 → v1: Current shape is our v1 baseline.
-  // No data transformation needed — just mark as versioned.
+  // v0 → v1: Baseline — mark as versioned.
   async () => {
     // Data already matches current types. Nothing to transform.
+  },
+
+  // v1 → v2: foodType null → 'non_food' (PR #13 — remove nullable foodType)
+  async () => {
+    const raw = await AsyncStorage.getItem(KEYS.items);
+    if (!raw) return;
+    const items: ShoppingItem[] = JSON.parse(raw);
+    let changed = false;
+    for (const item of items) {
+      if ((item as any).foodType === null) {
+        (item as any).foodType = 'non_food';
+        changed = true;
+      }
+    }
+    if (changed) {
+      await AsyncStorage.setItem(KEYS.items, JSON.stringify(items));
+    }
   },
 ];
 

@@ -12,7 +12,7 @@ interface ShoppingState {
   items: ShoppingItem[];
   settings: AppSettings;
   hydrated: boolean;
-  foodNameIndex: Map<string, { foodType: FoodType | null; icon: string }>;
+  foodNameIndex: Map<string, { foodType: FoodType; icon: string }>;
 
   // Init
   hydrate: () => Promise<void>;
@@ -62,9 +62,8 @@ export const useStore = create<ShoppingState>((set, get) => ({
 
   rebuildNameIndex: () => {
     const items = get().items;
-    const index = new Map<string, { foodType: FoodType | null; icon: string }>();
+    const index = new Map<string, { foodType: FoodType; icon: string }>();
     for (const item of items) {
-      if (item.foodType === null) continue;
       const key = item.description.trim().toLowerCase();
       if (!key) continue;
       // Last-write-wins — later items override earlier ones for the same name
@@ -128,7 +127,7 @@ export const useStore = create<ShoppingState>((set, get) => ({
       purchased: false,
       order: maxOrder + 1,
       category: params.category ?? null,
-      foodType: null,
+      foodType: 'non_food',
       createdAt: now,
       updatedAt: now,
     };
@@ -268,7 +267,7 @@ export const useStore = create<ShoppingState>((set, get) => ({
           description: `${foods[i % foods.length]} #${Math.floor(i / foods.length) + 1}`,
           qualifier: '',
           icon: icons[Math.floor(Math.random() * icons.length)],
-          foodType: null,
+          foodType: 'non_food',
           purchased: false,
           order: i,
           category: categories[Math.floor(Math.random() * categories.length)],

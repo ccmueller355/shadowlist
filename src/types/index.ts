@@ -15,7 +15,7 @@ export interface ShoppingItem {
   purchased: boolean;
   order: number;
   category: string | null;
-  foodType: FoodType | null;
+  foodType: FoodType;
   createdAt: number;
   updatedAt: number;
 }

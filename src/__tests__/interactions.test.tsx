@@ -20,7 +20,7 @@ describe('AddItemBar', () => {
     purchased: false,
     order: 0,
     category: null,
-    foodType: null,
+    foodType: 'non_food',
     createdAt: 1,
     updatedAt: 1,
   };

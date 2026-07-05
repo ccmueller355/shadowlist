@@ -97,7 +97,7 @@ export const stufferTheme: Theme = {
     headerText: '#faf5ed',
     primary: '#b8453a',
     secondary: '#8c6a4a',
-    sectionHeader: '#7a5540',
+    sectionHeader: '#2e241a',
     danger: '#b04444',
     border: '#e0d5c4',
     checkedBg: '#f0e6d6',
