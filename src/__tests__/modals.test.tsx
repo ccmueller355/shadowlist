@@ -113,6 +113,25 @@ describe('EditModal', () => {
     expect(screen.queryByText('[icon:cart]')).toBeNull();
     expect(screen.queryByText('Dairy')).toBeNull();
   });
+
+  // T041 — initialCategory prop pre-selects the category chip
+  it('renders with pre-selected category when initialCategory is provided', () => {
+    render(
+      <EditModal
+        visible={true}
+        item={null}
+        initialDescription="Milch"
+        initialFoodType="dairy"
+        initialIcon="cheese"
+        initialCategory="Groceries"
+        onSave={jest.fn()}
+        onDelete={jest.fn()}
+        onClose={jest.fn()}
+      />
+    );
+    // The Groceries category chip should render
+    expect(screen.getByText('Groceries')).toBeTruthy();
+  });
 });
 
 describe('SettingsModal', () => {

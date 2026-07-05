@@ -350,4 +350,29 @@ describe('FOOD_TYPE_TO_CATEGORY mapping', () => {
     const category = result.foodType ? FOOD_TYPE_TO_CATEGORY[result.foodType] : null;
     expect(category).toBe('Groceries');
   });
+
+  // T038 — resolveName on beverage item → category "Beverages"
+  it('resolved foodType "beverage" yields category "Beverages"', () => {
+    const result = resolveName('Wasser', 'de', new Map());
+    expect(result.foodType).toBe('beverage');
+    const category = result.foodType ? FOOD_TYPE_TO_CATEGORY[result.foodType] : null;
+    expect(category).toBe('Beverages');
+  });
+
+  // T039 — resolveName on non_food item → category null
+  it('resolved foodType "non_food" yields category null', () => {
+    const result = resolveName('Küchenrolle', 'de', new Map());
+    expect(result.foodType).toBe('non_food');
+    const category = result.foodType ? FOOD_TYPE_TO_CATEGORY[result.foodType] : null;
+    expect(category).toBeNull();
+  });
+
+  // T040 — resolveName with no match → null category
+  it('unmatched name returns source "none" and foodType null → category null', () => {
+    const result = resolveName('XyzzyPlugh', 'de', new Map());
+    expect(result.source).toBe('none');
+    expect(result.foodType).toBeNull();
+    const category = result.foodType ? FOOD_TYPE_TO_CATEGORY[result.foodType] : null;
+    expect(category).toBeNull();
+  });
 });
