@@ -30,6 +30,7 @@ interface ShoppingState {
   togglePurchased: (id: string) => void;
   moveToShop: (id: string) => void;
   reorderItems: (listId: string, orderedIds: string[]) => void;
+  reorderLists: (orderedIds: string[]) => void;
 
   // Settings
   setTheme: (theme: AppSettings['theme']) => void;
@@ -197,6 +198,13 @@ export const useStore = create<ShoppingState>((set, get) => ({
     });
     set({ items });
     saveItems(items);
+  },
+
+  reorderLists: (orderedIds: string[]) => {
+    const listMap = new Map(get().lists.map((l) => [l.id, l]));
+    const lists = orderedIds.map((id) => listMap.get(id)!).filter(Boolean);
+    set({ lists });
+    saveLists(lists);
   },
 
   setTheme: (theme: AppSettings['theme']) => {
