@@ -453,7 +453,7 @@ export function ListDetailScreen({ route, navigation }: Props) {
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       >
       {/* Content — Compact or Full view */}
-      {!showAllItems ? (
+      {!showAllItems && !settings.sortByCategory ? (
         // ── COMPACT VIEW — Last 50 items (mix of active + bought) ──
         <ScrollView
           style={styles.scrollArea}
@@ -510,7 +510,7 @@ export function ListDetailScreen({ route, navigation }: Props) {
 
           <View style={styles.bottomSpacer} />
         </ScrollView>
-      ) : showAllItems && settings.sortByCategory ? (
+      ) : settings.sortByCategory ? (
         // ── FULL VIEW — Category sorted ──
         <ScrollView
           style={styles.scrollArea}
