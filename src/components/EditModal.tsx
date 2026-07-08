@@ -95,17 +95,13 @@ export function EditModal({ visible, item, onSave, onDelete, onClose, onAdd, ini
   return (
     <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
       <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         style={[styles.overlay, { backgroundColor: 'rgba(0,0,0,0.5)' }]}
       >
         <View style={[styles.container, { backgroundColor: cyberpunkTheme.colors.surface }]}>
           <ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="always" style={styles.scrollBody}>
             <Text style={[styles.title, { color: cyberpunkTheme.colors.textPrimary }]}>{tr('edit.title')}</Text>
- 
-            {/* Icon Picker */}
-            <Text style={[styles.label, { color: cyberpunkTheme.colors.primary }]}>{tr('edit.icon')}</Text>
-            <IconPickerGrid selected={icon} onSelect={setIcon} />
- 
+  
             {/* Description */}
             <Text style={[styles.label, { color: cyberpunkTheme.colors.primary }]}>{tr('edit.description')}</Text>
             <TextInput
@@ -115,7 +111,7 @@ export function EditModal({ visible, item, onSave, onDelete, onClose, onAdd, ini
               placeholder={tr('edit.descriptionPlaceholder')}
               placeholderTextColor={cyberpunkTheme.colors.textSecondary}
             />
- 
+  
             {/* Amount / Qualifier */}
             <Text style={[styles.label, { color: cyberpunkTheme.colors.primary }]}>{tr('edit.amount')}</Text>
             <TextInput
@@ -125,6 +121,10 @@ export function EditModal({ visible, item, onSave, onDelete, onClose, onAdd, ini
               placeholder={tr('edit.amountPlaceholder')}
               placeholderTextColor={cyberpunkTheme.colors.textSecondary}
             />
+  
+            {/* Icon Picker */}
+            <Text style={[styles.label, { color: cyberpunkTheme.colors.primary }]}>{tr('edit.icon')}</Text>
+            <IconPickerGrid selected={icon} onSelect={setIcon} />
  
             {/* Category */}
             <Text style={[styles.label, { color: cyberpunkTheme.colors.primary }]}>{tr('edit.category')}</Text>
