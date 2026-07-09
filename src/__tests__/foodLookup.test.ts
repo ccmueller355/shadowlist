@@ -343,6 +343,49 @@ describe('FOOD_TYPE_TO_CATEGORY mapping', () => {
     expect(category).toBe('Groceries');
   });
 
+  // T036b — German plural variants resolve to correct foodType (spec 019)
+  it('DE plural "Kartoffeln" resolves to vegetable via Kartoffel entry', () => {
+    const result = resolveName('Kartoffeln', 'de', new Map());
+    expect(result.foodType).toBe('vegetable');
+    expect(result.source).toBe('static_exact');
+  });
+
+  it('DE plural "Tomaten" resolves to vegetable via Tomate entry', () => {
+    const result = resolveName('Tomaten', 'de', new Map());
+    expect(result.foodType).toBe('vegetable');
+    expect(result.source).toBe('static_exact');
+  });
+
+  it('DE plural "Zwiebeln" resolves to vegetable via Zwiebel entry', () => {
+    const result = resolveName('Zwiebeln', 'de', new Map());
+    expect(result.foodType).toBe('vegetable');
+    expect(result.source).toBe('static_exact');
+  });
+
+  it('DE plural "Karotten" resolves to vegetable via Karotte entry', () => {
+    const result = resolveName('Karotten', 'de', new Map());
+    expect(result.foodType).toBe('vegetable');
+    expect(result.source).toBe('static_exact');
+  });
+
+  it('DE plural "Gurken" resolves to vegetable via Gurke entry', () => {
+    const result = resolveName('Gurken', 'de', new Map());
+    expect(result.foodType).toBe('vegetable');
+    expect(result.source).toBe('static_exact');
+  });
+
+  it('DE plural "Nudeln" resolves to grain via Nudel entry', () => {
+    const result = resolveName('Nudeln', 'de', new Map());
+    expect(result.foodType).toBe('grain');
+    expect(result.source).toBe('static_exact');
+  });
+
+  it('DE singular "Kartoffel" still resolves correctly (not broken by plural logic)', () => {
+    const result = resolveName('Kartoffel', 'de', new Map());
+    expect(result.foodType).toBe('vegetable');
+    expect(result.source).toBe('static_exact');
+  });
+
   // T037 — resolveName on bread → grain → Groceries
   it('resolved foodType "grain" yields category "Groceries"', () => {
     const result = resolveName('Vollkornbrot', 'de', new Map());

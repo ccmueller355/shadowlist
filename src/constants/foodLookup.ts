@@ -24,6 +24,28 @@ export interface RegexEntry {
 
 const ALL_ITEMS = [...TIER_1_ITEMS, ...TIER_2_ITEMS];
 
+/**
+ * Generate common German plural variants for a singular noun.
+ * Covers predictable patterns for food-related nouns:
+ *   -el → -eln  (Kartoffel → Kartoffeln, Zwiebel → Zwiebeln, Nudel → Nudeln)
+ *   -e  → -en   (Tomate → Tomaten, Karotte → Karotten, Gurke → Gurken)
+ *   -er → -ern  (Eier → Eiern — uncommon for food but safe)
+ * Does NOT handle umlaut shifts (Apfel → Äpfel) or -s plurals (Auto → Autos).
+ */
+function germanPluralVariants(singular: string): string[] {
+  const variants = [singular];
+  if (singular.endsWith('el')) {
+    variants.push(singular + 'n');
+  }
+  if (singular.endsWith('e') && !singular.endsWith('ee')) {
+    variants.push(singular + 'n');
+  }
+  if (singular.endsWith('er')) {
+    variants.push(singular + 'n');
+  }
+  return variants;
+}
+
 function buildEnLookup(): StaticLookupEntry[] {
   return ALL_ITEMS.map((item) => ({
     keywords: [item.nameEn.toLowerCase()],
@@ -34,12 +56,15 @@ function buildEnLookup(): StaticLookupEntry[] {
 }
 
 function buildDeLookup(): StaticLookupEntry[] {
-  return ALL_ITEMS.map((item) => ({
-    keywords: [item.nameDe.toLowerCase()],
-    foodType: item.foodType,
-    icon: item.icon,
-    lang: 'de' as const,
-  }));
+  return ALL_ITEMS.map((item) => {
+    const base = item.nameDe.toLowerCase();
+    return {
+      keywords: germanPluralVariants(base),
+      foodType: item.foodType,
+      icon: item.icon,
+      lang: 'de' as const,
+    };
+  });
 }
 
 // --- Exported tables ------------------------------------------------------
