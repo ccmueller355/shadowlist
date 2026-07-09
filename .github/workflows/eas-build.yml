@@ -29,7 +29,7 @@ jobs:
         run: |
           BUILD_OUTPUT=$(eas build --platform android --profile preview --non-interactive --no-wait --json 2>/dev/null)
           echo "$BUILD_OUTPUT"
-          BUILD_URL=$(echo "$BUILD_OUTPUT" | jq -r '.buildUrl // "https://expo.dev/accounts/aethelred-cybernetics/projects/shadowlist/builds"')
+          BUILD_URL=$(echo "$BUILD_OUTPUT" | jq -r '.[0].buildUrl // "https://expo.dev/accounts/aethelred-cybernetics/projects/shadowlist/builds"')
           echo "build_url=$BUILD_URL" >> $GITHUB_OUTPUT
       - name: Comment build URL on PR
         if: github.event_name == 'pull_request'
