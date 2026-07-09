@@ -408,7 +408,7 @@ export function ListDetailScreen({ route, navigation }: Props) {
         <Text style={[styles.categoryHeader, { color: cyberpunkTheme.colors.secondary, backgroundColor: cyberpunkTheme.colors.background }]}>
           {tr(('category.' + cat.replace(/[ &]/g, '')) as any)}
         </Text>
-        {group[cat].map((item) => (
+        {group[cat].sort((a, b) => a.description.localeCompare(b.description)).map((item) => (
           <ItemRow
             key={item.id}
             item={item}
