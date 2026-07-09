@@ -17,7 +17,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { FoodType, ShoppingItem } from '../types';
 import { IconPickerGrid } from './IconPickerGrid';
 import { CATEGORIES } from '../constants/icons';
-import { FOOD_TYPES } from '../constants/foodTypes';
+import { FOOD_TYPES, FOOD_TYPE_TO_CATEGORY } from '../constants/foodTypes';
 import { useAppTheme } from '../theme/useTheme';
 import { useTranslation } from '../i18n/useTranslation';
 
@@ -66,6 +66,12 @@ export function EditModal({ visible, item, onSave, onDelete, onClose, onAdd, ini
       setCategory(initialCategory ?? null);
     }
   }, [item, initialFoodType, initialIcon, initialDescription, initialCategory]);
+
+  // Auto-sync category when food type changes (#20)
+  useEffect(() => {
+    const mapped = FOOD_TYPE_TO_CATEGORY[foodType];
+    setCategory(mapped);
+  }, [foodType]);
 
   const handleSave = () => {
     if (!description.trim()) return;
