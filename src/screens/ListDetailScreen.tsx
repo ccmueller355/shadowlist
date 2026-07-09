@@ -15,7 +15,6 @@ import {
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import DraggableFlatList, {
   RenderItemParams,
   ScaleDecorator,
@@ -168,7 +167,6 @@ export function ListDetailScreen({ route, navigation }: Props) {
 
   const MAX_COMPACT_ITEMS = 40;
   const MAX_VISIBLE_BOUGHT = 20;
-  const insets = useSafeAreaInsets();
   const ts = useThemeStyles();
 
 
@@ -448,6 +446,17 @@ export function ListDetailScreen({ route, navigation }: Props) {
           )}
         </View>
       )}
+      {/* Top add/search bar — above scrollable content so keyboard never hides it */}
+      <View style={[styles.topAddBar, { borderBottomColor: cyberpunkTheme.colors.border }]}>
+        <AddItemBar
+          listId={listId}
+          recentBought={boughtItems}
+          onAddItem={handleAddItem}
+          onReAddItem={handleReAddItem}
+          onSearchChange={setSearch}
+        />
+      </View>
+
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
@@ -697,16 +706,6 @@ export function ListDetailScreen({ route, navigation }: Props) {
         </View>
       )}
 
-      {/* Bottom add/search bar */}
-      <View style={[styles.bottomBar, { paddingBottom: insets.bottom + 8 }]}>
-        <AddItemBar
-          listId={listId}
-          recentBought={boughtItems}
-          onAddItem={handleAddItem}
-          onReAddItem={handleReAddItem}
-          onSearchChange={setSearch}
-        />
-      </View>
       </KeyboardAvoidingView>
 
       {/* Modals */}
@@ -773,10 +772,10 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold',
   },
-  bottomBar: {
+  topAddBar: {
     paddingHorizontal: 8,
     paddingVertical: 8,
-    borderTopWidth: 1,
+    borderBottomWidth: 1,
   },
   searchRow: {
     flexDirection: 'row',
