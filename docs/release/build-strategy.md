@@ -26,6 +26,15 @@ feature → PR to main → merge (squash) → main
 
 **Squash-only merges.** One commit per feature on `main` and `release`. Full branch history stays local. This keeps the tree linear and makes build attribution trivial.
 
+**Fast-forward only on `release`.** Every PR against `release` MUST be a clean fast-forward from `main`. If it's not fast-forwardable, the PR is invalid. `release` is always a direct descendant of `main` — no independent commits, no merge commits, no divergence.
+
+**If `release` diverges:** this is a critical state. Delete `release` and recreate from `main`:
+```bash
+gh api repos/ccmueller355/shadowlist/git/refs/heads/release -X DELETE
+git push origin main:release
+```
+This is the only exception to the no-direct-push rule and requires operator acknowledgment.
+
 ## Build Profile
 
 | Profile | Trigger | Purpose |

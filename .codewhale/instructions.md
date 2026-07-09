@@ -118,6 +118,15 @@ Before marking any task complete, pass these gates:
 - **After merge**, the remote branch is auto-cleaned by GitHub via `--delete-branch`
 - **Rationale**: traceability — PRs are the permanent record of what landed, when, and why. Local merges leave zero audit trail.
 
+## 4b. Release Branch (NON-NEGOTIABLE)
+
+- **`release` is a marker branch.** It MUST always be a direct descendant of `main`. No independent commits, no merge commits, no divergence.
+- **Only fast-forward PR merges.** Every PR against `release` must be a clean fast-forward from `main`. If it's not fast-forwardable, the PR is invalid.
+- **No direct pushes.** No `git push origin main:release`. No force-pushes. No local merges.
+- **EAS build triggers on PR open.** The `pull_request` trigger on `release` fires the EAS build. The APK IS the release artifact — no second build.
+- **What to do if `release` diverges:** delete it and recreate from `main` (`git push origin main:release`). This is the only exception to the no-direct-push rule and requires operator acknowledgment.
+- **Violation of any of these rules means the session stops and the operator is notified.**
+
 ---
 
 ## 5. SpecKit Workflow
