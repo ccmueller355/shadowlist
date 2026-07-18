@@ -79,10 +79,11 @@ export const EN_REGEX: RegexEntry[] = [];
 export const DE_REGEX: RegexEntry[] = [
   { pattern: /käse$/i,   foodType: 'dairy',     icon: 'cheese' },
   { pattern: /milch$/i,  foodType: 'dairy',     icon: 'cup' },
-  { pattern: /brot$/i,   foodType: 'bakery',    icon: 'bread-slice-outline' },
+  { pattern: /brot$/i,   foodType: 'grain',     icon: 'bread-slice-outline' },
   { pattern: /fleisch$/i,foodType: 'meat',      icon: 'food-drumstick-outline' },
   { pattern: /wurst$/i,  foodType: 'meat',      icon: 'food-drumstick-outline' },
-  { pattern: /nudeln/i,  foodType: 'bakery',    icon: 'rice' },
+  { pattern: /nudeln/i,  foodType: 'grain',     icon: 'rice' },
+  { pattern: /reis$/i,   foodType: 'grain',     icon: 'rice' },
   { pattern: /fisch$/i,  foodType: 'seafood',   icon: 'fish' },
   { pattern: /saft$/i,   foodType: 'beverage',  icon: 'cup' },
   { pattern: /wasser$/i, foodType: 'beverage',  icon: 'water' },

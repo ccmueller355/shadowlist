@@ -49,8 +49,8 @@ describe('DIET_PROFILES', () => {
   it('keto forbids grain, sugar, fruit, legume', () => {
     const keto = DIET_PROFILES.find((d) => d.id === 'keto')!;
     const forbid = keto.rules.flatMap((r) => r.forbid);
-    expect(forbid).toContain('bakery');
-    expect(forbid).toContain('sugar');
+    expect(forbid).toContain('grain');
+    expect(forbid).toContain('grain');
     expect(forbid).toContain('fruit');
     expect(forbid).toContain('legume');
   });
@@ -67,7 +67,7 @@ describe('DIET_PROFILES', () => {
   it('paleo forbids grain, dairy, legume', () => {
     const paleo = DIET_PROFILES.find((d) => d.id === 'paleo')!;
     const forbid = paleo.rules.flatMap((r) => r.forbid);
-    expect(forbid).toContain('bakery');
+    expect(forbid).toContain('grain');
     expect(forbid).toContain('dairy');
     expect(forbid).toContain('legume');
   });
@@ -75,6 +75,6 @@ describe('DIET_PROFILES', () => {
   it('gluten-free forbids grain', () => {
     const gf = DIET_PROFILES.find((d) => d.id === 'gluten-free')!;
     const forbid = gf.rules.flatMap((r) => r.forbid);
-    expect(forbid).toContain('bakery');
+    expect(forbid).toContain('grain');
   });
 });

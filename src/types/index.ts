@@ -23,10 +23,10 @@ export interface ShoppingItem {
 export type ThemeName = 'fixer' | 'stuffer' | 'decker' | 'cyber' | 'terminal';
 
 export type FoodType =
+  | 'vegetable' | 'fruit' | 'legume' | 'grain'
   | 'meat' | 'seafood' | 'egg' | 'dairy'
-  | 'bakery' | 'sugar' | 'fruit' | 'vegetable'
-  | 'legume' | 'fat' | 'beverage' | 'supplement'
-  | 'snacks' | 'processed' | 'frozen'
+  | 'fat' | 'convenience' | 'snacks'
+  | 'beverage' | 'supplement'
   | 'non_food';
 
 export type DietId = 'keto' | 'low-carb' | 'slow-carb' | 'vegetarian' | 'vegan' | 'gluten-free' | 'paleo';

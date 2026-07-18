@@ -17,8 +17,8 @@ describe('dietEngine', () => {
 
     it('returns compatible: false for forbidden food types', () => {
       const keto = DIET_PROFILES.find((d) => d.id === 'keto')!;
-      expect(checkItem(keto, 'bakery').compatible).toBe(false);
-      expect(checkItem(keto, 'sugar').compatible).toBe(false);
+      expect(checkItem(keto, 'grain').compatible).toBe(false);
+      expect(checkItem(keto, 'grain').compatible).toBe(false);
       expect(checkItem(keto, 'fruit').compatible).toBe(false);
       expect(checkItem(keto, 'legume').compatible).toBe(false);
     });
@@ -31,7 +31,7 @@ describe('dietEngine', () => {
 
     it('returns warning message when incompatible', () => {
       const keto = DIET_PROFILES.find((d) => d.id === 'keto')!;
-      const result = checkItem(keto, 'bakery');
+      const result = checkItem(keto, 'grain');
       expect(result.compatible).toBe(false);
       expect(result.warnings).toBeDefined();
       expect(result.warnings!.length).toBeGreaterThan(0);
@@ -63,7 +63,7 @@ describe('dietEngine', () => {
 
     it('paleo forbids grain, dairy, legume', () => {
       const paleo = DIET_PROFILES.find((d) => d.id === 'paleo')!;
-      expect(checkItem(paleo, 'bakery').compatible).toBe(false);
+      expect(checkItem(paleo, 'grain').compatible).toBe(false);
       expect(checkItem(paleo, 'dairy').compatible).toBe(false);
       expect(checkItem(paleo, 'legume').compatible).toBe(false);
       expect(checkItem(paleo, 'meat').compatible).toBe(true);
@@ -71,23 +71,23 @@ describe('dietEngine', () => {
 
     it('gluten-free forbids grain', () => {
       const gf = DIET_PROFILES.find((d) => d.id === 'gluten-free')!;
-      expect(checkItem(gf, 'bakery').compatible).toBe(false);
+      expect(checkItem(gf, 'grain').compatible).toBe(false);
       expect(checkItem(gf, 'dairy').compatible).toBe(true);
     });
 
     it('low-carb forbids grain, sugar, fruit', () => {
       const lc = DIET_PROFILES.find((d) => d.id === 'low-carb')!;
-      expect(checkItem(lc, 'bakery').compatible).toBe(false);
-      expect(checkItem(lc, 'sugar').compatible).toBe(false);
+      expect(checkItem(lc, 'grain').compatible).toBe(false);
+      expect(checkItem(lc, 'grain').compatible).toBe(false);
       expect(checkItem(lc, 'fruit').compatible).toBe(false);
       expect(checkItem(lc, 'meat').compatible).toBe(true);
     });
 
     it('slow-carb forbids grain, dairy, sugar, fruit', () => {
       const sc = DIET_PROFILES.find((d) => d.id === 'slow-carb')!;
-      expect(checkItem(sc, 'bakery').compatible).toBe(false);
+      expect(checkItem(sc, 'grain').compatible).toBe(false);
       expect(checkItem(sc, 'dairy').compatible).toBe(false);
-      expect(checkItem(sc, 'sugar').compatible).toBe(false);
+      expect(checkItem(sc, 'grain').compatible).toBe(false);
       expect(checkItem(sc, 'fruit').compatible).toBe(false);
       expect(checkItem(sc, 'meat').compatible).toBe(true);
       expect(checkItem(sc, 'legume').compatible).toBe(true);

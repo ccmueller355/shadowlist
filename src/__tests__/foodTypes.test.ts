@@ -4,15 +4,15 @@ import { FoodType } from '../types';
 
 describe('FOOD_TYPES', () => {
   const allFoodTypes: FoodType[] = [
+    'vegetable', 'fruit', 'legume', 'grain',
     'meat', 'seafood', 'egg', 'dairy',
-    'bakery', 'sugar', 'fruit', 'vegetable',
-    'legume', 'fat', 'beverage', 'supplement',
-    'snacks', 'processed', 'frozen',
+    'fat', 'convenience', 'snacks',
+    'beverage', 'supplement',
     'non_food',
   ];
 
-  it('defines all 16 food types', () => {
-    expect(FOOD_TYPES).toHaveLength(16);
+  it('defines all 14 food types', () => {
+    expect(FOOD_TYPES).toHaveLength(14);
   });
 
   it('covers every FoodType value', () => {

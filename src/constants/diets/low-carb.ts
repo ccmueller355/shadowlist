@@ -6,6 +6,6 @@ export const lowCarb: DietProfile = {
   nameKey: 'diet.lowCarb.label',
   descriptionKey: 'diet.lowCarb.desc',
   rules: [
-    { forbid: ['bakery', 'sugar', 'fruit'] },
+    { forbid: ['grain', 'fruit'] },
   ],
 };

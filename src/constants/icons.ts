@@ -112,15 +112,19 @@ export const ICON_FOOD_TYPE_MAP: Record<string, string> = {
   'egg-outline': 'egg',
   'cheese': 'dairy',
 
-  // Grain / Sugar / Fruit / Vegetable
-  'bread-slice-outline': 'bakery',
-  'candy': 'sugar',
+  // Grain / Legume / Fat
+  'rice': 'grain',
+  'bread-slice-outline': 'grain',
+  'seed-outline': 'legume',
+  'oil': 'fat',
+
+  // Produce
   'fruit-cherries': 'fruit',
   'carrot': 'vegetable',
 
-  // Legume / Fat
-  'seed-outline': 'legume',
-  'oil': 'fat',
+  // Snacks / Convenience
+  'candy': 'snacks',
+  'food-variant': 'convenience',
 
   // Beverages
   'cup': 'beverage',

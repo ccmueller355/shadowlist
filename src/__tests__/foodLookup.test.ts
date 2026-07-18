@@ -47,7 +47,7 @@ describe('Phase 1 — Static Lookup Tables', () => {
   it('DE regex /brot$/i matches "Vollkornbrot"', () => {
     const match = DE_REGEX.find((r) => r.pattern.test('Vollkornbrot'));
     expect(match).toBeDefined();
-    expect(match!.foodType).toBe('bakery');
+    expect(match!.foodType).toBe('grain');
   });
 
   it('DE regex /fleisch$/i matches "Rinderfleisch"', () => {
@@ -65,7 +65,7 @@ describe('Phase 1 — Static Lookup Tables', () => {
   it('DE regex /nudeln/i matches "Spaghettinudeln"', () => {
     const match = DE_REGEX.find((r) => r.pattern.test('Spaghettinudeln'));
     expect(match).toBeDefined();
-    expect(match!.foodType).toBe('bakery');
+    expect(match!.foodType).toBe('grain');
   });
 
   it('DE regex /saft$/i matches "Apfelsaft"', () => {
@@ -139,7 +139,7 @@ it('rebuildNameIndex() creates a Map with correct size from mock items', () => {
   const store = useStore.getState();
   const items = [
     makeMockItem('1', 'Milk', 'dairy', 'cheese'),
-    makeMockItem('2', 'Bread', 'bakery', 'bread-slice-outline'),
+    makeMockItem('2', 'Bread', 'grain', 'bread-slice-outline'),
     makeMockItem('3', 'Apple', 'fruit', 'fruit-cherries'),
   ];
   store.items = items;
@@ -167,7 +167,7 @@ it('all items are included in the name index (no null foodType)', () => {
   store.items = [
     makeMockItem('1', 'Milk', 'dairy', 'cheese'),
     makeMockItem('2', 'Unknown Item', 'non_food', 'cart'),
-    makeMockItem('3', 'Bread', 'bakery', 'bread-slice-outline'),
+    makeMockItem('3', 'Bread', 'grain', 'bread-slice-outline'),
   ];
   store.rebuildNameIndex();
   const state = useStore.getState();
@@ -281,11 +281,11 @@ it('exact keyword match wins over regex when both match', () => {
 
 // T029 — Learned match wins over both static and regex
 it('learned match wins over both static and regex', () => {
-  const index = new Map([['bread', { foodType: 'sugar' as FoodType, icon: 'candy' }]]);
+  const index = new Map([['bread', { foodType: 'grain' as FoodType, icon: 'candy' }]]);
   const result = resolveName('Bread', 'en', index);
   // Learned says sugar, static says grain — learned wins
   expect(result.source).toBe('learned');
-  expect(result.foodType).toBe('sugar');
+  expect(result.foodType).toBe('grain');
 });
 
 // T030 — resolveName returns source: 'learned' with correct values
@@ -303,22 +303,22 @@ import { FOOD_TYPE_TO_CATEGORY } from '../constants/foodTypes';
 
 describe('FOOD_TYPE_TO_CATEGORY mapping', () => {
   // T031 — food types map to expected categories
-  it('meat, seafood, egg, dairy, bakery, sugar map to Groceries', () => {
+  it('vegetable, fruit, legume, grain, meat, seafood, egg, dairy map to Groceries', () => {
+    expect(FOOD_TYPE_TO_CATEGORY.vegetable).toBe('Groceries');
+    expect(FOOD_TYPE_TO_CATEGORY.fruit).toBe('Groceries');
+    expect(FOOD_TYPE_TO_CATEGORY.legume).toBe('Groceries');
+    expect(FOOD_TYPE_TO_CATEGORY.grain).toBe('Groceries');
     expect(FOOD_TYPE_TO_CATEGORY.meat).toBe('Groceries');
     expect(FOOD_TYPE_TO_CATEGORY.seafood).toBe('Groceries');
     expect(FOOD_TYPE_TO_CATEGORY.egg).toBe('Groceries');
     expect(FOOD_TYPE_TO_CATEGORY.dairy).toBe('Groceries');
-    expect(FOOD_TYPE_TO_CATEGORY.bakery).toBe('Groceries');
-    expect(FOOD_TYPE_TO_CATEGORY.sugar).toBe('Groceries');
-    expect(FOOD_TYPE_TO_CATEGORY.frozen).toBe('Frozen');
   });
 
   // T032
-  it('fruit, vegetable, legume, fat map to Groceries', () => {
-    expect(FOOD_TYPE_TO_CATEGORY.fruit).toBe('Groceries');
-    expect(FOOD_TYPE_TO_CATEGORY.vegetable).toBe('Groceries');
-    expect(FOOD_TYPE_TO_CATEGORY.legume).toBe('Groceries');
+  it('fat, convenience map to Groceries, snacks maps to Snacks', () => {
     expect(FOOD_TYPE_TO_CATEGORY.fat).toBe('Groceries');
+    expect(FOOD_TYPE_TO_CATEGORY.convenience).toBe('Groceries');
+    expect(FOOD_TYPE_TO_CATEGORY.snacks).toBe('Snacks');
   });
 
   // T033
@@ -377,7 +377,7 @@ describe('FOOD_TYPE_TO_CATEGORY mapping', () => {
 
   it('DE plural "Nudeln" resolves to grain via Nudel entry', () => {
     const result = resolveName('Nudeln', 'de', new Map());
-    expect(result.foodType).toBe('bakery');
+    expect(result.foodType).toBe('grain');
     expect(result.source).toBe('static_exact');
   });
 
@@ -390,7 +390,7 @@ describe('FOOD_TYPE_TO_CATEGORY mapping', () => {
   // T037 — resolveName on bread → grain → Groceries
   it('resolved foodType "grain" yields category "Groceries"', () => {
     const result = resolveName('Vollkornbrot', 'de', new Map());
-    expect(result.foodType).toBe('bakery');
+    expect(result.foodType).toBe('grain');
     const category = result.foodType ? FOOD_TYPE_TO_CATEGORY[result.foodType] : null;
     expect(category).toBe('Groceries');
   });

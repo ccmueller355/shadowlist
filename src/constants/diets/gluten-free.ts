@@ -6,6 +6,6 @@ export const glutenFree: DietProfile = {
   nameKey: 'diet.glutenFree.label',
   descriptionKey: 'diet.glutenFree.desc',
   rules: [
-    { forbid: ['bakery'] },
+    { forbid: ['grain'] },
   ],
 };
