@@ -167,7 +167,7 @@ Git agents: `speckit-git-initialize`, `speckit-git-feature`, `speckit-git-commit
 Every source file (`*.ts`, `*.tsx`) SHALL start with this header:
 
 ```
-// ─── [ NEURAL DECK v4.6 $ AI::GENERATED :: NO COPYRIGHT ] ───
+// ─── [ NEURAL DECK v4.6 $ AI::GENERATED ] ───
 ```
 
 Applied to all `src/` and root `.ts/.tsx` files. New files must include it. Config files, test fixtures, and generated output are exempt.

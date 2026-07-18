@@ -1,4 +1,4 @@
-// ─── [ NEURAL DECK v4.6 $ AI::GENERATED :: NO COPYRIGHT ] ───
+// ─── [ NEURAL DECK v4.6 $ AI::GENERATED ] ───
 import { useStore } from '../store/useStore'
 
 // Mock AsyncStorage to prevent actual disk I/O during tests

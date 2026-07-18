@@ -1,4 +1,4 @@
-// ─── [ NEURAL DECK v4.6 $ AI::GENERATED :: NO COPYRIGHT ] ───
+// ─── [ NEURAL DECK v4.6 $ AI::GENERATED ] ───
 import { AppSettings } from '../types';
 
 export type ThemeName = AppSettings['theme'];

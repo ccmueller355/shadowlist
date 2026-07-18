@@ -1,4 +1,4 @@
-// ─── [ NEURAL DECK v4.6 $ AI::GENERATED :: NO COPYRIGHT ] ───
+// ─── [ NEURAL DECK v4.6 $ AI::GENERATED ] ───
 export function generateId(): string {
   if (typeof crypto !== 'undefined' && crypto.randomUUID) {
     return crypto.randomUUID();

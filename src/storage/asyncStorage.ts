@@ -1,4 +1,4 @@
-// ─── [ NEURAL DECK v4.6 $ AI::GENERATED :: NO COPYRIGHT ] ───
+// ─── [ NEURAL DECK v4.6 $ AI::GENERATED ] ───
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ShoppingList, ShoppingItem, AppSettings } from '../types';
 

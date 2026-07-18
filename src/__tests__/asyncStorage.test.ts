@@ -1,4 +1,4 @@
-// ─── [ NEURAL DECK v4.6 $ AI::GENERATED :: NO COPYRIGHT ] ───
+// ─── [ NEURAL DECK v4.6 $ AI::GENERATED ] ───
 import { getSchemaVersion, runMigrations, loadAllData, saveLists, saveItems, clearAllData } from '../storage/asyncStorage';
 
 // ── In-memory AsyncStorage mock ──

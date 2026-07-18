@@ -1,4 +1,4 @@
-// ─── [ NEURAL DECK v4.6 $ AI::GENERATED :: NO COPYRIGHT ] ───
+// ─── [ NEURAL DECK v4.6 $ AI::GENERATED ] ───
 import { TIER_1_ITEMS, TIER_2_ITEMS, TestItem } from '../constants/testData';
 
 const ALL_ITEMS: TestItem[] = [...TIER_1_ITEMS, ...TIER_2_ITEMS];

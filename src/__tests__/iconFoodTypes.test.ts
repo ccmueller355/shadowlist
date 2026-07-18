@@ -1,4 +1,4 @@
-// ─── [ NEURAL DECK v4.6 $ AI::GENERATED :: NO COPYRIGHT ] ───
+// ─── [ NEURAL DECK v4.6 $ AI::GENERATED ] ───
 import { ICON_FOOD_TYPE_MAP } from '../constants/icons';
 
 describe('ICON_FOOD_TYPE_MAP', () => {

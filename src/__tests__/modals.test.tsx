@@ -1,4 +1,4 @@
-// ─── [ NEURAL DECK v4.6 $ AI::GENERATED :: NO COPYRIGHT ] ───
+// ─── [ NEURAL DECK v4.6 $ AI::GENERATED ] ───
 import './component-test-setup';
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react-native';

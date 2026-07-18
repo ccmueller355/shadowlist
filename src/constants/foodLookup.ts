@@ -1,4 +1,4 @@
-// ─── [ NEURAL DECK v4.6 $ AI::GENERATED :: NO COPYRIGHT ] ───
+// ─── [ NEURAL DECK v4.6 $ AI::GENERATED ] ───
 // Bilingual static lookup tables for name → food type pre-selection.
 // Derived from testData.ts (spec 003) — 379 items providing EN + DE entries.
 

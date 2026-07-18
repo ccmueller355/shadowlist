@@ -1,4 +1,4 @@
-// ─── [ NEURAL DECK v4.6 $ AI::GENERATED :: NO COPYRIGHT ] ───
+// ─── [ NEURAL DECK v4.6 $ AI::GENERATED ] ───
 // Central mocks for React Native component tests
 // This file is NOT a test suite — it's a shared mock/setup module imported by test files.
 

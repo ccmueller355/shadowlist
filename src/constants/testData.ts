@@ -1,4 +1,4 @@
-// ─── [ NEURAL DECK v4.6 $ AI::GENERATED :: NO COPYRIGHT ] ───
+// ─── [ NEURAL DECK v4.6 $ AI::GENERATED ] ───
 // 200+ item bilingual grocery pool for statistical test list generation.
 // Two tiers: TIER_1 (top 100 frequency) and TIER_2 (long-tail, 100+ items).
 

@@ -119,4 +119,4 @@ See [docs/arc42.md](docs/arc42.md) for the full arc42 architecture documentation
 
 ## License
 
-TBD
+MIT — see [LICENSE](LICENSE) for details.
