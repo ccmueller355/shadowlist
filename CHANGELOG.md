@@ -1,5 +1,32 @@
 # Changelog
 
+## v0.15.0 — 2026-07-18
+
+### Bugfix Cluster + Food Type System Redesign (PR #39)
+- **6 issues closed**: #33 (input contrast), #34 (debounce race), #35 (category sort),
+  #36 (convenience food), #37 (snacks), #38 (picker order)
+- **14-type food system** — healthy-first sort: vegetable → fruit → legume → grain →
+  meat → seafood → egg → dairy → fat → convenience → snacks → beverage →
+  supplement → non_food
+- **4 new shopping categories**: Bakery, Deli, International, Snacks (24 total)
+- **Input text color** — TextInput now uses theme textPrimary, readable on all themes
+- **Debounce race** — `.cancel()` method on debounce utility, called on submit
+- **Category sort** — items within category groups sorted by food type order
+  (fresh → refrigerated → dry goods → treats → drinks → other), then alphabetically
+- **German regex** — `brot`→grain, `nudeln/reis`→grain, `fisch`→seafood, `milch`→dairy
+- **Diet profiles** — all 7 updated to 14-type system
+- **268 tests** — all passing, TypeScript clean
+
+## v0.14.0 — 2026-07-09
+
+### CI & Release Infrastructure
+- **EAS build pipeline** — CI fixes for build URL extraction, jq array indexing,
+  pull-requests:write permission for bot PR comments
+- **Release branch protocol** — non-negotiable marker branch rules documented
+- **German plural recognition** — `germanPluralVariants()` for -el→-eln, -e→-en, -er→-ern
+- **Bug fixes**: #19 (Kartoffeln), #20 (category auto-sync), #21 (sort by category),
+  #24 (AddItemBar keyboard overlap)
+
 ## v0.13.0 — 2026-06-29
 
 ### Spec 002 — Name-Based Food Type Pre-Selection (fully implemented)
