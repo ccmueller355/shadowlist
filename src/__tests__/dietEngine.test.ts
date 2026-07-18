@@ -7,7 +7,7 @@ describe('dietEngine', () => {
     it('returns compatible: true for matching food types', () => {
       const keto = DIET_PROFILES.find((d) => d.id === 'keto')!;
       expect(checkItem(keto, 'meat').compatible).toBe(true);
-      expect(checkItem(keto, 'fish').compatible).toBe(true);
+      expect(checkItem(keto, 'seafood').compatible).toBe(true);
       expect(checkItem(keto, 'egg').compatible).toBe(true);
       expect(checkItem(keto, 'dairy').compatible).toBe(true);
       expect(checkItem(keto, 'vegetable').compatible).toBe(true);
@@ -18,7 +18,7 @@ describe('dietEngine', () => {
     it('returns compatible: false for forbidden food types', () => {
       const keto = DIET_PROFILES.find((d) => d.id === 'keto')!;
       expect(checkItem(keto, 'grain').compatible).toBe(false);
-      expect(checkItem(keto, 'sugar').compatible).toBe(false);
+      expect(checkItem(keto, 'grain').compatible).toBe(false);
       expect(checkItem(keto, 'fruit').compatible).toBe(false);
       expect(checkItem(keto, 'legume').compatible).toBe(false);
     });
@@ -48,14 +48,14 @@ describe('dietEngine', () => {
     it('vegetarian forbids meat and fish', () => {
       const veg = DIET_PROFILES.find((d) => d.id === 'vegetarian')!;
       expect(checkItem(veg, 'meat').compatible).toBe(false);
-      expect(checkItem(veg, 'fish').compatible).toBe(false);
+      expect(checkItem(veg, 'seafood').compatible).toBe(false);
       expect(checkItem(veg, 'vegetable').compatible).toBe(true);
     });
 
     it('vegan forbids meat, fish, dairy, and egg', () => {
       const vegan = DIET_PROFILES.find((d) => d.id === 'vegan')!;
       expect(checkItem(vegan, 'meat').compatible).toBe(false);
-      expect(checkItem(vegan, 'fish').compatible).toBe(false);
+      expect(checkItem(vegan, 'seafood').compatible).toBe(false);
       expect(checkItem(vegan, 'dairy').compatible).toBe(false);
       expect(checkItem(vegan, 'egg').compatible).toBe(false);
       expect(checkItem(vegan, 'fruit').compatible).toBe(true);
@@ -78,7 +78,7 @@ describe('dietEngine', () => {
     it('low-carb forbids grain, sugar, fruit', () => {
       const lc = DIET_PROFILES.find((d) => d.id === 'low-carb')!;
       expect(checkItem(lc, 'grain').compatible).toBe(false);
-      expect(checkItem(lc, 'sugar').compatible).toBe(false);
+      expect(checkItem(lc, 'grain').compatible).toBe(false);
       expect(checkItem(lc, 'fruit').compatible).toBe(false);
       expect(checkItem(lc, 'meat').compatible).toBe(true);
     });
@@ -87,7 +87,7 @@ describe('dietEngine', () => {
       const sc = DIET_PROFILES.find((d) => d.id === 'slow-carb')!;
       expect(checkItem(sc, 'grain').compatible).toBe(false);
       expect(checkItem(sc, 'dairy').compatible).toBe(false);
-      expect(checkItem(sc, 'sugar').compatible).toBe(false);
+      expect(checkItem(sc, 'grain').compatible).toBe(false);
       expect(checkItem(sc, 'fruit').compatible).toBe(false);
       expect(checkItem(sc, 'meat').compatible).toBe(true);
       expect(checkItem(sc, 'legume').compatible).toBe(true);

@@ -108,19 +108,23 @@ export const SHOPPING_ICONS = [
 export const ICON_FOOD_TYPE_MAP: Record<string, string> = {
   // Meat / Fish / Egg / Dairy
   'food-drumstick-outline': 'meat',
-  'fish': 'fish',
+  'fish': 'seafood',
   'egg-outline': 'egg',
   'cheese': 'dairy',
 
-  // Grain / Sugar / Fruit / Vegetable
+  // Grain / Legume / Fat
+  'rice': 'grain',
   'bread-slice-outline': 'grain',
-  'candy': 'sugar',
+  'seed-outline': 'legume',
+  'oil': 'fat',
+
+  // Produce
   'fruit-cherries': 'fruit',
   'carrot': 'vegetable',
 
-  // Legume / Fat
-  'seed-outline': 'legume',
-  'oil': 'fat',
+  // Snacks / Convenience
+  'candy': 'snacks',
+  'food-variant': 'convenience',
 
   // Beverages
   'cup': 'beverage',

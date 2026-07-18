@@ -6,6 +6,6 @@ export const vegan: DietProfile = {
   nameKey: 'diet.vegan.label',
   descriptionKey: 'diet.vegan.desc',
   rules: [
-    { forbid: ['meat', 'fish', 'dairy', 'egg'] },
+    { forbid: ['meat', 'seafood', 'dairy', 'egg'] },
   ],
 };

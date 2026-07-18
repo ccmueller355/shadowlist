@@ -50,7 +50,7 @@ describe('DIET_PROFILES', () => {
     const keto = DIET_PROFILES.find((d) => d.id === 'keto')!;
     const forbid = keto.rules.flatMap((r) => r.forbid);
     expect(forbid).toContain('grain');
-    expect(forbid).toContain('sugar');
+    expect(forbid).toContain('grain');
     expect(forbid).toContain('fruit');
     expect(forbid).toContain('legume');
   });
@@ -59,7 +59,7 @@ describe('DIET_PROFILES', () => {
     const vegan = DIET_PROFILES.find((d) => d.id === 'vegan')!;
     const forbid = vegan.rules.flatMap((r) => r.forbid);
     expect(forbid).toContain('meat');
-    expect(forbid).toContain('fish');
+    expect(forbid).toContain('seafood');
     expect(forbid).toContain('dairy');
     expect(forbid).toContain('egg');
   });

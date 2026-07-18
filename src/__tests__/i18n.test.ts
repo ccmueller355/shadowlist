@@ -12,9 +12,10 @@ describe('i18n', () => {
     'diet.vegetarian.desc', 'diet.vegan.desc', 'diet.glutenFree.desc',
     'diet.paleo.desc',
     // Food type labels
-    'foodType.meat', 'foodType.fish', 'foodType.egg', 'foodType.dairy',
-    'foodType.grain', 'foodType.sugar', 'foodType.fruit', 'foodType.vegetable',
-    'foodType.legume', 'foodType.fat', 'foodType.beverage', 'foodType.supplement',
+    'foodType.vegetable', 'foodType.fruit', 'foodType.legume', 'foodType.grain',
+    'foodType.meat', 'foodType.seafood', 'foodType.egg', 'foodType.dairy',
+    'foodType.fat', 'foodType.convenience', 'foodType.snacks',
+    'foodType.beverage', 'foodType.supplement',
     'foodType.nonFood',
     // Themes
     'theme.fixer.label', 'theme.fixer.desc', 'theme.stuffer.label', 'theme.stuffer.desc',
@@ -35,7 +36,9 @@ describe('i18n', () => {
     'general.save', 'general.cancel', 'general.delete',
     'general.addItemPlaceholder', 'general.emptyListMessage',
     // Categories
-    'category.Groceries', 'category.Beverages', 'category.Pharmacy', 'category.Beauty',
+    'category.Groceries', 'category.Beverages', 'category.Frozen',
+    'category.Bakery', 'category.Deli', 'category.International', 'category.Snacks',
+    'category.Pharmacy', 'category.Beauty',
     'category.HomeDIY', 'category.Gardening', 'category.Clothing', 'category.Household',
     'category.Electronics', 'category.Office', 'category.Sports', 'category.Automotive',
     'category.Pets', 'category.Baby', 'category.BooksMedia', 'category.Party',

@@ -52,15 +52,15 @@ export const DEMO_ITEMS_EN: ShoppingItem[] = [
   // --- Weekly Groceries (Recently Bought) ---
   { id: 'item_demo_7', listId: 'list_demo_1', description: 'Apples',        qualifier: '3x',    icon: 'fruit-cherries',        foodType: 'fruit',      purchased: true,  order: 0, category: 'Groceries',  createdAt: now - 172800000, updatedAt: now },
   { id: 'item_demo_8', listId: 'list_demo_1', description: 'Eggs',          qualifier: '12x',   icon: 'egg-outline',           foodType: 'egg',        purchased: true,  order: 1, category: 'Groceries',  createdAt: now - 172800000, updatedAt: now },
-  { id: 'item_demo_9', listId: 'list_demo_1', description: 'Salmon',        qualifier: '300g',  icon: 'fish',                  foodType: 'fish',       purchased: true,  order: 2, category: 'Groceries',  createdAt: now - 172800000, updatedAt: now },
+  { id: 'item_demo_9', listId: 'list_demo_1', description: 'Salmon',        qualifier: '300g',  icon: 'fish',                  foodType: 'seafood',       purchased: true,  order: 2, category: 'Groceries',  createdAt: now - 172800000, updatedAt: now },
   { id: 'item_demo_10', listId: 'list_demo_1', description: 'Butter',       qualifier: '250g',  icon: 'cheese',                foodType: 'dairy',      purchased: true,  order: 3, category: 'Groceries',  createdAt: now - 172800000, updatedAt: now },
 
   // --- Bakery & Snacks (To Shop) ---
   { id: 'item_demo_13', listId: 'list_demo_2', description: 'Croissant',    qualifier: '2x',    icon: 'bread-slice-outline',   foodType: 'grain',      purchased: false, order: 0, category: 'Groceries',  createdAt: now, updatedAt: now },
   { id: 'item_demo_14', listId: 'list_demo_2', description: 'Bagels',       qualifier: '4x',    icon: 'baguette',                 foodType: 'grain',      purchased: false, order: 1, category: 'Groceries',  createdAt: now, updatedAt: now },
   { id: 'item_demo_15', listId: 'list_demo_2', description: 'Mixed Nuts',   qualifier: '200g',  icon: 'seed',                  foodType: 'legume',     purchased: false, order: 2, category: 'Snacks',     createdAt: now, updatedAt: now },
-  { id: 'item_demo_16', listId: 'list_demo_2', description: 'Dark Chocolate', qualifier: '100g', icon: 'candy',                foodType: 'sugar',      purchased: false, order: 3, category: 'Snacks',     createdAt: now, updatedAt: now },
-  { id: 'item_demo_17', listId: 'list_demo_2', description: 'Organic Honey', qualifier: '1 jar', icon: 'bee',                 foodType: 'sugar',      purchased: true,  order: 4, category: 'Groceries',  createdAt: now - 86400000, updatedAt: now },
+  { id: 'item_demo_16', listId: 'list_demo_2', description: 'Dark Chocolate', qualifier: '100g', icon: 'candy',                foodType: 'grain',      purchased: false, order: 3, category: 'Snacks',     createdAt: now, updatedAt: now },
+  { id: 'item_demo_17', listId: 'list_demo_2', description: 'Organic Honey', qualifier: '1 jar', icon: 'bee',                 foodType: 'grain',      purchased: true,  order: 4, category: 'Groceries',  createdAt: now - 86400000, updatedAt: now },
   { id: 'item_demo_18', listId: 'list_demo_2', description: 'Cheddar Crackers', qualifier: '1 box', icon: 'pizza',             foodType: 'grain',      purchased: true,  order: 5, category: 'Snacks',     createdAt: now - 86400000, updatedAt: now },
 
   // --- Pharmacy & Health (To Shop) ---
@@ -134,15 +134,15 @@ export const DEMO_ITEMS_DE: ShoppingItem[] = [
   // --- Wocheneinkauf (Recently Bought) ---
   { id: 'item_demo_7', listId: 'list_demo_1', description: 'Äpfel',         qualifier: '3x',    icon: 'fruit-cherries',        foodType: 'fruit',      purchased: true,  order: 0, category: 'Groceries',  createdAt: now - 172800000, updatedAt: now },
   { id: 'item_demo_8', listId: 'list_demo_1', description: 'Eier',          qualifier: '12x',   icon: 'egg-outline',           foodType: 'egg',        purchased: true,  order: 1, category: 'Groceries',  createdAt: now - 172800000, updatedAt: now },
-  { id: 'item_demo_9', listId: 'list_demo_1', description: 'Lachs',         qualifier: '300g',  icon: 'fish',                  foodType: 'fish',       purchased: true,  order: 2, category: 'Groceries',  createdAt: now - 172800000, updatedAt: now },
+  { id: 'item_demo_9', listId: 'list_demo_1', description: 'Lachs',         qualifier: '300g',  icon: 'fish',                  foodType: 'seafood',       purchased: true,  order: 2, category: 'Groceries',  createdAt: now - 172800000, updatedAt: now },
   { id: 'item_demo_10', listId: 'list_demo_1', description: 'Butter',       qualifier: '250g',  icon: 'cheese',                foodType: 'dairy',      purchased: true,  order: 3, category: 'Groceries',  createdAt: now - 172800000, updatedAt: now },
 
   // --- Bäckerei & Snacks (To Shop) ---
   { id: 'item_demo_13', listId: 'list_demo_2', description: 'Croissant',    qualifier: '2x',    icon: 'bread-slice-outline',   foodType: 'grain',      purchased: false, order: 0, category: 'Groceries',  createdAt: now, updatedAt: now },
   { id: 'item_demo_14', listId: 'list_demo_2', description: 'Bagels',       qualifier: '4x',    icon: 'baguette',                 foodType: 'grain',      purchased: false, order: 1, category: 'Groceries',  createdAt: now, updatedAt: now },
   { id: 'item_demo_15', listId: 'list_demo_2', description: 'Nüsse gemischt', qualifier: '200g', icon: 'seed',                 foodType: 'legume',     purchased: false, order: 2, category: 'Snacks',     createdAt: now, updatedAt: now },
-  { id: 'item_demo_16', listId: 'list_demo_2', description: 'Zartbitterschokolade', qualifier: '100g', icon: 'candy',       foodType: 'sugar',      purchased: false, order: 3, category: 'Snacks',     createdAt: now, updatedAt: now },
-  { id: 'item_demo_17', listId: 'list_demo_2', description: 'Waldhonig',    qualifier: '1 Glas', icon: 'bee',                foodType: 'sugar',      purchased: true,  order: 4, category: 'Groceries',  createdAt: now - 86400000, updatedAt: now },
+  { id: 'item_demo_16', listId: 'list_demo_2', description: 'Zartbitterschokolade', qualifier: '100g', icon: 'candy',       foodType: 'grain',      purchased: false, order: 3, category: 'Snacks',     createdAt: now, updatedAt: now },
+  { id: 'item_demo_17', listId: 'list_demo_2', description: 'Waldhonig',    qualifier: '1 Glas', icon: 'bee',                foodType: 'grain',      purchased: true,  order: 4, category: 'Groceries',  createdAt: now - 86400000, updatedAt: now },
   { id: 'item_demo_18', listId: 'list_demo_2', description: 'Cheddar Cracker', qualifier: '1 Pack', icon: 'pizza',           foodType: 'grain',      purchased: true,  order: 5, category: 'Snacks',     createdAt: now - 86400000, updatedAt: now },
 
   // --- Apotheke & Gesundheit (To Shop) ---

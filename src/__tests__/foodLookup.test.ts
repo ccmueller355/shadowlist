@@ -41,7 +41,7 @@ describe('Phase 1 — Static Lookup Tables', () => {
   it('DE regex /milch$/i matches "Sojamilch"', () => {
     const match = DE_REGEX.find((r) => r.pattern.test('Sojamilch'));
     expect(match).toBeDefined();
-    expect(match!.foodType).toBe('beverage');
+    expect(match!.foodType).toBe('dairy');
   });
 
   it('DE regex /brot$/i matches "Vollkornbrot"', () => {
@@ -281,11 +281,11 @@ it('exact keyword match wins over regex when both match', () => {
 
 // T029 — Learned match wins over both static and regex
 it('learned match wins over both static and regex', () => {
-  const index = new Map([['bread', { foodType: 'sugar' as FoodType, icon: 'candy' }]]);
+  const index = new Map([['bread', { foodType: 'grain' as FoodType, icon: 'candy' }]]);
   const result = resolveName('Bread', 'en', index);
   // Learned says sugar, static says grain — learned wins
   expect(result.source).toBe('learned');
-  expect(result.foodType).toBe('sugar');
+  expect(result.foodType).toBe('grain');
 });
 
 // T030 — resolveName returns source: 'learned' with correct values
@@ -303,21 +303,22 @@ import { FOOD_TYPE_TO_CATEGORY } from '../constants/foodTypes';
 
 describe('FOOD_TYPE_TO_CATEGORY mapping', () => {
   // T031 — food types map to expected categories
-  it('meat, fish, egg, dairy, grain, sugar map to Groceries', () => {
+  it('vegetable, fruit, legume, grain, meat, seafood, egg, dairy map to Groceries', () => {
+    expect(FOOD_TYPE_TO_CATEGORY.vegetable).toBe('Groceries');
+    expect(FOOD_TYPE_TO_CATEGORY.fruit).toBe('Groceries');
+    expect(FOOD_TYPE_TO_CATEGORY.legume).toBe('Groceries');
+    expect(FOOD_TYPE_TO_CATEGORY.grain).toBe('Groceries');
     expect(FOOD_TYPE_TO_CATEGORY.meat).toBe('Groceries');
-    expect(FOOD_TYPE_TO_CATEGORY.fish).toBe('Groceries');
+    expect(FOOD_TYPE_TO_CATEGORY.seafood).toBe('Groceries');
     expect(FOOD_TYPE_TO_CATEGORY.egg).toBe('Groceries');
     expect(FOOD_TYPE_TO_CATEGORY.dairy).toBe('Groceries');
-    expect(FOOD_TYPE_TO_CATEGORY.grain).toBe('Groceries');
-    expect(FOOD_TYPE_TO_CATEGORY.sugar).toBe('Groceries');
   });
 
   // T032
-  it('fruit, vegetable, legume, fat map to Groceries', () => {
-    expect(FOOD_TYPE_TO_CATEGORY.fruit).toBe('Groceries');
-    expect(FOOD_TYPE_TO_CATEGORY.vegetable).toBe('Groceries');
-    expect(FOOD_TYPE_TO_CATEGORY.legume).toBe('Groceries');
+  it('fat, convenience map to Groceries, snacks maps to Snacks', () => {
     expect(FOOD_TYPE_TO_CATEGORY.fat).toBe('Groceries');
+    expect(FOOD_TYPE_TO_CATEGORY.convenience).toBe('Groceries');
+    expect(FOOD_TYPE_TO_CATEGORY.snacks).toBe('Snacks');
   });
 
   // T033

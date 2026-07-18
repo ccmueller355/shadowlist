@@ -27,7 +27,7 @@ describe('ICON_FOOD_TYPE_MAP', () => {
   });
 
   it('maps fish icons', () => {
-    expect(ICON_FOOD_TYPE_MAP['fish']).toBe('fish');
+    expect(ICON_FOOD_TYPE_MAP['fish']).toBe('seafood');
   });
 
   it('non-food icons are not in the map', () => {
