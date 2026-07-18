@@ -1,4 +1,4 @@
-// ─── [ NEURAL DECK v4.6 $ AI::GENERATED :: NO COPYRIGHT ] ───
+// ─── [ NEURAL DECK v4.6 $ AI::GENERATED ] ───
 import { EN_LOOKUP, DE_LOOKUP, EN_REGEX, DE_REGEX } from '../constants/foodLookup';
 
 describe('Phase 1 — Static Lookup Tables', () => {

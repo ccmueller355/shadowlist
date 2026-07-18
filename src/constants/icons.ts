@@ -1,4 +1,4 @@
-// ─── [ NEURAL DECK v4.6 $ AI::GENERATED :: NO COPYRIGHT ] ───
+// ─── [ NEURAL DECK v4.6 $ AI::GENERATED ] ───
 export const SHOPPING_ICONS = [
   // 🛒 Groceries / Food
   { name: 'cart', label: 'Groceries' },

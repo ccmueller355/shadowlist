@@ -1,4 +1,4 @@
-// ─── [ NEURAL DECK v4.6 $ AI::GENERATED :: NO COPYRIGHT ] ───
+// ─── [ NEURAL DECK v4.6 $ AI::GENERATED ] ───
 import { DEMO_LISTS_EN, DEMO_ITEMS_EN, DEMO_LISTS_DE, DEMO_ITEMS_DE, getDemoData } from '../constants/demoData';
 
 describe('Demo Data — FR-001: 15+ items, 2+ lists with foodType', () => {

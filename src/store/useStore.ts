@@ -1,4 +1,4 @@
-// ─── [ NEURAL DECK v4.6 $ AI::GENERATED :: NO COPYRIGHT ] ───
+// ─── [ NEURAL DECK v4.6 $ AI::GENERATED ] ───
 import { create } from 'zustand';
 import { InteractionManager } from 'react-native';
 import { ShoppingList, ShoppingItem, AppSettings, NewItemParams, AppLang, DietId, FoodType } from '../types';
