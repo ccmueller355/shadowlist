@@ -43,6 +43,8 @@ export const en = {
     fat: 'Fat / Oil',
     beverage: 'Beverage',
     supplement: 'Supplement',
+    snacks: 'Snacks',
+    processed: 'Processed Food',
     nonFood: 'Non-Food',
   },
   settings: {

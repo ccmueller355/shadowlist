@@ -26,6 +26,7 @@ export type FoodType =
   | 'meat' | 'fish' | 'egg' | 'dairy'
   | 'grain' | 'sugar' | 'fruit' | 'vegetable'
   | 'legume' | 'fat' | 'beverage' | 'supplement'
+  | 'snacks' | 'processed'
   | 'non_food';
 
 export type DietId = 'keto' | 'low-carb' | 'slow-carb' | 'vegetarian' | 'vegan' | 'gluten-free' | 'paleo';

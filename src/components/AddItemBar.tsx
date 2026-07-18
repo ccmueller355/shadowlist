@@ -67,8 +67,10 @@ export function AddItemBar({ listId, recentBought, onAddItem, onReAddItem, onSea
     setText('');
     setSuggestions([]);
     setShowSuggestions(false);
+    debouncedSuggest.cancel();
+    debouncedSearch.cancel();
     onSearchChange('');
-  }, [onSearchChange]);
+  }, [onSearchChange, debouncedSuggest, debouncedSearch]);
 
   const handleSubmit = () => {
     const trimmed = text.trim();
@@ -97,7 +99,7 @@ export function AddItemBar({ listId, recentBought, onAddItem, onReAddItem, onSea
         />
         <TextInput
           ref={inputRef}
-          style={styles.input}
+          style={[styles.input, { color: cyberpunkTheme.colors.textPrimary }]}
           placeholder={tr('general.addItemPlaceholder')}
           placeholderTextColor={cyberpunkTheme.colors.textSecondary}
           value={text}

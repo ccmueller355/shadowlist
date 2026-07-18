@@ -7,11 +7,12 @@ describe('FOOD_TYPES', () => {
     'meat', 'fish', 'egg', 'dairy',
     'grain', 'sugar', 'fruit', 'vegetable',
     'legume', 'fat', 'beverage', 'supplement',
+    'snacks', 'processed',
     'non_food',
   ];
 
-  it('defines all 13 food types', () => {
-    expect(FOOD_TYPES).toHaveLength(13);
+  it('defines all 15 food types', () => {
+    expect(FOOD_TYPES).toHaveLength(15);
   });
 
   it('covers every FoodType value', () => {

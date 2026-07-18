@@ -43,6 +43,8 @@ export const de = {
     fat: 'Fett / Öl',
     beverage: 'Getränk',
     supplement: 'Nahrungsergänzung',
+    snacks: 'Snacks',
+    processed: 'Fertigprodukt',
     nonFood: 'Kein Lebensmittel',
   },
   settings: {

@@ -1,20 +1,26 @@
 // ─── [ NEURAL DECK v4.6 $ AI::GENERATED :: NO COPYRIGHT ] ───
 import { FoodType, FoodTypeInfo } from '../types';
 
+/**
+ * Food types ordered by supermarket aisle / food pyramid layout:
+ * fresh produce → refrigerated → dry goods → beverages → other
+ */
 export const FOOD_TYPES: FoodTypeInfo[] = [
-  { id: 'meat',       labelKey: 'foodType.meat',       icon: 'food-drumstick-outline' },
-  { id: 'fish',       labelKey: 'foodType.fish',       icon: 'fish' },
-  { id: 'egg',        labelKey: 'foodType.egg',        icon: 'egg-outline' },
-  { id: 'dairy',      labelKey: 'foodType.dairy',      icon: 'cheese' },
-  { id: 'grain',      labelKey: 'foodType.grain',      icon: 'bread-slice-outline' },
-  { id: 'sugar',      labelKey: 'foodType.sugar',      icon: 'candy' },
-  { id: 'fruit',      labelKey: 'foodType.fruit',      icon: 'fruit-cherries' },
-  { id: 'vegetable',  labelKey: 'foodType.vegetable',  icon: 'carrot' },
-  { id: 'legume',     labelKey: 'foodType.legume',     icon: 'seed-outline' },
-  { id: 'fat',        labelKey: 'foodType.fat',        icon: 'oil' },
-  { id: 'beverage',   labelKey: 'foodType.beverage',   icon: 'cup' },
-  { id: 'supplement', labelKey: 'foodType.supplement', icon: 'pill' },
-  { id: 'non_food',   labelKey: 'foodType.nonFood',    icon: 'package-variant' },
+  { id: 'fruit',       labelKey: 'foodType.fruit',       icon: 'fruit-cherries' },
+  { id: 'vegetable',   labelKey: 'foodType.vegetable',   icon: 'carrot' },
+  { id: 'legume',      labelKey: 'foodType.legume',      icon: 'seed-outline' },
+  { id: 'meat',        labelKey: 'foodType.meat',        icon: 'food-drumstick-outline' },
+  { id: 'fish',        labelKey: 'foodType.fish',        icon: 'fish' },
+  { id: 'egg',         labelKey: 'foodType.egg',         icon: 'egg-outline' },
+  { id: 'dairy',       labelKey: 'foodType.dairy',       icon: 'cheese' },
+  { id: 'grain',       labelKey: 'foodType.grain',       icon: 'bread-slice-outline' },
+  { id: 'snacks',      labelKey: 'foodType.snacks',      icon: 'candy' },
+  { id: 'sugar',       labelKey: 'foodType.sugar',       icon: 'corn' },
+  { id: 'processed',   labelKey: 'foodType.processed',   icon: 'food-variant' },
+  { id: 'fat',         labelKey: 'foodType.fat',          icon: 'oil' },
+  { id: 'beverage',    labelKey: 'foodType.beverage',    icon: 'cup' },
+  { id: 'supplement',  labelKey: 'foodType.supplement',  icon: 'pill' },
+  { id: 'non_food',    labelKey: 'foodType.nonFood',     icon: 'package-variant' },
 ];
 
 /**
@@ -32,8 +38,33 @@ export const FOOD_TYPE_TO_CATEGORY: Record<FoodType, string | null> = {
   fruit:      'Groceries',
   vegetable:  'Groceries',
   legume:     'Groceries',
+  snacks:     'Groceries',
+  processed:  'Groceries',
   fat:        'Groceries',
   beverage:   'Beverages',
   supplement: 'Pharmacy',
   non_food:   null,
 };
+
+/**
+ * Sort order for items within a category group.
+ * Follows supermarket layout: fresh → refrigerated → dry goods → beverages → other.
+ * Items with unrecognized food types sort last.
+ */
+export const FOOD_TYPE_SORT_ORDER: FoodType[] = [
+  'fruit',
+  'vegetable',
+  'legume',
+  'meat',
+  'fish',
+  'egg',
+  'dairy',
+  'grain',
+  'snacks',
+  'sugar',
+  'processed',
+  'fat',
+  'beverage',
+  'supplement',
+  'non_food',
+];

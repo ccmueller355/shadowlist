@@ -29,7 +29,7 @@ import { EmptyPlaceholder } from '../components/EmptyPlaceholder';
 import { checkItem, CheckResult } from '../utils/dietEngine';
 import { DIET_PROFILES } from '../constants/diets';
 import { resolveName } from '../constants/foodLookup';
-import { FOOD_TYPE_TO_CATEGORY } from '../constants/foodTypes';
+import { FOOD_TYPE_TO_CATEGORY, FOOD_TYPE_SORT_ORDER } from '../constants/foodTypes';
 import { useTranslation } from '../i18n/useTranslation';
 import { useAppTheme } from '../theme/useTheme';
 import { useThemeStyles } from '../theme/useThemeStyles';
@@ -408,7 +408,12 @@ export function ListDetailScreen({ route, navigation }: Props) {
         <Text style={[styles.categoryHeader, { color: cyberpunkTheme.colors.secondary, backgroundColor: cyberpunkTheme.colors.background }]}>
           {tr(('category.' + cat.replace(/[ &]/g, '')) as any)}
         </Text>
-        {group[cat].sort((a, b) => a.description.localeCompare(b.description)).map((item) => (
+        {group[cat].sort((a, b) => {
+          const aIdx = FOOD_TYPE_SORT_ORDER.indexOf(a.foodType);
+          const bIdx = FOOD_TYPE_SORT_ORDER.indexOf(b.foodType);
+          const foodDiff = (aIdx >= 0 ? aIdx : FOOD_TYPE_SORT_ORDER.length) - (bIdx >= 0 ? bIdx : FOOD_TYPE_SORT_ORDER.length);
+          return foodDiff !== 0 ? foodDiff : a.description.localeCompare(b.description);
+        }).map((item) => (
           <ItemRow
             key={item.id}
             item={item}
