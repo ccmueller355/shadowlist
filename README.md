@@ -6,26 +6,21 @@ Keep your grocery runs clean and your deck cooler. Three hand-crafted themes, dr
 
 ## Features
 
-- **Three themes** — Fixer's Notebook (dark noir), Stuffer Shack (aged parchment), Decker's Den (synth terminal)
+- **Five themes** — Fixer's Notebook (dark noir), Stuffer Shack (aged parchment), Decker's Den (synth terminal), Cyber Blue (ocean tones), Fiddler's Green (CRT phosphor)
 - **Drag-to-reorder** — Pivot your list mid-run with `react-native-draggable-flatlist`
 - **54 category icons** — Groceries, pharmacy, OBI/DIY, clothing, electronics, pets, and more
-- **19 categories** — Group items and sort by category
+- **24 categories** — Group items and sort by category
 - **Fast add with dedup** — Type-and-enter; already-in-list items skip, bought items re-add
 - **Inline qualifier editing** — Tap a qualifier to edit it right in the row
 - **On-device persistence** — AsyncStorage, local-only, no account needed
 - **Toast notifications** — Clean confirmations on every action
 - **Demo data** — One-tap load for testing and screenshots
 
-## Screenshots
-
-<!-- TODO: add screenshots -->
-*Screenshots coming soon.*
-
 ## Tech Stack
 
 | Layer | Technology |
 |-------|-----------|
-| Framework | React Native 0.81 + Expo SDK 54 |
+| Framework | React Native + Expo SDK 56 |
 | Language | TypeScript 5 |
 | Navigation | React Navigation 7 (native stack) |
 | State | Zustand 5 |
@@ -110,12 +105,9 @@ shadowlist/
 
 See [docs/arc42.md](docs/arc42.md) for the full arc42 architecture documentation.
 
-## Contributing
+## Feedback
 
-1. Read `AGENTS.md` for AI agent instructions
-2. Match existing code style — surgical edits, no unsolicited refactors
-3. TypeScript strict mode is on — keep it that way
-4. Test on both iOS and Android simulators before submitting
+Found a bug or have an idea? [Open an issue](https://github.com/ccmueller355/shadowlist/issues).
 
 ## License
 
