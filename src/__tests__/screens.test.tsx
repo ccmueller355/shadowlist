@@ -201,7 +201,7 @@ describe('ListDetailScreen', () => {
     useStore.getState().setActiveDiet('keto');
     // Tag Milk as a grain to trigger keto warning
     const milk = useStore.getState().items.find((i) => i.description === 'Milk')!;
-    useStore.getState().updateItem(milk.id, { foodType: 'grain' });
+    useStore.getState().updateItem(milk.id, { foodType: 'bakery' });
     render(<ListDetailScreen route={route} navigation={navigation} />);
     expect(screen.getByText(/1 warning/)).toBeTruthy();
   });

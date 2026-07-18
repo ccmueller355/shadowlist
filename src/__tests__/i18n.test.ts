@@ -12,9 +12,10 @@ describe('i18n', () => {
     'diet.vegetarian.desc', 'diet.vegan.desc', 'diet.glutenFree.desc',
     'diet.paleo.desc',
     // Food type labels
-    'foodType.meat', 'foodType.fish', 'foodType.egg', 'foodType.dairy',
-    'foodType.grain', 'foodType.sugar', 'foodType.fruit', 'foodType.vegetable',
-    'foodType.legume', 'foodType.fat', 'foodType.beverage', 'foodType.supplement',
+    'foodType.meat', 'foodType.seafood', 'foodType.egg', 'foodType.dairy',
+    'foodType.frozen', 'foodType.bakery', 'foodType.sugar', 'foodType.fruit',
+    'foodType.vegetable', 'foodType.legume', 'foodType.fat', 'foodType.beverage',
+    'foodType.supplement', 'foodType.snacks', 'foodType.processed',
     'foodType.nonFood',
     // Themes
     'theme.fixer.label', 'theme.fixer.desc', 'theme.stuffer.label', 'theme.stuffer.desc',

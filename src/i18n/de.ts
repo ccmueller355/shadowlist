@@ -32,10 +32,11 @@ export const de = {
   },
   foodType: {
     meat: 'Fleisch',
-    fish: 'Fisch',
+    seafood: 'Meeresfrüchte',
     egg: 'Ei',
     dairy: 'Milchprodukt',
-    grain: 'Getreide',
+    frozen: 'Tiefkühl',
+    bakery: 'Backwaren',
     sugar: 'Zucker',
     fruit: 'Obst',
     vegetable: 'Gemüse',
@@ -101,6 +102,7 @@ export const de = {
   category: {
     Groceries: 'Lebensmittel',
     Beverages: 'Getränke',
+    Frozen: 'Tiefkühl',
     Pharmacy: 'Apotheke',
     Beauty: 'Kosmetik',
     HomeDIY: 'Haus & Heimwerken',

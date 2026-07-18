@@ -100,7 +100,7 @@ describe('Type definitions', () => {
   describe('FoodType', () => {
     it('has 13 string literal values', () => {
       const types: FoodType[] = [
-        'meat', 'fish', 'egg', 'dairy', 'grain', 'sugar', 'fruit',
+        'meat', 'seafood', 'egg', 'dairy', 'bakery', 'sugar', 'fruit',
         'vegetable', 'legume', 'fat', 'beverage', 'supplement', 'non_food',
       ]
       expect(types).toHaveLength(13)
@@ -116,12 +116,12 @@ describe('Type definitions', () => {
 
   describe('DietRule', () => {
     it('accepts forbidden food types', () => {
-      const rule: DietRule = { forbid: ['grain', 'sugar'] }
-      expect(rule.forbid).toContain('grain')
+      const rule: DietRule = { forbid: ['bakery', 'sugar'] }
+      expect(rule.forbid).toContain('bakery')
     })
 
     it('accepts optional alternatives', () => {
-      const rule: DietRule = { forbid: ['grain'], alternatives: ['vegetable', 'fruit'] }
+      const rule: DietRule = { forbid: ['bakery'], alternatives: ['vegetable', 'fruit'] }
       expect(rule.alternatives).toHaveLength(2)
     })
   })
@@ -132,10 +132,10 @@ describe('Type definitions', () => {
         id: 'keto',
         nameKey: 'diet.keto',
         descriptionKey: 'diet.keto.desc',
-        rules: [{ forbid: ['grain', 'sugar'] }],
+        rules: [{ forbid: ['bakery', 'sugar'] }],
       }
       expect(profile.id).toBe('keto')
-      expect(profile.rules[0].forbid).toContain('grain')
+      expect(profile.rules[0].forbid).toContain('bakery')
     })
   })
 

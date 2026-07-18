@@ -6,6 +6,6 @@ export const keto: DietProfile = {
   nameKey: 'diet.keto.label',
   descriptionKey: 'diet.keto.desc',
   rules: [
-    { forbid: ['grain', 'sugar', 'fruit', 'legume'] },
+    { forbid: ['bakery', 'sugar', 'fruit', 'legume'] },
   ],
 };

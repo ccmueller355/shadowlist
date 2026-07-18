@@ -108,12 +108,12 @@ export const SHOPPING_ICONS = [
 export const ICON_FOOD_TYPE_MAP: Record<string, string> = {
   // Meat / Fish / Egg / Dairy
   'food-drumstick-outline': 'meat',
-  'fish': 'fish',
+  'fish': 'seafood',
   'egg-outline': 'egg',
   'cheese': 'dairy',
 
   // Grain / Sugar / Fruit / Vegetable
-  'bread-slice-outline': 'grain',
+  'bread-slice-outline': 'bakery',
   'candy': 'sugar',
   'fruit-cherries': 'fruit',
   'carrot': 'vegetable',

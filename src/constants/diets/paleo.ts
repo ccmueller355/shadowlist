@@ -6,6 +6,6 @@ export const paleo: DietProfile = {
   nameKey: 'diet.paleo.label',
   descriptionKey: 'diet.paleo.desc',
   rules: [
-    { forbid: ['grain', 'dairy', 'legume'] },
+    { forbid: ['bakery', 'dairy', 'legume'] },
   ],
 };

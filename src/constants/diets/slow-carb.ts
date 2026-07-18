@@ -6,6 +6,6 @@ export const slowCarb: DietProfile = {
   nameKey: 'diet.slowCarb.label',
   descriptionKey: 'diet.slowCarb.desc',
   rules: [
-    { forbid: ['grain', 'dairy', 'sugar', 'fruit'] },
+    { forbid: ['bakery', 'dairy', 'sugar', 'fruit'] },
   ],
 };

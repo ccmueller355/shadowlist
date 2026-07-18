@@ -11,7 +11,7 @@ describe('ICON_FOOD_TYPE_MAP', () => {
   });
 
   it('maps grain icons', () => {
-    expect(ICON_FOOD_TYPE_MAP['bread-slice-outline']).toBe('grain');
+    expect(ICON_FOOD_TYPE_MAP['bread-slice-outline']).toBe('bakery');
   });
 
   it('maps fruit icons', () => {
@@ -27,7 +27,7 @@ describe('ICON_FOOD_TYPE_MAP', () => {
   });
 
   it('maps fish icons', () => {
-    expect(ICON_FOOD_TYPE_MAP['fish']).toBe('fish');
+    expect(ICON_FOOD_TYPE_MAP['fish']).toBe('seafood');
   });
 
   it('non-food icons are not in the map', () => {

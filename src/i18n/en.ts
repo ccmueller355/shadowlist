@@ -32,10 +32,11 @@ export const en = {
   },
   foodType: {
     meat: 'Meat',
-    fish: 'Fish',
+    seafood: 'Seafood',
     egg: 'Egg',
     dairy: 'Dairy',
-    grain: 'Grain',
+    frozen: 'Frozen',
+    bakery: 'Bakery',
     sugar: 'Sugar',
     fruit: 'Fruit',
     vegetable: 'Vegetable',
@@ -101,6 +102,7 @@ export const en = {
   category: {
     Groceries: 'Groceries',
     Beverages: 'Beverages',
+    Frozen: 'Frozen',
     Pharmacy: 'Pharmacy',
     Beauty: 'Beauty',
     HomeDIY: 'Home & DIY',
