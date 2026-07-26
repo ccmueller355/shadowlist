@@ -70,7 +70,7 @@ export const TIER_1_ITEMS: TestItem[] = [
   { nameEn: 'Cottage Cheese', nameDe: 'Hüttenkäse', foodType: 'dairy', icon: 'cheese', category: 'Groceries', tier: 1 },
   { nameEn: 'Cream Cheese', nameDe: 'Frischkäse', foodType: 'dairy', icon: 'cheese', category: 'Groceries', tier: 1 },
   { nameEn: 'Condensed Milk', nameDe: 'Kondensmilch', foodType: 'dairy', icon: 'cheese', category: 'Groceries', tier: 1 },
-  { nameEn: 'Ice Cream', nameDe: 'Eiscreme', foodType: 'dairy', icon: 'cheese', category: 'Snacks', tier: 1 },
+  { nameEn: 'Ice Cream', nameDe: 'Eiscreme', foodType: 'snacks', icon: 'ice-cream', category: 'Snacks', tier: 1 },
 
   // ── Meat / Fish / Egg (8) ──
   { nameEn: 'Chicken Breast', nameDe: 'Hähnchenbrust', foodType: 'meat', icon: 'food-drumstick-outline', category: 'Groceries', tier: 1 },
@@ -95,13 +95,13 @@ export const TIER_1_ITEMS: TestItem[] = [
   { nameEn: 'Energy Drink', nameDe: 'Energy Drink', foodType: 'beverage', icon: 'cup', category: 'Beverages', tier: 1 },
 
   // ── Sugar / Snacks (8) ──
-  { nameEn: 'Chocolate', nameDe: 'Schokolade', foodType: 'grain', icon: 'candy', category: 'Snacks', tier: 1 },
-  { nameEn: 'Cookies', nameDe: 'Kekse', foodType: 'grain', icon: 'candy', category: 'Snacks', tier: 1 },
+  { nameEn: 'Chocolate', nameDe: 'Schokolade', foodType: 'snacks', icon: 'candy', category: 'Snacks', tier: 1 },
+  { nameEn: 'Cookies', nameDe: 'Kekse', foodType: 'snacks', icon: 'candy', category: 'Snacks', tier: 1 },
   { nameEn: 'Honey', nameDe: 'Honig', foodType: 'grain', icon: 'candy', category: 'Groceries', tier: 1 },
   { nameEn: 'Jam', nameDe: 'Marmelade', foodType: 'grain', icon: 'candy', category: 'Groceries', tier: 1 },
-  { nameEn: 'Candy', nameDe: 'Bonbons', foodType: 'grain', icon: 'candy', category: 'Snacks', tier: 1 },
-  { nameEn: 'Chips', nameDe: 'Chips', foodType: 'grain', icon: 'candy', category: 'Snacks', tier: 1 },
-  { nameEn: 'Granola Bar', nameDe: 'Müsliriegel', foodType: 'grain', icon: 'candy', category: 'Snacks', tier: 1 },
+  { nameEn: 'Candy', nameDe: 'Bonbons', foodType: 'snacks', icon: 'candy', category: 'Snacks', tier: 1 },
+  { nameEn: 'Chips', nameDe: 'Chips', foodType: 'snacks', icon: 'pizza', category: 'Snacks', tier: 1 },
+  { nameEn: 'Granola Bar', nameDe: 'Müsliriegel', foodType: 'snacks', icon: 'candy', category: 'Snacks', tier: 1 },
   { nameEn: 'Maple Syrup', nameDe: 'Ahornsirup', foodType: 'grain', icon: 'candy', category: 'Groceries', tier: 1 },
 
   // ── Fats / Oils / Condiments (7) ──
@@ -364,8 +364,8 @@ export const TIER_2_ITEMS: TestItem[] = [
   { nameEn: 'Tonic Water', nameDe: 'Tonic Water', foodType: 'beverage', icon: 'water', category: 'Beverages', tier: 2 },
 
   // Snacks – long-tail
-  { nameEn: 'Dark Chocolate (85%)', nameDe: 'Zartbitterschokolade 85%', foodType: 'grain', icon: 'candy', category: 'Snacks', tier: 2 },
-  { nameEn: 'Dried Mango', nameDe: 'Getrocknete Mango', foodType: 'fruit', icon: 'fruit-cherries', category: 'Snacks', tier: 2 },
+  { nameEn: 'Dark Chocolate (85%)', nameDe: 'Zartbitterschokolade 85%', foodType: 'snacks', icon: 'candy', category: 'Snacks', tier: 2 },
+  { nameEn: 'Dried Mango', nameDe: 'Getrocknete Mango', foodType: 'snacks', icon: 'fruit-cherries', category: 'Snacks', tier: 2 },
   { nameEn: 'Edamame (Dry Roasted)', nameDe: 'Edamame geröstet', foodType: 'legume', icon: 'seed-outline', category: 'Snacks', tier: 2 },
   { nameEn: 'Falafel', nameDe: 'Falafel', foodType: 'legume', icon: 'food-variant', category: 'Snacks', tier: 2 },
   { nameEn: 'Granola', nameDe: 'Granola', foodType: 'grain', icon: 'seed-outline', category: 'Snacks', tier: 2 },
@@ -373,14 +373,40 @@ export const TIER_2_ITEMS: TestItem[] = [
   { nameEn: 'Olives (Kalamata)', nameDe: 'Kalamata-Oliven', foodType: 'fat', icon: 'seed-outline', category: 'Snacks', tier: 2 },
   { nameEn: 'Olives (Green)', nameDe: 'Grüne Oliven', foodType: 'fat', icon: 'seed-outline', category: 'Snacks', tier: 2 },
   { nameEn: 'Pita Chips', nameDe: 'Pita-Chips', foodType: 'snacks', icon: 'pizza', category: 'Snacks', tier: 2 },
-  { nameEn: 'Popcorn (Kernels)', nameDe: 'Popcornmais', foodType: 'grain', icon: 'popcorn', category: 'Snacks', tier: 2 },
+  { nameEn: 'Popcorn (Kernels)', nameDe: 'Popcornmais', foodType: 'snacks', icon: 'popcorn', category: 'Snacks', tier: 2 },
   { nameEn: 'Pretzel Sticks', nameDe: 'Laugenstangen', foodType: 'snacks', icon: 'pretzel', category: 'Snacks', tier: 2 },
-  { nameEn: 'Protein Bar', nameDe: 'Proteinriegel', foodType: 'grain', icon: 'candy', category: 'Snacks', tier: 2 },
+  { nameEn: 'Protein Bar', nameDe: 'Proteinriegel', foodType: 'snacks', icon: 'candy', category: 'Snacks', tier: 2 },
   { nameEn: 'Rice Cakes', nameDe: 'Reiswaffeln', foodType: 'snacks', icon: 'rice', category: 'Snacks', tier: 2 },
   { nameEn: 'Seaweed Snacks', nameDe: 'Algensnacks', foodType: 'vegetable', icon: 'fish', category: 'Snacks', tier: 2 },
   { nameEn: 'Tortilla Chips', nameDe: 'Tortilla-Chips', foodType: 'snacks', icon: 'pizza', category: 'Snacks', tier: 2 },
   { nameEn: 'Trail Mix', nameDe: 'Studentenfutter', foodType: 'legume', icon: 'seed-outline', category: 'Snacks', tier: 2 },
   { nameEn: 'Veggie Chips', nameDe: 'Gemüsechips', foodType: 'vegetable', icon: 'carrot', category: 'Snacks', tier: 2 },
+
+  // Convenience / Ready-Made
+  { nameEn: 'Canned Soup', nameDe: 'Konservensuppe', foodType: 'convenience', icon: 'food-variant', category: 'Groceries', tier: 2 },
+  { nameEn: 'Instant Noodles', nameDe: 'Instantnudeln', foodType: 'convenience', icon: 'rice', category: 'Groceries', tier: 2 },
+  { nameEn: 'Microwave Rice', nameDe: 'Mikrowellenreis', foodType: 'convenience', icon: 'rice', category: 'Groceries', tier: 2 },
+  { nameEn: 'Instant Soup', nameDe: 'Tütensuppe', foodType: 'convenience', icon: 'food-variant', category: 'Groceries', tier: 2 },
+  { nameEn: 'Frozen Meal', nameDe: 'Tiefkühlgericht', foodType: 'convenience', icon: 'food-variant', category: 'Groceries', tier: 2 },
+  { nameEn: 'TV Dinner', nameDe: 'Fertiggericht', foodType: 'convenience', icon: 'food-variant', category: 'Groceries', tier: 2 },
+  { nameEn: 'Canned Chili', nameDe: 'Chili aus der Dose', foodType: 'convenience', icon: 'food-variant', category: 'Groceries', tier: 2 },
+  { nameEn: 'Ramen Noodles', nameDe: 'Ramen-Nudeln', foodType: 'convenience', icon: 'rice', category: 'Groceries', tier: 2 },
+  { nameEn: 'Fish Sticks', nameDe: 'Fischstäbchen', foodType: 'convenience', icon: 'fish', category: 'Groceries', tier: 2 },
+  { nameEn: 'Chicken Nuggets', nameDe: 'Hähnchennuggets', foodType: 'convenience', icon: 'food-drumstick-outline', category: 'Groceries', tier: 2 },
+  { nameEn: 'Frozen Vegetables', nameDe: 'Tiefkühlgemüse', foodType: 'convenience', icon: 'carrot', category: 'Frozen', tier: 2 },
+  { nameEn: 'Frozen Fruit', nameDe: 'Tiefkühlobst', foodType: 'convenience', icon: 'fruit-cherries', category: 'Frozen', tier: 2 },
+
+  // Snacks – extended
+  { nameEn: 'Gummy Bears', nameDe: 'Gummibärchen', foodType: 'snacks', icon: 'candy', category: 'Snacks', tier: 2 },
+  { nameEn: 'Licorice', nameDe: 'Lakritze', foodType: 'snacks', icon: 'candy', category: 'Snacks', tier: 2 },
+  { nameEn: 'Chocolate Bar', nameDe: 'Schokoriegel', foodType: 'snacks', icon: 'candy', category: 'Snacks', tier: 2 },
+  { nameEn: 'Potato Chips', nameDe: 'Kartoffelchips', foodType: 'snacks', icon: 'pizza', category: 'Snacks', tier: 2 },
+  { nameEn: 'Corn Chips', nameDe: 'Maischips', foodType: 'snacks', icon: 'pizza', category: 'Snacks', tier: 2 },
+  { nameEn: 'Cheese Puffs', nameDe: 'Käseflips', foodType: 'snacks', icon: 'pizza', category: 'Snacks', tier: 2 },
+  { nameEn: 'Beef Jerky', nameDe: 'Biltong', foodType: 'snacks', icon: 'food-drumstick-outline', category: 'Snacks', tier: 2 },
+  { nameEn: 'Mixed Nuts (Roasted)', nameDe: 'Geröstete Nüsse', foodType: 'snacks', icon: 'seed-outline', category: 'Snacks', tier: 2 },
+  { nameEn: 'Pudding', nameDe: 'Pudding', foodType: 'snacks', icon: 'cup', category: 'Snacks', tier: 2 },
+  { nameEn: 'Yogurt (Sweets)', nameDe: 'Joghurt (Süß)', foodType: 'snacks', icon: 'cheese', category: 'Snacks', tier: 2 },
 
   // Household & Kitchen
   { nameEn: 'Aluminum Foil', nameDe: 'Alufolie', foodType: 'non_food', icon: 'package-variant', category: 'Household', tier: 2 },

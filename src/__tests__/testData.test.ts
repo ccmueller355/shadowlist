@@ -45,7 +45,7 @@ describe('Test Data Pool — FR-009: All items typed', () => {
   });
 
   test('T015: all items have valid category', () => {
-    const validCategories = ['Groceries', 'Beverages', 'Snacks', 'Household', 'Personal', 'Electronics', 'Pet', 'Baby', 'Office', 'Garden', 'Auto', 'Sports', 'Books', 'Toys', 'Music', 'Clothing', 'Shoes', 'Pharmacy', 'General'];
+    const validCategories = ['Groceries', 'Beverages', 'Snacks', 'Frozen', 'Household', 'Personal', 'Electronics', 'Pet', 'Baby', 'Office', 'Garden', 'Auto', 'Sports', 'Books', 'Toys', 'Music', 'Clothing', 'Shoes', 'Pharmacy', 'General'];
     for (const item of ALL_ITEMS) {
       expect(validCategories).toContain(item.category);
     }

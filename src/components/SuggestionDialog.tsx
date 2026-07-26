@@ -38,7 +38,7 @@ export function SuggestionDialog({
         <View style={[styles.container, { backgroundColor: t.colors.surface }]}>
           <View style={styles.header}>
             <MaterialCommunityIcons name="alert-circle" size={28} color={t.colors.danger} />
-            <Text style={styles.title}>Diet Warning</Text>
+            <Text style={[styles.title, { color: t.colors.textPrimary }]}>Diet Warning</Text>
           </View>
 
           <Text style={[styles.message, { color: t.colors.textSecondary }]}>

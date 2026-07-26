@@ -213,16 +213,6 @@ export function ListDetailScreen({ route, navigation }: Props) {
     [allPurchased]
   );
 
-  // Compact default view — up to 50 items total: active first, then bought
-  const compactActive = useMemo(
-    () => activeItems.slice(0, MAX_COMPACT_ITEMS),
-    [activeItems]
-  );
-  const compactBought = useMemo(
-    () => boughtItems.slice(0, MAX_COMPACT_ITEMS - compactActive.length),
-    [boughtItems, compactActive.length]
-  );
-
   // Search filter
   const filteredActive = useMemo(() => {
     if (!search.trim()) return activeItems;
@@ -235,6 +225,17 @@ export function ListDetailScreen({ route, navigation }: Props) {
     const q = search.toLowerCase();
     return boughtItems.filter((i) => i.description.toLowerCase().includes(q));
   }, [boughtItems, search]);
+
+  // Compact default view — up to 50 items total: active first, then bought
+  // When search is active, compact view shows filtered items instead
+  const compactActive = useMemo(() => {
+    const source = search.trim() ? filteredActive : activeItems;
+    return source.slice(0, MAX_COMPACT_ITEMS);
+  }, [activeItems, filteredActive, search]);
+  const compactBought = useMemo(() => {
+    if (search.trim()) return filteredBought.slice(0, MAX_COMPACT_ITEMS);
+    return boughtItems.slice(0, MAX_COMPACT_ITEMS - compactActive.length);
+  }, [boughtItems, filteredBought, compactActive.length, search]);
 
   const displayBought = useMemo(
     () => showAllBought ? filteredBought : filteredBought.slice(0, MAX_VISIBLE_BOUGHT),
@@ -515,7 +516,16 @@ export function ListDetailScreen({ route, navigation }: Props) {
             </TouchableOpacity>
           )}
 
-          {listItems.length === 0 && (
+          {/* No results for active search */}
+          {search.trim() && filteredActive.length === 0 && filteredBought.length === 0 && (
+            <EmptyPlaceholder
+              message={tr('general.noSearchResults', { query: search })}
+              icon="file-search-outline"
+            />
+          )}
+
+          {/* Empty list (no items at all) */}
+          {!search.trim() && listItems.length === 0 && (
             <EmptyPlaceholder
               message={tr('general.emptyListMessage')}
               icon="cart-outline"
@@ -590,8 +600,16 @@ export function ListDetailScreen({ route, navigation }: Props) {
             </>
           )}
 
+          {/* No results for active search */}
+          {search.trim() && filteredActive.length === 0 && filteredBought.length === 0 && (
+            <EmptyPlaceholder
+              message={tr('general.noSearchResults', { query: search })}
+              icon="file-search-outline"
+            />
+          )}
+
           {/* Empty state */}
-          {activeItems.length === 0 && boughtItems.length === 0 && (
+          {!search.trim() && activeItems.length === 0 && boughtItems.length === 0 && (
             <EmptyPlaceholder
               message={tr('general.emptyListMessage')}
               icon="cart-outline"
@@ -700,7 +718,12 @@ export function ListDetailScreen({ route, navigation }: Props) {
               <View style={styles.bottomSpacer} />
             )}
             ListEmptyComponent={
-              activeItems.length === 0 && boughtItems.length === 0 ? (
+              search.trim() ? (
+                <EmptyPlaceholder
+                  message={tr('general.noSearchResults', { query: search })}
+                  icon="file-search-outline"
+                />
+              ) : activeItems.length === 0 && boughtItems.length === 0 ? (
                 <EmptyPlaceholder
                   message={tr('general.emptyListMessage')}
                   icon="cart-outline"

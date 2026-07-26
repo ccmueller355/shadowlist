@@ -126,12 +126,12 @@ export function AddItemBar({ listId, recentBought, onAddItem, onReAddItem, onSea
 
       {/* Auto-suggest dropdown */}
       {showSuggestions && suggestions.length > 0 && (
-        <View style={styles.suggestionsContainer}>
-          <Text style={styles.recentLabel}>RECENTLY BOUGHT</Text>
+        <View style={[styles.suggestionsContainer, { backgroundColor: cyberpunkTheme.colors.surface, borderColor: cyberpunkTheme.colors.border }]}>
+          <Text style={[styles.recentLabel, { color: cyberpunkTheme.colors.textSecondary }]}>RECENTLY BOUGHT</Text>
           {suggestions.map((item) => (
             <TouchableOpacity
               key={item.id}
-              style={styles.suggestionRow}
+              style={[styles.suggestionRow, { backgroundColor: cyberpunkTheme.colors.surface, borderBottomColor: cyberpunkTheme.colors.border }]}
               onPress={() => handleSelectSuggestion(item)}
             >
               <MaterialCommunityIcons
@@ -139,9 +139,9 @@ export function AddItemBar({ listId, recentBought, onAddItem, onReAddItem, onSea
                 size={20}
                 color={cyberpunkTheme.colors.primary}
               />
-              <Text style={styles.suggestionText}>{item.description}</Text>
+              <Text style={[styles.suggestionText, { color: cyberpunkTheme.colors.textPrimary }]}>{item.description}</Text>
               {item.qualifier ? (
-                <Text style={styles.suggestionQualifier}>{item.qualifier}</Text>
+                <Text style={[styles.suggestionQualifier, { color: cyberpunkTheme.colors.textSecondary }]}>{item.qualifier}</Text>
               ) : null}
             </TouchableOpacity>
           ))}

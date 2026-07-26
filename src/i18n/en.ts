@@ -89,6 +89,7 @@ export const en = {
     loadDemoData: 'Load Demo Data',
     addItemPlaceholder: 'Search or add item...',
     emptyListMessage: 'Your shopping list is empty — add items below',
+    noSearchResults: 'No results for "{query}"',
   },
   theme: {
     fixer: { label: "Fixer's Notebook", desc: 'Warm leather tones with rust and brass' },
