@@ -89,6 +89,7 @@ export const de = {
     loadDemoData: 'Demo-Daten laden',
     addItemPlaceholder: 'Suchen oder hinzufügen...',
     emptyListMessage: 'Deine Einkaufsliste ist leer — füge unten Artikel hinzu',
+    noSearchResults: 'Keine Ergebnisse für "{query}"',
   },
   theme: {
     fixer: { label: "Fixer's Notebook", desc: 'Warme Ledertöne mit Rost und Messing' },

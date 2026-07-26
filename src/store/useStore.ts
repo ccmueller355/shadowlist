@@ -48,7 +48,7 @@ interface ShoppingState {
 
 const DEFAULT_SETTINGS: AppSettings = {
   theme: 'fixer',
-  sortByCategory: false,
+  sortByCategory: true,
   defaultIcon: 'cart',
   activeDiet: null,
   lang: 'en',

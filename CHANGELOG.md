@@ -1,5 +1,30 @@
 # Changelog
 
+## v0.16.0 — 2026-07-26
+
+### Fix Streak Week 30 (PR #48)
+- **8 issues addressed** across the board, full suite green (273 tests)
+- **Auto-suggest dropdown contrast** — suggestion text, labels, container, rows now use theme colors
+  (Fixes dark-on-dark text in the "recently bought" preview overlay)
+- **Herbs & Spices lookup** — 60 EN + 35 DE regex patterns for common Kräuter und Gewürze
+  (basil, oregano, thyme, rosemary, sage, dill, parsley, garlic, cumin, nutmeg, etc.)
+  Fixes #46
+- **Compact view search filter** — typing in search now visually filters items in the compact view
+  instead of showing unfiltered data (Fixes #34)
+- **"No results" empty state** — all 3 views (compact, category, full draggable) show a
+  search-aware "No results for 'query'" message when no items match
+- **Unthemed text color sweep** — SettingsModal title, row labels, section labels, theme descriptions,
+  and SuggestionDialog title now use theme colors instead of system defaults
+- **Category sort by default** — `sortByCategory` now defaults to `true`, so items are grouped by
+  shopping category out of the box (Fixes #35)
+- **Missing category picker entries** — Frozen, Bakery, Deli, International, Snacks added to
+  the manual category picker. `.codewhale/state/` gitignored (Fixes #36, #37)
+- **Convenience & Snacks data** — 12 convenience items (Canned Soup, Instant Noodles, TV Dinner,
+  Fish Sticks, etc.) + 10 new snack items (Gummy Bears, Licorice, Potato Chips, etc.) in lookup.
+  9 items reclassified from `grain`/`dairy`/`fruit` to proper `snacks` type (Chocolate, Cookies,
+  Candy, Chips, Granola Bar, Ice Cream, Popcorn, Protein Bar, Dark Chocolate, Dried Mango).
+  7 EN + 22 DE regex patterns for auto-classification (Fixes #36, #37)
+
 ## v0.15.0 — 2026-07-18
 
 ### Bugfix Cluster + Food Type System Redesign (PR #39)

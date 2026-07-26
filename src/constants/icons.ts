@@ -141,6 +141,11 @@ export const ICON_FOOD_TYPE_MAP: Record<string, string> = {
 export const CATEGORIES = [
   'Groceries',
   'Beverages',
+  'Frozen',
+  'Bakery',
+  'Deli',
+  'International',
+  'Snacks',
   'Pharmacy',
   'Beauty',
   'Home & DIY',

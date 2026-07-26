@@ -93,7 +93,7 @@ export function SettingsModal({
         <ScrollView style={styles.scrollContainer} contentContainerStyle={styles.scrollContent}>
           <View style={styles.container}>
             <View style={styles.header}>
-              <Text style={styles.title}>Settings</Text>
+              <Text style={[styles.title, { color: t.colors.textPrimary }]}>Settings</Text>
               <TouchableOpacity
                 onPress={onClose}
                 accessibilityLabel="Close settings"
@@ -138,7 +138,7 @@ export function SettingsModal({
                   size={22}
                   color={t.colors.primary}
                 />
-                <Text style={styles.rowLabel}>{tr('settings.sortByCategory')}</Text>
+                <Text style={[styles.rowLabel, { color: t.colors.textPrimary }]}>{tr('settings.sortByCategory')}</Text>
               </View>
               <Switch
                 value={sortByCategory}
@@ -155,7 +155,7 @@ export function SettingsModal({
             <View style={[styles.divider, { backgroundColor: t.colors.border }]} />
 
             {/* Diet picker */}
-            <Text style={styles.sectionLabel}>{tr('settings.diet.label')}</Text>
+            <Text style={[styles.sectionLabel, { color: t.colors.secondary }]}>{tr('settings.diet.label')}</Text>
             <TouchableOpacity
               style={[styles.themeRow, activeDiet === null && { backgroundColor: t.colors.checkedBg }]}
               onPress={() => onDietChange(null)}
@@ -188,7 +188,7 @@ export function SettingsModal({
                     <Text style={[styles.themeLabel, active && { color: t.colors.primary }]}>
                       {tr(diet.nameKey as any)}
                     </Text>
-                    <Text style={styles.themeDesc}>{tr(diet.descriptionKey as any)}</Text>
+                    <Text style={[styles.themeDesc, { color: t.colors.textSecondary }]}>{tr(diet.descriptionKey as any)}</Text>
                   </View>
                   <View style={[styles.radio, active && { borderColor: t.colors.primary }]}>
                     {active && <View style={[styles.radioDot, { backgroundColor: t.colors.primary }]} />}
@@ -236,7 +236,7 @@ export function SettingsModal({
                     size={22}
                     color={t.colors.primary}
                   />
-                  <Text style={styles.rowLabel}>{tr('general.loadDemoData')}</Text>
+                  <Text style={[styles.rowLabel, { color: t.colors.textPrimary }]}>{tr('general.loadDemoData')}</Text>
                 </View>
                 <MaterialCommunityIcons
                   name="chevron-right"
@@ -287,7 +287,7 @@ export function SettingsModal({
                       size={22}
                       color={t.colors.primary}
                     />
-                    <Text style={styles.rowLabel}>{tr('general.generateTestData')}</Text>
+                    <Text style={[styles.rowLabel, { color: t.colors.textPrimary }]}>{tr('general.generateTestData')}</Text>
                   </View>
                   <MaterialCommunityIcons
                     name="chevron-right"
@@ -315,7 +315,7 @@ export function SettingsModal({
                       size={22}
                       color={t.colors.primary}
                     />
-                    <Text style={styles.rowLabel}>Generate 500 Items</Text>
+                    <Text style={[styles.rowLabel, { color: t.colors.textPrimary }]}>Generate 500 Items</Text>
                   </View>
                   <MaterialCommunityIcons
                     name="chevron-right"
