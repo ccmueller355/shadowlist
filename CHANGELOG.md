@@ -1,3 +1,9 @@
+## v0.17.0 — 2026-08-09
+
+### Refactor
+- Reduced the shopping icons to a curated selection based on classic food aisles (Produce, Cooled/Dairy, Meat, Staple/Grains, Frozen, Snacks, Beverages, Non-Food).
+- Selecting an icon automatically selects its associated food type for improved tracking and efficiency.
+
 # Changelog
 
 ## v0.16.0 — 2026-07-26
