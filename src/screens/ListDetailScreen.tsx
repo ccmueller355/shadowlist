@@ -276,17 +276,6 @@ export function ListDetailScreen({ route, navigation }: Props) {
     return groups;
   }, [filteredActive, settings.sortByCategory]);
 
-  const groupedBought = useMemo(() => {
-    if (!settings.sortByCategory) return null;
-    const groups: Record<string, ShoppingItem[]> = {};
-    displayBought.forEach((item) => {
-      const cat = item.category || 'Other';
-      if (!groups[cat]) groups[cat] = [];
-      groups[cat].push(item);
-    });
-    return groups;
-  }, [filteredBought, settings.sortByCategory]);
-
   // Handlers
   // Type + Enter: dedup active items, re-add from bought, or create new
   const handleAddItem = useCallback(
@@ -576,7 +565,16 @@ export function ListDetailScreen({ route, navigation }: Props) {
                 </Text>
                 </View>
               </View>
-              {groupedBought && renderCategoryGroup(groupedBought, handleTogglePurchased, handleLongPress, moveToShop, updateItem, true)}
+              {displayBought.map((item) => (
+                <ItemRow
+                  key={item.id}
+                  item={item}
+                  onTogglePurchased={handleTogglePurchased}
+                  onLongPress={handleLongPress}
+                  onTapBought={moveToShop}
+                  onUpdateItem={updateItem}
+                />
+              ))}
               {hasMoreBought && (
                 <TouchableOpacity
                   style={[styles.viewAllButton, { borderColor: cyberpunkTheme.colors.border }]}
