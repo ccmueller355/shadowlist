@@ -56,8 +56,8 @@ describe('IconPickerGrid', () => {
     render(<IconPickerGrid selected="cart" onSelect={mockOnSelect} />);
     // TouchableOpacity renders as accessible Views; verify first icon renders
     expect(screen.getByText('[icon:cart]')).toBeTruthy();
-    expect(screen.getByText('[icon:fridge]')).toBeTruthy();
     expect(screen.getByText('[icon:basket]')).toBeTruthy();
+    expect(screen.getByText('[icon:carrot]')).toBeTruthy();
   });
 
   it('calls onSelect when an icon is pressed', () => {

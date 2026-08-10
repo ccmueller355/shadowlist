@@ -16,7 +16,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { FoodType, ShoppingItem } from '../types';
 import { IconPickerGrid } from './IconPickerGrid';
-import { CATEGORIES } from '../constants/icons';
+import { CATEGORIES, ICON_FOOD_TYPE_MAP } from '../constants/icons';
 import { FOOD_TYPES, FOOD_TYPE_TO_CATEGORY } from '../constants/foodTypes';
 import { useAppTheme } from '../theme/useTheme';
 import { useTranslation } from '../i18n/useTranslation';
@@ -130,7 +130,15 @@ export function EditModal({ visible, item, onSave, onDelete, onClose, onAdd, ini
   
             {/* Icon Picker */}
             <Text style={[styles.label, { color: cyberpunkTheme.colors.primary }]}>{tr('edit.icon')}</Text>
-            <IconPickerGrid selected={icon} onSelect={setIcon} />
+            <IconPickerGrid
+              selected={icon}
+              onSelect={(newIcon) => {
+                setIcon(newIcon);
+                if (ICON_FOOD_TYPE_MAP[newIcon]) {
+                  setFoodType(ICON_FOOD_TYPE_MAP[newIcon] as FoodType);
+                }
+              }}
+            />
  
             {/* Category */}
             <Text style={[styles.label, { color: cyberpunkTheme.colors.primary }]}>{tr('edit.category')}</Text>
