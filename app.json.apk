@@ -17,7 +17,8 @@
         "monochromeImage": "./assets/android-icon-monochrome.png"
       },
       "predictiveBackGestureEnabled": false,
-      "package": "com.aethelredcybernetics.shadowlist"
+      "package": "com.aethelredcybernetics.shadowlist",
+      "versionCode": 17
     },
     "updates": {
       "enabled": false,
