@@ -91,6 +91,14 @@
 - **Screen tests** — HomeScreen and ListDetailScreen rendering and interactions
 - Coverage: **22.64% → 75% lines** (user-facing stories, not coverage-filling)
 
+## v0.18.1 — 2025-02-15
+
+### Fixed
+- Fixed version mismatches in expo dependencies (react-native-screens, expo, expo-dev-client, expo-splash-screen).
+
+### Changed
+- Replaced per-food icons with exactly 12 high-level shopping category icons (Electronics, DIY, Pets, Gardening, etc.) up to a hard limit of 30 icons to avoid UI overload.
+
 ## v0.11.0 — 2026-06-28
 
 ### Performance
