@@ -118,14 +118,11 @@ Before marking any task complete, pass these gates:
 - **After merge**, the remote branch is auto-cleaned by GitHub via `--delete-branch`
 - **Rationale**: traceability — PRs are the permanent record of what landed, when, and why. Local merges leave zero audit trail.
 
-## 4b. Release Branch (NON-NEGOTIABLE)
+## 4b. Release Branch (DEPRECATED)
 
-- **`release` is a marker branch.** It MUST always be a direct descendant of `main`. No independent commits, no merge commits, no divergence.
-- **Only fast-forward PR merges.** Every PR against `release` must be a clean fast-forward from `main`. If it's not fast-forwardable, the PR is invalid.
-- **No direct pushes.** No `git push origin main:release`. No force-pushes. No local merges.
-- **EAS build triggers on PR open.** The `pull_request` trigger on `release` fires the EAS build. The APK IS the release artifact — no second build.
-- **What to do if `release` diverges:** delete it and recreate from `main` (`git push origin main:release`). This is the only exception to the no-direct-push rule and requires operator acknowledgment.
-- **Violation of any of these rules means the session stops and the operator is notified.**
+- **`main` is the single source of truth.** The `release` branch has been deprecated.
+- **Maintain a clean linear history** on `main` and avoid merge commits where possible.
+- **Production builds and Expo triggers** run exclusively on semantic version tags (`v*.*.*`).
 
 ---
 
@@ -192,7 +189,7 @@ Three EAS build profiles — see `docs/release/workflow.md` for full details:
 | Profile | When | Command / Trigger |
 |---------|------|-------------------|
 | `development` | One-time: install dev client, then `npx expo start` | `eas build -p android --profile development` |
-| `preview` | Cut a release: push to `release` branch | CI gates → auto-build via `eas-build.yml` |
+| `preview` | Cut a release: push semantic tag (`v*.*.*`) | CI gates → auto-build via `eas-build.yml` |
 | `production` | Deferred (not yet active) | Manual, later |
 
 [MATRIX_STATUS: ACTIVE // DECK_TEMPERATURE: NOMINAL]

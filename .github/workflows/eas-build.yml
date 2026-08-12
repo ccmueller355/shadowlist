@@ -1,7 +1,7 @@
 name: EAS Build
 on:
-  pull_request:
-    branches: [release]
+  push:
+    tags: ['v*.*.*']
   workflow_dispatch:
 
 permissions:
@@ -36,14 +36,3 @@ jobs:
           BUILD_ID=$(echo "$BUILD_OUTPUT" | jq -r '.[0].id // ""')
           BUILD_URL="https://expo.dev/accounts/aethelred-cybernetics/projects/shadowlist/builds/${BUILD_ID}"
           echo "build_url=$BUILD_URL" >> $GITHUB_OUTPUT
-      - name: Comment build URL on PR
-        if: github.event_name == 'pull_request'
-        uses: actions/github-script@v7
-        with:
-          script: |
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: `📦 EAS Build ready: ${{ steps.build.outputs.build_url }}`
-            })
