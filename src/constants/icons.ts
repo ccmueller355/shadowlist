@@ -35,6 +35,20 @@ export const SHOPPING_ICONS = [
   { name: 'package-variant', label: 'Package' },
   { name: 'cart', label: 'Groceries' },
   { name: 'basket', label: 'Basket' },
+
+  // Added high-level categories
+  { name: 'television', label: 'Electronics' },
+  { name: 'hammer-wrench', label: 'DIY' },
+  { name: 'hanger', label: 'Clothing' },
+  { name: 'book-open-variant', label: 'Media' },
+  { name: 'paw', label: 'Pets' },
+  { name: 'flower', label: 'Gardening' },
+  { name: 'car', label: 'Automotive' },
+  { name: 'baby-bottle-outline', label: 'Baby' },
+  { name: 'party-popper', label: 'Party' },
+  { name: 'desk-lamp', label: 'Home' },
+  { name: 'basketball', label: 'Sports' },
+  { name: 'spray-bottle', label: 'Household' },
 ];
 
 // Map icon names to FoodType for pre-selection when user picks an icon
@@ -68,6 +82,18 @@ export const ICON_FOOD_TYPE_MAP: Record<string, string> = {
   'package-variant': 'non_food',
   'cart': 'non_food',
   'basket': 'non_food',
+  'television': 'non_food',
+  'hammer-wrench': 'non_food',
+  'hanger': 'non_food',
+  'book-open-variant': 'non_food',
+  'paw': 'non_food',
+  'flower': 'non_food',
+  'car': 'non_food',
+  'baby-bottle-outline': 'non_food',
+  'party-popper': 'non_food',
+  'desk-lamp': 'non_food',
+  'basketball': 'non_food',
+  'spray-bottle': 'non_food',
 };
 
 export const CATEGORIES = [
