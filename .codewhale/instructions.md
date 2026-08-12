@@ -188,9 +188,11 @@ Three EAS build profiles — see `docs/release/workflow.md` for full details:
 
 | Profile | When | Command / Trigger |
 |---------|------|-------------------|
-| `development` | One-time: install dev client, then `npx expo start` | `eas build -p android --profile development` |
-| `preview` | Cut a release: push semantic tag (`v*.*.*`) | CI gates → auto-build via `eas-build.yml` |
-| `production` | Deferred (not yet active) | Manual, later |
+| `development` | For internal testing/dev clients | CI gates → tag: `v*.*.*-dev` OR manual workflow dispatch |
+| `preview` | Cut a release for IzzyOnDroid/Testing | CI gates → tag: `v*.*.*` OR manual workflow dispatch |
+| `production` | Cut an official App Store / Play Store release | CI gates → tag: `v*.*.*-prod` OR manual workflow dispatch |
+
+*Note: All profiles can also be triggered manually via GitHub Actions UI (`workflow_dispatch`) by selecting the profile from the dropdown.*
 
 [MATRIX_STATUS: ACTIVE // DECK_TEMPERATURE: NOMINAL]
 
