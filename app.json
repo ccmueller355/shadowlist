@@ -18,7 +18,8 @@
       },
       "predictiveBackGestureEnabled": false,
       "package": "com.aethelredcybernetics.shadowlist",
-      "softwareKeyboardLayoutMode": "resize"
+      "softwareKeyboardLayoutMode": "resize",
+      "versionCode": 17
     },
     "updates": {
       "enabled": false,
