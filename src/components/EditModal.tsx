@@ -128,32 +128,6 @@ export function EditModal({ visible, item, onSave, onDelete, onClose, onAdd, ini
               placeholderTextColor={cyberpunkTheme.colors.textSecondary}
             />
   
-            {/* Food Type */}
-            <Text style={[styles.label, { color: cyberpunkTheme.colors.primary }]}>{tr('edit.foodType.label')}</Text>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.categoryRow}>
-              {FOOD_TYPES.map((ft) => (
-                <TouchableOpacity
-                  key={ft.id}
-                  style={[styles.categoryChip, { borderColor: foodType === ft.id ? cyberpunkTheme.colors.primary : cyberpunkTheme.colors.border, backgroundColor: foodType === ft.id ? cyberpunkTheme.colors.checkedBg : cyberpunkTheme.colors.background }]}
-                  onPress={() => setFoodType(ft.id)}
-                  accessibilityLabel={tr(ft.labelKey as any)}
-                  accessibilityRole="radio"
-                  accessibilityState={{ selected: foodType === ft.id }}
-                >
-                  <MaterialCommunityIcons
-                    name={ft.icon as any}
-                    size={16}
-                    color={cyberpunkTheme.colors.primary}
-                  />
-                  <Text
-                    style={[styles.categoryText, { color: foodType === ft.id ? cyberpunkTheme.colors.primary : cyberpunkTheme.colors.textSecondary }, foodType === ft.id && styles.categoryTextSelected]}
-                  >
-                    {tr(ft.labelKey as any)}
-                  </Text>
-                </TouchableOpacity>
-              ))}
-            </ScrollView>
-
             {/* Icon Picker */}
             <Text style={[styles.label, { color: cyberpunkTheme.colors.primary }]}>{tr('edit.icon')}</Text>
             <IconPickerGrid
@@ -164,8 +138,6 @@ export function EditModal({ visible, item, onSave, onDelete, onClose, onAdd, ini
                   setFoodType(ICON_FOOD_TYPE_MAP[newIcon] as FoodType);
                 }
               }}
-              activeFoodType={foodType}
-              activeCategory={category}
             />
  
             {/* Category */}
@@ -194,6 +166,31 @@ export function EditModal({ visible, item, onSave, onDelete, onClose, onAdd, ini
               ))}
             </ScrollView>
 
+            {/* Food Type */}
+            <Text style={[styles.label, { color: cyberpunkTheme.colors.primary }]}>{tr('edit.foodType.label')}</Text>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.categoryRow}>
+              {FOOD_TYPES.map((ft) => (
+                <TouchableOpacity
+                  key={ft.id}
+                  style={[styles.categoryChip, { borderColor: foodType === ft.id ? cyberpunkTheme.colors.primary : cyberpunkTheme.colors.border, backgroundColor: foodType === ft.id ? cyberpunkTheme.colors.checkedBg : cyberpunkTheme.colors.background }]}
+                  onPress={() => setFoodType(ft.id)}
+                  accessibilityLabel={tr(ft.labelKey as any)}
+                  accessibilityRole="radio"
+                  accessibilityState={{ selected: foodType === ft.id }}
+                >
+                  <MaterialCommunityIcons
+                    name={ft.icon as any}
+                    size={16}
+                    color={cyberpunkTheme.colors.primary}
+                  />
+                  <Text
+                    style={[styles.categoryText, { color: foodType === ft.id ? cyberpunkTheme.colors.primary : cyberpunkTheme.colors.textSecondary }, foodType === ft.id && styles.categoryTextSelected]}
+                  >
+                    {tr(ft.labelKey as any)}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
           </ScrollView>
 
           {/* Fixed footer with buttons */}
