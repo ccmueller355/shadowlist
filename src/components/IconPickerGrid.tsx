@@ -13,6 +13,33 @@ interface Props {
   activeCategory?: string | null;
 }
 
+const CATEGORY_TO_ICONS: Record<string, string[] | 'ALL_FOOD' | 'ALL_NON_FOOD'> = {
+  'Electronics': ['television'],
+  'Home & DIY': ['hammer-wrench'],
+  'Clothing': ['hanger'],
+  'Pets': ['paw'],
+  'Gardening': ['flower'],
+  'Automotive': ['car'],
+  'Baby': ['baby-bottle-outline'],
+  'Party': ['party-popper'],
+  'Books & Media': ['book-open-variant'],
+  'Household': ['spray-bottle'],
+  'Sports': ['basketball'],
+  'Bakery': ['bread-slice-outline'],
+  'Beverages': ['cup'],
+  'Snacks': ['candy'],
+  'Pharmacy': ['pill'],
+  'Groceries': 'ALL_FOOD',
+  'Frozen': 'ALL_FOOD',
+  'Deli': 'ALL_FOOD',
+  'International': 'ALL_FOOD',
+  'General': 'ALL_NON_FOOD',
+  'Other': 'ALL_NON_FOOD',
+  'Office': 'ALL_NON_FOOD',
+  'Beauty': 'ALL_NON_FOOD',
+  'Travel': 'ALL_NON_FOOD',
+};
+
 export function IconPickerGrid({ selected, onSelect, activeFoodType, activeCategory }: Props) {
   const cyberpunkTheme = useAppTheme();
 
@@ -26,19 +53,52 @@ export function IconPickerGrid({ selected, onSelect, activeFoodType, activeCateg
     const isNonFoodIcon = mappedType === 'non_food' || !mappedType;
     const isFoodIcon = !isNonFoodIcon;
 
-    if (activeCategory === 'Frozen') {
-      if (isNonFoodIcon) return true;
-      return false;
+    let catMatch = false;
+    if (activeCategory && CATEGORY_TO_ICONS[activeCategory]) {
+      const mapping = CATEGORY_TO_ICONS[activeCategory];
+      if (mapping === 'ALL_FOOD') {
+        catMatch = isFoodIcon;
+      } else if (mapping === 'ALL_NON_FOOD') {
+        catMatch = isNonFoodIcon;
+      } else if (Array.isArray(mapping)) {
+        catMatch = mapping.includes(iconName);
+      }
     }
 
-    if (activeFoodType === 'non_food') {
-      if (isFoodIcon) return true;
-      return false;
+    let ftMatch = false;
+    if (activeFoodType && mappedType === activeFoodType) {
+      ftMatch = true;
     }
 
-    if (activeFoodType) {
-      if (mappedType !== activeFoodType) return true;
-      return false;
+    if (activeCategory) {
+      const mapping = CATEGORY_TO_ICONS[activeCategory];
+      if (mapping === 'ALL_FOOD') {
+        if (!activeFoodType || activeFoodType === 'non_food') {
+          return !isFoodIcon;
+        } else {
+          // Both active category (general food) and specific food type are selected.
+          // In this case, highlight the specific food type.
+          return !ftMatch;
+        }
+      } else if (mapping === 'ALL_NON_FOOD') {
+        return !isNonFoodIcon;
+      } else if (mapping) {
+        // Specific category (Array)
+        return !catMatch;
+      } else {
+         // Fallback for unknown categories not in mapping
+         if (!activeFoodType || activeFoodType === 'non_food') {
+            return false; // Don't dim anything if we don't know the category and there's no specific food type
+         } else {
+            return !ftMatch;
+         }
+      }
+    } else {
+      if (!activeFoodType || activeFoodType === 'non_food') {
+        return !isNonFoodIcon;
+      } else if (activeFoodType) {
+        return !ftMatch;
+      }
     }
 
     return false;
