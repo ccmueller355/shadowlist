@@ -21,13 +21,6 @@
 
 # Changelog
 
-## v0.18.0 — 2026-08-12
-
-### Workflow Refactor & AI Instructions
-- **Release Triggers:** Deprecated the `release` branch. EAS builds are now triggered dynamically by semantic tags (`v*.*.*`) or via manual workflow dispatch dropdown.
-- **Build Semantics:** Tags ending in `-dev` trigger `development` profile; tags ending in `-prod` trigger `production`; standard tags run `preview`.
-- **AI Tooling:** Added `AGENTS.md` and updated `.codewhale/instructions.md` to reflect new release rules and project instructions.
-
 ## v0.16.0 — 2026-07-26
 
 ### Fix Streak Week 30 (PR #48)
@@ -105,14 +98,6 @@
 - **Utility tests** — debounce, uuid (including crypto.randomUUID fallback), i18n
 - **Screen tests** — HomeScreen and ListDetailScreen rendering and interactions
 - Coverage: **22.64% → 75% lines** (user-facing stories, not coverage-filling)
-
-## v0.18.1 — 2025-02-15
-
-### Fixed
-- Fixed version mismatches in expo dependencies (react-native-screens, expo, expo-dev-client, expo-splash-screen).
-
-### Changed
-- Replaced per-food icons with exactly 12 high-level shopping category icons (Electronics, DIY, Pets, Gardening, etc.) up to a hard limit of 30 icons to avoid UI overload.
 
 ## v0.11.0 — 2026-06-28
 

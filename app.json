@@ -18,8 +18,7 @@
       },
       "predictiveBackGestureEnabled": false,
       "package": "com.aethelredcybernetics.shadowlist",
-      "softwareKeyboardLayoutMode": "resize",
-      "versionCode": 17
+      "softwareKeyboardLayoutMode": "resize"
     },
     "updates": {
       "enabled": false,
@@ -36,7 +35,13 @@
       }
     },
     "plugins": [
-      "expo-splash-screen"
+      "expo-splash-screen",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow ShadowList to access your camera to scan barcodes."
+        }
+      ]
     ]
   }
 }

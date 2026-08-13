@@ -13,6 +13,9 @@ import { ShoppingItem } from '../types';
 import { debounce } from '../utils/debounce';
 import { useTranslation } from '../i18n/useTranslation';
 import { useAppTheme } from '../theme/useTheme';
+import { BarcodeScannerModal } from './BarcodeScannerModal';
+import { lookupBarcode } from '../utils/barcodeLookup';
+import Toast from 'react-native-toast-message';
 
 interface Props {
   listId: string;
@@ -30,6 +33,8 @@ export function AddItemBar({ listId, recentBought, onAddItem, onReAddItem, onSea
   const [suggestions, setSuggestions] = useState<ShoppingItem[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [focused, setFocused] = useState(false);
+  const [showScanner, setShowScanner] = useState(false);
+  const [isScanning, setIsScanning] = useState(false);
 
   const debouncedSuggest = useMemo(
     () =>
@@ -84,6 +89,40 @@ export function AddItemBar({ listId, recentBought, onAddItem, onReAddItem, onSea
     clearInput();
   };
 
+  const handleBarcodeScan = async (barcode: string) => {
+    setShowScanner(false);
+    setIsScanning(true);
+
+    Toast.show({
+      type: 'info',
+      text1: 'Looking up product...',
+      text2: `Barcode: ${barcode}`,
+    });
+
+    const result = await lookupBarcode(barcode);
+    setIsScanning(false);
+
+    if (result.error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Lookup Failed',
+        text2: result.error,
+      });
+      return;
+    }
+
+    if (result.productName) {
+      const newText = result.brand ? `${result.brand} ${result.productName}` : result.productName;
+      setText(newText);
+      inputRef.current?.focus();
+      Toast.show({
+        type: 'success',
+        text1: 'Product Found',
+        text2: newText,
+      });
+    }
+  };
+
   const showFilterBadge = text.length > 0;
 
   return (
@@ -118,11 +157,21 @@ export function AddItemBar({ listId, recentBought, onAddItem, onReAddItem, onSea
           <TouchableOpacity onPress={clearInput} style={styles.clearButton}>
             <MaterialCommunityIcons name="close-circle" size={20} color={cyberpunkTheme.colors.textSecondary} />
           </TouchableOpacity>
-        ) : null}
+        ) : (
+          <TouchableOpacity onPress={() => setShowScanner(true)} style={styles.scanButton}>
+            <MaterialCommunityIcons name="barcode-scan" size={20} color={cyberpunkTheme.colors.primary} />
+          </TouchableOpacity>
+        )}
         <TouchableOpacity onPress={handleSubmit} style={styles.addButton}>
           <MaterialCommunityIcons name="plus" size={22} color="#0a0a0a" />
         </TouchableOpacity>
       </Pressable>
+
+      <BarcodeScannerModal
+        visible={showScanner}
+        onClose={() => setShowScanner(false)}
+        onScan={handleBarcodeScan}
+      />
 
       {/* Auto-suggest dropdown */}
       {showSuggestions && suggestions.length > 0 && (
@@ -175,6 +224,9 @@ const styles = StyleSheet.create({
   },
   clearButton: {
     padding: 2,
+  },
+  scanButton: {
+    padding: 6,
   },
   addButton: {
     width: 34,

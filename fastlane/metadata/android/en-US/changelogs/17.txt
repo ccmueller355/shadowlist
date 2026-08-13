@@ -1,2 +1,0 @@
-- Reduced the shopping icons to a curated selection based on classic food aisles.
-- Selecting an icon automatically selects its associated food type for improved tracking and efficiency.
