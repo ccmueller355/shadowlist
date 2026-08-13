@@ -1,3 +1,12 @@
+## v0.19.0 — 2026-08-15
+
+### Added
+- Separated food and non-food icons in the icon picker.
+- Implemented visual dimming for irrelevant icons based on the selected food type or category.
+
+### Changed
+- Reordered EditModal fields to Description -> Amount -> Food Type -> Icon Picker -> Category.
+
 ## v0.17.0 — 2026-08-09
 
 ### Refactor
@@ -90,6 +99,16 @@
 - **Utility tests** — debounce, uuid (including crypto.randomUUID fallback), i18n
 - **Screen tests** — HomeScreen and ListDetailScreen rendering and interactions
 - Coverage: **22.64% → 75% lines** (user-facing stories, not coverage-filling)
+
+## v0.19.0 — 2025-02-15
+
+### Added
+- Separated food and non-food icons in the icon picker.
+- Implemented visual dimming for irrelevant icons based on the selected food type or category.
+
+### Changed
+- Reordered EditModal fields to Description -> Amount -> Food Type -> Icon Picker -> Category.
+- Version bumped to 0.19.0.
 
 ## v0.18.1 — 2025-02-15
 
