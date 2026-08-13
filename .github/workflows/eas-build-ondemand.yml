@@ -65,7 +65,7 @@ jobs:
 
   build-preview:
     needs: determine-action
-    if: needs.determine-action.outputs.build_preview == 'true'
+    if: needs.determine-action.outputs.build_preview == 'true' || (github.event.action == 'labeled' && github.event.label.name == 'build:preview')
     runs-on: ubuntu-latest
     steps:
       - name: Get PR Ref
@@ -139,7 +139,7 @@ jobs:
 
   build-dev:
     needs: determine-action
-    if: needs.determine-action.outputs.build_dev == 'true'
+    if: needs.determine-action.outputs.build_dev == 'true' || (github.event.action == 'labeled' && github.event.label.name == 'build:dev')
     runs-on: ubuntu-latest
     steps:
       - name: Get PR Ref
@@ -206,7 +206,7 @@ jobs:
 
   build-production:
     needs: determine-action
-    if: needs.determine-action.outputs.build_prod == 'true'
+    if: needs.determine-action.outputs.build_prod == 'true' || (github.event.action == 'labeled' && github.event.label.name == 'build:production')
     runs-on: ubuntu-latest
     steps:
       - name: Get PR Ref
@@ -267,7 +267,7 @@ jobs:
 
   eas-update:
     needs: determine-action
-    if: needs.determine-action.outputs.eas_update == 'true'
+    if: needs.determine-action.outputs.eas_update == 'true' || (github.event.action == 'labeled' && github.event.label.name == 'eas:update')
     runs-on: ubuntu-latest
     steps:
       - name: Get PR Ref
