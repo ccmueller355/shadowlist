@@ -1,0 +1,12 @@
+Keep your grocery runs clean and your deck cooler. Three hand-crafted themes, drag-to-reorder, 54 category icons — all running on-device with zero cloud dependencies.
+
+Features
+* Five themes — Fixer's Notebook (dark noir), Stuffer Shack (aged parchment), Decker's Den (synth terminal), Cyber Blue (ocean tones), Fiddler's Green (CRT phosphor)
+* Drag-to-reorder — Pivot your list mid-run
+* 54 category icons — Groceries, pharmacy, OBI/DIY, clothing, electronics, pets, and more
+* 24 categories — Group items and sort by category
+* Fast add with dedup — Type-and-enter; already-in-list items skip, bought items re-add
+* Inline qualifier editing — Tap a qualifier to edit it right in the row
+* On-device persistence — Local-only, no account needed
+* Toast notifications — Clean confirmations on every action
+* Demo data — One-tap load for testing and screenshots

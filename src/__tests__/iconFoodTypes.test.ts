@@ -30,9 +30,13 @@ describe('ICON_FOOD_TYPE_MAP', () => {
     expect(ICON_FOOD_TYPE_MAP['fish']).toBe('seafood');
   });
 
-  it('non-food icons are not in the map', () => {
+  it('unrelated icons are not in the map', () => {
     expect(ICON_FOOD_TYPE_MAP['hammer']).toBeUndefined();
-    expect(ICON_FOOD_TYPE_MAP['car']).toBeUndefined();
-    expect(ICON_FOOD_TYPE_MAP['paw']).toBeUndefined();
+    expect(ICON_FOOD_TYPE_MAP['alien']).toBeUndefined();
+  });
+
+  it('new non-food icons are mapped to non_food', () => {
+    expect(ICON_FOOD_TYPE_MAP['car']).toBe('non_food');
+    expect(ICON_FOOD_TYPE_MAP['paw']).toBe('non_food');
   });
 });
