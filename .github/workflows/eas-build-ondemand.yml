@@ -1,0 +1,325 @@
+name: EAS Build On-Demand
+
+on:
+  pull_request:
+    types: [labeled]
+  issue_comment:
+    types: [created]
+
+permissions:
+  pull-requests: write
+  contents: read
+
+jobs:
+  determine-action:
+    runs-on: ubuntu-latest
+    if: |
+      (github.event_name == 'pull_request' || (github.event_name == 'issue_comment' && github.event.issue.pull_request)) &&
+      (github.event.sender.type != 'Bot') &&
+      contains(fromJson('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.comment.author_association || github.event.sender.author_association || 'NONE')
+    outputs:
+      build_preview: ${{ steps.check.outputs.build_preview }}
+      build_dev: ${{ steps.check.outputs.build_dev }}
+      build_prod: ${{ steps.check.outputs.build_prod }}
+      eas_update: ${{ steps.check.outputs.eas_update }}
+      pr_number: ${{ steps.check.outputs.pr_number }}
+    steps:
+      - name: Check triggers
+        id: check
+        env:
+          PR_NUMBER: ${{ github.event.issue.number || github.event.pull_request.number }}
+          LABEL_NAME: ${{ github.event.label.name }}
+          COMMENT_BODY: ${{ github.event.comment.body }}
+        run: |
+          echo "pr_number=$PR_NUMBER" >> $GITHUB_OUTPUT
+
+          # Use grep to allow for leading/trailing whitespace or multiline matching for comments
+          if [[ "$LABEL_NAME" == "build:preview" ]] || echo "$COMMENT_BODY" | grep -qE "^\s*/build-preview\s*$"; then
+             echo "build_preview=true" >> $GITHUB_OUTPUT
+          fi
+          if [[ "$LABEL_NAME" == "build:dev" ]] || echo "$COMMENT_BODY" | grep -qE "^\s*/build-dev\s*$"; then
+             echo "build_dev=true" >> $GITHUB_OUTPUT
+          fi
+          if [[ "$LABEL_NAME" == "build:production" ]] || echo "$COMMENT_BODY" | grep -qE "^\s*/build-production\s*$"; then
+             echo "build_prod=true" >> $GITHUB_OUTPUT
+          fi
+          if [[ "$LABEL_NAME" == "eas:update" ]] || echo "$COMMENT_BODY" | grep -qE "^\s*/eas-update\s*$"; then
+             echo "eas_update=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Remove Label
+        uses: actions/github-script@v7
+        if: github.event_name == 'pull_request'
+        with:
+          script: |
+            try {
+              await github.rest.issues.removeLabel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                name: context.payload.label.name
+              });
+            } catch (error) {
+              console.log('Error removing label: ', error);
+            }
+
+  build-preview:
+    needs: determine-action
+    if: needs.determine-action.outputs.build_preview == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get PR Ref
+        uses: actions/github-script@v7
+        id: get-ref
+        with:
+          script: |
+            const pr = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: ${{ needs.determine-action.outputs.pr_number }}
+            });
+            return pr.data.head.ref;
+          result-encoding: string
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ steps.get-ref.outputs.result }}
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - name: Setup Expo and EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+      - name: Build on EAS
+        id: build
+        run: |
+          BUILD_OUTPUT=$(eas build --platform android --profile preview --non-interactive --json)
+          echo "$BUILD_OUTPUT"
+
+          # EAS JSON output for build is an array
+          BUILD_ID=$(echo "$BUILD_OUTPUT" | jq -r '.[0].id // ""')
+          APP_VERSION=$(echo "$BUILD_OUTPUT" | jq -r '.[0].appVersion // ""')
+
+          if [[ -n "$BUILD_ID" && "$BUILD_ID" != "null" ]]; then
+            BUILD_URL="https://expo.dev/accounts/aethelred-cybernetics/projects/shadowlist/builds/${BUILD_ID}"
+            INSTALL_URL=$(echo "$BUILD_OUTPUT" | jq -r '.[0].artifacts.buildUrl // ""')
+
+            echo "build_url=$BUILD_URL" >> $GITHUB_OUTPUT
+            echo "install_url=$INSTALL_URL" >> $GITHUB_OUTPUT
+            echo "app_version=$APP_VERSION" >> $GITHUB_OUTPUT
+          else
+            echo "build_url=Error parsing build ID" >> $GITHUB_OUTPUT
+            false
+          fi
+      - name: Comment on PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const buildUrl = "${{ steps.build.outputs.build_url }}";
+            const installUrl = "${{ steps.build.outputs.install_url }}";
+
+            let body = `✅ **Preview Build Completed**\n\n[View Build Details on EAS](${buildUrl})\n`;
+
+            if (installUrl && installUrl !== 'null') {
+                body += `\n**Install APK:**\n[Download APK](${installUrl})\n`;
+                // Add QR code using an external service or markdown trick if possible
+                body += `\n![QR Code](https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(installUrl)})`;
+            }
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: ${{ needs.determine-action.outputs.pr_number }},
+              body: body
+            });
+
+  build-dev:
+    needs: determine-action
+    if: needs.determine-action.outputs.build_dev == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get PR Ref
+        uses: actions/github-script@v7
+        id: get-ref
+        with:
+          script: |
+            const pr = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: ${{ needs.determine-action.outputs.pr_number }}
+            });
+            return pr.data.head.ref;
+          result-encoding: string
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ steps.get-ref.outputs.result }}
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - name: Setup Expo and EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+      - name: Build on EAS
+        id: build
+        run: |
+          BUILD_OUTPUT=$(eas build --platform android --profile development --non-interactive --json)
+          echo "$BUILD_OUTPUT"
+
+          BUILD_ID=$(echo "$BUILD_OUTPUT" | jq -r '.[0].id // ""')
+
+          if [[ -n "$BUILD_ID" && "$BUILD_ID" != "null" ]]; then
+            BUILD_URL="https://expo.dev/accounts/aethelred-cybernetics/projects/shadowlist/builds/${BUILD_ID}"
+            INSTALL_URL=$(echo "$BUILD_OUTPUT" | jq -r '.[0].artifacts.buildUrl // ""')
+            echo "build_url=$BUILD_URL" >> $GITHUB_OUTPUT
+            echo "install_url=$INSTALL_URL" >> $GITHUB_OUTPUT
+          else
+             echo "build_url=Error parsing build ID" >> $GITHUB_OUTPUT
+             false
+          fi
+      - name: Comment on PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const buildUrl = "${{ steps.build.outputs.build_url }}";
+            const installUrl = "${{ steps.build.outputs.install_url }}";
+
+            let body = `🛠️ **Development Build Completed**\n\n[View Build Details on EAS](${buildUrl})\n`;
+            if (installUrl && installUrl !== 'null') {
+                body += `\n**Install Dev Client:**\n[Download Binary](${installUrl})\n`;
+            }
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: ${{ needs.determine-action.outputs.pr_number }},
+              body: body
+            });
+
+  build-production:
+    needs: determine-action
+    if: needs.determine-action.outputs.build_prod == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get PR Ref
+        uses: actions/github-script@v7
+        id: get-ref
+        with:
+          script: |
+            const pr = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: ${{ needs.determine-action.outputs.pr_number }}
+            });
+            return pr.data.head.ref;
+          result-encoding: string
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ steps.get-ref.outputs.result }}
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - name: Setup Expo and EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+      - name: Build on EAS
+        id: build
+        run: |
+          BUILD_OUTPUT=$(eas build --platform all --profile production --non-interactive --json)
+          echo "$BUILD_OUTPUT"
+
+          # Platform all returns array with potentially multiple builds
+          BUILD_ID=$(echo "$BUILD_OUTPUT" | jq -r '.[0].id // ""')
+
+          if [[ -n "$BUILD_ID" && "$BUILD_ID" != "null" ]]; then
+            # We'll just link to the first one, or the project build list
+            BUILD_URL="https://expo.dev/accounts/aethelred-cybernetics/projects/shadowlist/builds/${BUILD_ID}"
+            echo "build_url=$BUILD_URL" >> $GITHUB_OUTPUT
+          else
+            echo "build_url=https://expo.dev/accounts/aethelred-cybernetics/projects/shadowlist/builds/" >> $GITHUB_OUTPUT
+            false
+          fi
+      - name: Comment on PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const buildUrl = "${{ steps.build.outputs.build_url }}";
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: ${{ needs.determine-action.outputs.pr_number }},
+              body: `🚀 **Production Build Completed**\n\n[View Build Details on EAS](${buildUrl})\n\nSigned bundles should be ready for store submission.`
+            });
+
+  eas-update:
+    needs: determine-action
+    if: needs.determine-action.outputs.eas_update == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get PR Ref
+        uses: actions/github-script@v7
+        id: get-ref
+        with:
+          script: |
+            const pr = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: ${{ needs.determine-action.outputs.pr_number }}
+            });
+            return pr.data.head.ref;
+          result-encoding: string
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ steps.get-ref.outputs.result }}
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - name: Setup Expo and EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+      - name: Run EAS Update
+        id: update
+        run: |
+          UPDATE_OUTPUT=$(eas update --auto --non-interactive --json)
+          echo "$UPDATE_OUTPUT"
+
+          GROUP_ID=$(echo "$UPDATE_OUTPUT" | jq -r '.[0].group // ""')
+
+          if [[ -n "$GROUP_ID" && "$GROUP_ID" != "null" ]]; then
+            UPDATE_URL="https://expo.dev/accounts/aethelred-cybernetics/projects/shadowlist/updates/${GROUP_ID}"
+            echo "update_url=$UPDATE_URL" >> $GITHUB_OUTPUT
+          else
+            echo "update_url=https://expo.dev/accounts/aethelred-cybernetics/projects/shadowlist/updates" >> $GITHUB_OUTPUT
+            false
+          fi
+      - name: Comment on PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const updateUrl = "${{ steps.update.outputs.update_url }}";
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: ${{ needs.determine-action.outputs.pr_number }},
+              body: `⚡ **EAS Update Published**\n\n[View Update on EAS](${updateUrl})\n\nOTA hotfix deployed to preview channels.`
+            });
