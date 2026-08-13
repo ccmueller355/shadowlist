@@ -1,4 +1,8 @@
-// ─── [ NEURAL DECK v4.6 $ AI::GENERATED ] ───
+const fs = require('fs');
+
+const content = fs.readFileSync('src/components/IconPickerGrid.tsx', 'utf-8');
+
+const newContent = `// ─── [ NEURAL DECK v4.6 $ AI::GENERATED ] ───
 import React from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -70,26 +74,14 @@ export function IconPickerGrid({ selected, onSelect, activeFoodType, activeCateg
       ftMatch = true;
     }
 
-    if (activeCategory) {
-      const mapping = CATEGORY_TO_ICONS[activeCategory];
-      if (mapping === 'ALL_FOOD') {
-        if (activeFoodType === 'non_food') {
-          return !isFoodIcon;
-        } else {
-          return !ftMatch;
-        }
-      } else if (mapping === 'ALL_NON_FOOD') {
-        return !isNonFoodIcon;
-      } else {
-        // Specific category (Array)
-        return !catMatch;
-      }
-    } else {
-      if (activeFoodType === 'non_food') {
-        return !isNonFoodIcon;
-      } else if (activeFoodType) {
-        return !ftMatch;
-      }
+    const hasActiveFoodType = activeFoodType && activeFoodType !== 'non_food';
+
+    if (!hasActiveFoodType && activeCategory) {
+      return !catMatch;
+    } else if (hasActiveFoodType && !activeCategory) {
+      return !ftMatch;
+    } else if (hasActiveFoodType && activeCategory) {
+      return !(ftMatch || catMatch);
     }
 
     return false;
@@ -160,3 +152,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+`;
+
+fs.writeFileSync('src/components/IconPickerGrid.tsx', newContent);
