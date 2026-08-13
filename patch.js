@@ -1,4 +1,7 @@
-// ─── [ NEURAL DECK v4.6 $ AI::GENERATED ] ───
+const fs = require('fs');
+const content = fs.readFileSync('src/components/IconPickerGrid.tsx', 'utf-8');
+
+const newContent = `// ─── [ NEURAL DECK v4.6 $ AI::GENERATED ] ───
 import React from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -36,7 +39,7 @@ export function IconPickerGrid({ selected, onSelect, activeFoodType, activeCateg
       return false;
     }
 
-    if (activeFoodType) {
+    if (activeFoodType && activeFoodType !== 'non_food') {
       if (mappedType !== activeFoodType) return true;
       return false;
     }
@@ -109,3 +112,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+`;
+
+fs.writeFileSync('src/components/IconPickerGrid.tsx', newContent);
