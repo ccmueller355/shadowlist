@@ -73,19 +73,28 @@ export function IconPickerGrid({ selected, onSelect, activeFoodType, activeCateg
     if (activeCategory) {
       const mapping = CATEGORY_TO_ICONS[activeCategory];
       if (mapping === 'ALL_FOOD') {
-        if (activeFoodType === 'non_food') {
+        if (!activeFoodType || activeFoodType === 'non_food') {
           return !isFoodIcon;
         } else {
+          // Both active category (general food) and specific food type are selected.
+          // In this case, highlight the specific food type.
           return !ftMatch;
         }
       } else if (mapping === 'ALL_NON_FOOD') {
         return !isNonFoodIcon;
-      } else {
+      } else if (mapping) {
         // Specific category (Array)
         return !catMatch;
+      } else {
+         // Fallback for unknown categories not in mapping
+         if (!activeFoodType || activeFoodType === 'non_food') {
+            return false; // Don't dim anything if we don't know the category and there's no specific food type
+         } else {
+            return !ftMatch;
+         }
       }
     } else {
-      if (activeFoodType === 'non_food') {
+      if (!activeFoodType || activeFoodType === 'non_food') {
         return !isNonFoodIcon;
       } else if (activeFoodType) {
         return !ftMatch;
