@@ -23,6 +23,7 @@ jobs:
       build_prod: ${{ steps.check.outputs.build_prod }}
       eas_update: ${{ steps.check.outputs.eas_update }}
       pr_number: ${{ steps.check.outputs.pr_number }}
+      pr_ref: ${{ steps.get-ref.outputs.result }}
     steps:
       - name: Check triggers
         id: check
@@ -65,26 +66,35 @@ jobs:
               console.log('Error removing label: ', error);
             }
 
-  build-preview:
-    needs: determine-action
-    if: needs.determine-action.outputs.build_preview == 'true' || (github.event.action == 'labeled' && github.event.label.name == 'build:preview')
-    runs-on: ubuntu-latest
-    steps:
       - name: Get PR Ref
         uses: actions/github-script@v7
         id: get-ref
+        if: steps.check.outputs.build_preview == 'true' || steps.check.outputs.build_dev == 'true' || steps.check.outputs.build_prod == 'true' || steps.check.outputs.eas_update == 'true'
         with:
           script: |
-            const pr = await github.rest.pulls.get({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: ${{ needs.determine-action.outputs.pr_number }}
-            });
-            return pr.data.head.ref;
+            try {
+              const pr = await github.rest.pulls.get({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: parseInt(process.env.PR_NUMBER, 10)
+              });
+              return pr.data.head.ref;
+            } catch (error) {
+              console.log('Error fetching PR ref: ', error);
+              return '';
+            }
           result-encoding: string
+        env:
+          PR_NUMBER: ${{ steps.check.outputs.pr_number }}
+
+  build-preview:
+    needs: determine-action
+    if: needs.determine-action.outputs.build_preview == 'true'
+    runs-on: ubuntu-latest
+    steps:
       - uses: actions/checkout@v5
         with:
-          ref: ${{ steps.get-ref.outputs.result }}
+          ref: ${{ needs.determine-action.outputs.pr_ref }}
       - uses: actions/setup-node@v5
         with:
           node-version: 22
@@ -141,24 +151,12 @@ jobs:
 
   build-dev:
     needs: determine-action
-    if: needs.determine-action.outputs.build_dev == 'true' || (github.event.action == 'labeled' && github.event.label.name == 'build:dev')
+    if: needs.determine-action.outputs.build_dev == 'true'
     runs-on: ubuntu-latest
     steps:
-      - name: Get PR Ref
-        uses: actions/github-script@v7
-        id: get-ref
-        with:
-          script: |
-            const pr = await github.rest.pulls.get({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: ${{ needs.determine-action.outputs.pr_number }}
-            });
-            return pr.data.head.ref;
-          result-encoding: string
       - uses: actions/checkout@v5
         with:
-          ref: ${{ steps.get-ref.outputs.result }}
+          ref: ${{ needs.determine-action.outputs.pr_ref }}
       - uses: actions/setup-node@v5
         with:
           node-version: 22
@@ -208,24 +206,12 @@ jobs:
 
   build-production:
     needs: determine-action
-    if: needs.determine-action.outputs.build_prod == 'true' || (github.event.action == 'labeled' && github.event.label.name == 'build:production')
+    if: needs.determine-action.outputs.build_prod == 'true'
     runs-on: ubuntu-latest
     steps:
-      - name: Get PR Ref
-        uses: actions/github-script@v7
-        id: get-ref
-        with:
-          script: |
-            const pr = await github.rest.pulls.get({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: ${{ needs.determine-action.outputs.pr_number }}
-            });
-            return pr.data.head.ref;
-          result-encoding: string
       - uses: actions/checkout@v5
         with:
-          ref: ${{ steps.get-ref.outputs.result }}
+          ref: ${{ needs.determine-action.outputs.pr_ref }}
       - uses: actions/setup-node@v5
         with:
           node-version: 22
@@ -240,7 +226,7 @@ jobs:
       - name: Build on EAS
         id: build
         run: |
-          BUILD_OUTPUT=$(eas build --platform all --profile production --non-interactive --json)
+          BUILD_OUTPUT=$(eas build --platform all --profile production --non-interactive --no-wait --json)
           echo "$BUILD_OUTPUT"
 
           # Platform all returns array with potentially multiple builds
@@ -269,24 +255,12 @@ jobs:
 
   eas-update:
     needs: determine-action
-    if: needs.determine-action.outputs.eas_update == 'true' || (github.event.action == 'labeled' && github.event.label.name == 'eas:update')
+    if: needs.determine-action.outputs.eas_update == 'true'
     runs-on: ubuntu-latest
     steps:
-      - name: Get PR Ref
-        uses: actions/github-script@v7
-        id: get-ref
-        with:
-          script: |
-            const pr = await github.rest.pulls.get({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: ${{ needs.determine-action.outputs.pr_number }}
-            });
-            return pr.data.head.ref;
-          result-encoding: string
       - uses: actions/checkout@v5
         with:
-          ref: ${{ steps.get-ref.outputs.result }}
+          ref: ${{ needs.determine-action.outputs.pr_ref }}
       - uses: actions/setup-node@v5
         with:
           node-version: 22
