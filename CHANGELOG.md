@@ -1,3 +1,10 @@
+## v0.19.3 — 2026-08-14
+
+### Changed
+- Updated release strategy documentation to reflect the new workflow: single `main` branch with automated builds triggered by semantic tags (`v*.*.*`).
+- Documented secondary on-demand build workflows via PR labels and comments.
+- Updated `README.md` to reference `AGENTS.md` and contributors.
+
 ## v0.19.2 — 2026-08-13
 
 ### Added

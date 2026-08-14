@@ -103,7 +103,15 @@ shadowlist/
 
 ## Architecture
 
-See [docs/arc42.md](docs/arc42.md) for the full arc42 architecture documentation.
+See [docs/arc42/index.md](docs/arc42/index.md) for the full arc42 architecture documentation.
+
+## Agent Instructions & Contributors
+
+This project uses AI agents to assist with development. The instructions for these agents can be found in the following files:
+- `AGENTS.md` - Primary instructions for our elite shadow-decker "Valerie".
+- `.codewhale/instructions.md` - Additional instructions for the AI agents.
+
+Special thanks to the contributors that help build and maintain ShadowList, including the AI assistants (`codew`, `Jules`, and the operator persona `Valerie`).
 
 ## Feedback
 
