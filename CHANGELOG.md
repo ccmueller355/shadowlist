@@ -1,18 +1,3 @@
-## v0.19.2 — 2026-08-13
-
-### Added
-- Added a GitHub Actions workflow (`eas-build-ondemand.yml`) to run EAS builds (preview, dev, production, and OTA update) directly from PR labels or slash commands (`/build-preview`, etc.).
-- Documented the new on-demand workflow in `docs/release/workflow.md`.
-
-## v0.19.0 — 2026-08-15
-
-### Added
-- Separated food and non-food icons in the icon picker.
-- Implemented visual dimming for irrelevant icons based on the selected food type or category.
-
-### Changed
-- Reordered EditModal fields to Description -> Amount -> Food Type -> Icon Picker -> Category.
-
 ## v0.17.0 — 2026-08-09
 
 ### Refactor

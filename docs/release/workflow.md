@@ -76,18 +76,3 @@ git push -f origin release
 ```
 
 Or skip the EAS build entirely by fixing on `main` and re-merging.
-
-## On-Demand Workflow
-
-You can trigger specific EAS actions on Pull Requests via labels or comments. This eliminates the need to push tags manually or merge to `release` just to generate a test build.
-
-| Trigger | Label | Comment | Action |
-|---------|-------|---------|--------|
-| Preview Build | `build:preview` | `/build-preview` | `eas build -p android --profile preview` |
-| Development Build | `build:dev` | `/build-dev` | `eas build -p android --profile development` |
-| Production Build | `build:production` | `/build-production` | `eas build -p all --profile production` |
-| Over-The-Air Update | `eas:update` | `/eas-update` | `eas update --auto` |
-
-**Security Note:** On-demand workflows will only execute for project members or collaborators (`OWNER`, `MEMBER`, `COLLABORATOR`). Bot triggers or comments from public contributors will be ignored for security reasons.
-
-**Output:** Upon completion, the bot will post the build link, a download URL, and an installation QR code directly back to the pull request.
