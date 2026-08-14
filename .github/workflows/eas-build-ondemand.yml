@@ -14,9 +14,9 @@ jobs:
   determine-action:
     runs-on: ubuntu-latest
     if: |
-      (github.event_name == 'pull_request' || (github.event_name == 'issue_comment' && github.event.issue.pull_request)) &&
-      (github.event.sender.type != 'Bot') &&
-      contains(fromJson('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.comment.author_association || github.event.sender.author_association || 'NONE')
+      (github.event_name == 'pull_request' || (github.event_name == 'issue_comment' && github.event.issue.pull_request != null)) &&
+      github.event.sender.type == 'User' &&
+      (contains('["OWNER", "MEMBER", "COLLABORATOR"]', github.event.comment.author_association) || contains('["OWNER", "MEMBER", "COLLABORATOR"]', github.event.pull_request.author_association))
     outputs:
       build_preview: ${{ steps.check.outputs.build_preview }}
       build_dev: ${{ steps.check.outputs.build_dev }}
@@ -33,17 +33,19 @@ jobs:
         run: |
           echo "pr_number=$PR_NUMBER" >> $GITHUB_OUTPUT
 
-          # Use grep to allow for leading/trailing whitespace or multiline matching for comments
-          if [[ "$LABEL_NAME" == "build:preview" ]] || echo "$COMMENT_BODY" | grep -qE "^\s*/build-preview\s*$"; then
+          if [[ "$LABEL_NAME" == "build:preview" ]] || [[ "$COMMENT_BODY" == *"/build-preview"* ]]; then
              echo "build_preview=true" >> $GITHUB_OUTPUT
           fi
-          if [[ "$LABEL_NAME" == "build:dev" ]] || echo "$COMMENT_BODY" | grep -qE "^\s*/build-dev\s*$"; then
+
+          if [[ "$LABEL_NAME" == "build:dev" ]] || [[ "$COMMENT_BODY" == *"/build-dev"* ]]; then
              echo "build_dev=true" >> $GITHUB_OUTPUT
           fi
-          if [[ "$LABEL_NAME" == "build:production" ]] || echo "$COMMENT_BODY" | grep -qE "^\s*/build-production\s*$"; then
+
+          if [[ "$LABEL_NAME" == "build:production" ]] || [[ "$COMMENT_BODY" == *"/build-production"* ]]; then
              echo "build_prod=true" >> $GITHUB_OUTPUT
           fi
-          if [[ "$LABEL_NAME" == "eas:update" ]] || echo "$COMMENT_BODY" | grep -qE "^\s*/eas-update\s*$"; then
+
+          if [[ "$LABEL_NAME" == "eas:update" ]] || [[ "$COMMENT_BODY" == *"/eas-update"* ]]; then
              echo "eas_update=true" >> $GITHUB_OUTPUT
           fi
 
