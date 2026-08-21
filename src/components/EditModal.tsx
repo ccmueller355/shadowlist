@@ -16,7 +16,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { FoodType, ShoppingItem } from '../types';
 import { IconPickerGrid } from './IconPickerGrid';
-import { CATEGORIES, ICON_FOOD_TYPE_MAP } from '../constants/icons';
+import { CATEGORIES, ICON_FOOD_TYPE_MAP, getCategoryForIcon } from '../constants/icons';
 import { FOOD_TYPES, FOOD_TYPE_TO_CATEGORY } from '../constants/foodTypes';
 import { useAppTheme } from '../theme/useTheme';
 import { useTranslation } from '../i18n/useTranslation';
@@ -39,8 +39,8 @@ export function EditModal({ visible, item, onSave, onDelete, onClose, onAdd, ini
   const [description, setDescription] = useState('');
   const [qualifier, setQualifier] = useState('');
   const [icon, setIcon] = useState('cart');
-  const [category, setCategory] = useState<string | null>(null);
-  const [foodType, setFoodType] = useState<FoodType>('non_food');
+  const [selectedFoodType, setSelectedFoodType] = useState<FoodType | undefined>(undefined);
+  const [selectedCategory, setSelectedCategory] = useState<string | null | undefined>(undefined);
   const insets = useSafeAreaInsets();
   const { t: tr } = useTranslation();
 
@@ -57,21 +57,20 @@ export function EditModal({ visible, item, onSave, onDelete, onClose, onAdd, ini
       setDescription(item.description);
       setQualifier(item.qualifier);
       setIcon(item.icon);
-      setCategory(item.category);
-      setFoodType(item.foodType);
+      setSelectedCategory(item.category);
+      setSelectedFoodType(item.foodType);
     } else if (initialFoodType !== undefined || initialIcon !== undefined || initialDescription !== undefined || initialCategory !== undefined) {
       setDescription(initialDescription || '');
       setIcon(initialIcon || 'cart');
-      setFoodType(initialFoodType ?? 'non_food');
-      setCategory(initialCategory ?? null);
+      setSelectedFoodType(initialFoodType !== undefined ? initialFoodType : undefined);
+      setSelectedCategory(initialCategory !== undefined ? initialCategory : undefined);
     }
   }, [item, initialFoodType, initialIcon, initialDescription, initialCategory]);
 
-  // Auto-sync category when food type changes (#20)
-  useEffect(() => {
-    const mapped = FOOD_TYPE_TO_CATEGORY[foodType];
-    setCategory(mapped);
-  }, [foodType]);
+  const derivedFoodType = selectedFoodType !== undefined ? selectedFoodType : (ICON_FOOD_TYPE_MAP[icon] as FoodType | undefined) ?? 'non_food';
+  const derivedCategory = selectedCategory !== undefined ? selectedCategory : (
+    derivedFoodType && derivedFoodType !== 'non_food' ? FOOD_TYPE_TO_CATEGORY[derivedFoodType] : getCategoryForIcon(icon)
+  );
 
   const handleSave = () => {
     if (!description.trim()) return;
@@ -80,8 +79,8 @@ export function EditModal({ visible, item, onSave, onDelete, onClose, onAdd, ini
         description: description.trim(),
         qualifier: qualifier.trim(),
         icon,
-        category,
-        foodType,
+        category: derivedCategory,
+        foodType: derivedFoodType,
       });
     } else if (onAdd) {
       onAdd({
@@ -89,8 +88,8 @@ export function EditModal({ visible, item, onSave, onDelete, onClose, onAdd, ini
         description: description.trim(),
         qualifier: qualifier.trim(),
         icon,
-        category,
-        foodType,
+        category: derivedCategory,
+        foodType: derivedFoodType,
       });
     }
     onClose();
@@ -131,27 +130,48 @@ export function EditModal({ visible, item, onSave, onDelete, onClose, onAdd, ini
             {/* Food Type */}
             <Text style={[styles.label, { color: cyberpunkTheme.colors.primary }]}>{tr('edit.foodType.label')}</Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.categoryRow}>
-              {FOOD_TYPES.map((ft) => (
-                <TouchableOpacity
-                  key={ft.id}
-                  style={[styles.categoryChip, { borderColor: foodType === ft.id ? cyberpunkTheme.colors.primary : cyberpunkTheme.colors.border, backgroundColor: foodType === ft.id ? cyberpunkTheme.colors.checkedBg : cyberpunkTheme.colors.background }]}
-                  onPress={() => setFoodType(ft.id)}
-                  accessibilityLabel={tr(ft.labelKey as any)}
-                  accessibilityRole="radio"
-                  accessibilityState={{ selected: foodType === ft.id }}
-                >
-                  <MaterialCommunityIcons
-                    name={ft.icon as any}
-                    size={16}
-                    color={cyberpunkTheme.colors.primary}
-                  />
-                  <Text
-                    style={[styles.categoryText, { color: foodType === ft.id ? cyberpunkTheme.colors.primary : cyberpunkTheme.colors.textSecondary }, foodType === ft.id && styles.categoryTextSelected]}
+              {FOOD_TYPES.map((ft) => {
+                const isSelected = selectedFoodType === ft.id;
+                const isHighlighted = selectedFoodType === undefined && derivedFoodType === ft.id;
+
+                let bgColor = cyberpunkTheme.colors.background;
+                let borderColor = cyberpunkTheme.colors.border;
+                let textColor = cyberpunkTheme.colors.textSecondary;
+
+                if (isSelected) {
+                  bgColor = cyberpunkTheme.colors.checkedBg;
+                  borderColor = cyberpunkTheme.colors.primary;
+                  textColor = cyberpunkTheme.colors.primary;
+                } else if (isHighlighted) {
+                  borderColor = cyberpunkTheme.colors.primary;
+                  textColor = cyberpunkTheme.colors.primary;
+                }
+
+                return (
+                  <TouchableOpacity
+                    key={ft.id}
+                    style={[styles.categoryChip, { borderColor, backgroundColor: bgColor }]}
+                    onPress={() => {
+                      setSelectedFoodType(ft.id);
+                      setSelectedCategory(undefined);
+                    }}
+                    accessibilityLabel={tr(ft.labelKey as any)}
+                    accessibilityRole="radio"
+                    accessibilityState={{ selected: isSelected }}
                   >
-                    {tr(ft.labelKey as any)}
-                  </Text>
-                </TouchableOpacity>
-              ))}
+                    <MaterialCommunityIcons
+                      name={ft.icon as any}
+                      size={16}
+                      color={textColor}
+                    />
+                    <Text
+                      style={[styles.categoryText, { color: textColor }, (isSelected || isHighlighted) && styles.categoryTextSelected]}
+                    >
+                      {tr(ft.labelKey as any)}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              })}
             </ScrollView>
 
             {/* Icon Picker */}
@@ -160,38 +180,79 @@ export function EditModal({ visible, item, onSave, onDelete, onClose, onAdd, ini
               selected={icon}
               onSelect={(newIcon) => {
                 setIcon(newIcon);
-                if (ICON_FOOD_TYPE_MAP[newIcon]) {
-                  setFoodType(ICON_FOOD_TYPE_MAP[newIcon] as FoodType);
-                }
+                // Clear explicit selections so that the new icon's derived values highlight correctly
+                setSelectedFoodType(undefined);
+                setSelectedCategory(undefined);
               }}
-              activeFoodType={foodType}
-              activeCategory={category}
+              activeFoodType={derivedFoodType}
+              activeCategory={derivedCategory}
             />
  
             {/* Category */}
             <Text style={[styles.label, { color: cyberpunkTheme.colors.primary }]}>{tr('edit.category')}</Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.categoryRow}>
-              <TouchableOpacity
-                style={[styles.categoryChip, { borderColor: category === null ? cyberpunkTheme.colors.primary : cyberpunkTheme.colors.border, backgroundColor: category === null ? cyberpunkTheme.colors.checkedBg : cyberpunkTheme.colors.background }]}
-                onPress={() => setCategory(null)}
-              >
-                <Text style={[styles.categoryText, { color: category === null ? cyberpunkTheme.colors.primary : cyberpunkTheme.colors.textSecondary }, category === null && styles.categoryTextSelected]}>
-                  {tr('edit.categoryNone')}
-                </Text>
-              </TouchableOpacity>
-              {CATEGORIES.map((cat) => (
-                <TouchableOpacity
-                  key={cat}
-                  style={[styles.categoryChip, { borderColor: category === cat ? cyberpunkTheme.colors.primary : cyberpunkTheme.colors.border, backgroundColor: category === cat ? cyberpunkTheme.colors.checkedBg : cyberpunkTheme.colors.background }]}
-                  onPress={() => setCategory(cat)}
-                >
-                  <Text
-                    style={[styles.categoryText, { color: category === cat ? cyberpunkTheme.colors.primary : cyberpunkTheme.colors.textSecondary }, category === cat && styles.categoryTextSelected]}
+              {(() => {
+                const isNoneSelected = selectedCategory === null;
+                const isNoneHighlighted = selectedCategory === undefined && derivedCategory === null;
+                let noneBg = cyberpunkTheme.colors.background;
+                let noneBorder = cyberpunkTheme.colors.border;
+                let noneText = cyberpunkTheme.colors.textSecondary;
+
+                if (isNoneSelected) {
+                  noneBg = cyberpunkTheme.colors.checkedBg;
+                  noneBorder = cyberpunkTheme.colors.primary;
+                  noneText = cyberpunkTheme.colors.primary;
+                } else if (isNoneHighlighted) {
+                  noneBorder = cyberpunkTheme.colors.primary;
+                  noneText = cyberpunkTheme.colors.primary;
+                }
+
+                return (
+                  <TouchableOpacity
+                    style={[styles.categoryChip, { borderColor: noneBorder, backgroundColor: noneBg }]}
+                    onPress={() => setSelectedCategory(null)}
                   >
-                    {tr(('category.' + cat.replace(/[ &]/g, '')) as any)}
-                  </Text>
-                </TouchableOpacity>
-              ))}
+                    <Text style={[styles.categoryText, { color: noneText }, (isNoneSelected || isNoneHighlighted) && styles.categoryTextSelected]}>
+                      {tr('edit.categoryNone')}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              })()}
+
+              {CATEGORIES.map((cat) => {
+                const isSelected = selectedCategory === cat;
+                const isHighlighted = selectedCategory === undefined && derivedCategory === cat;
+
+                let bgColor = cyberpunkTheme.colors.background;
+                let borderColor = cyberpunkTheme.colors.border;
+                let textColor = cyberpunkTheme.colors.textSecondary;
+
+                if (isSelected) {
+                  bgColor = cyberpunkTheme.colors.checkedBg;
+                  borderColor = cyberpunkTheme.colors.primary;
+                  textColor = cyberpunkTheme.colors.primary;
+                } else if (isHighlighted) {
+                  borderColor = cyberpunkTheme.colors.primary;
+                  textColor = cyberpunkTheme.colors.primary;
+                }
+
+                return (
+                  <TouchableOpacity
+                    key={cat}
+                    style={[styles.categoryChip, { borderColor, backgroundColor: bgColor }]}
+                    onPress={() => {
+                      setSelectedCategory(cat);
+                      setSelectedFoodType(undefined);
+                    }}
+                  >
+                    <Text
+                      style={[styles.categoryText, { color: textColor }, (isSelected || isHighlighted) && styles.categoryTextSelected]}
+                    >
+                      {tr(('category.' + cat.replace(/[ &]/g, '')) as any)}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              })}
             </ScrollView>
 
           </ScrollView>

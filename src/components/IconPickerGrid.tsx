@@ -2,7 +2,7 @@
 import React from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { SHOPPING_ICONS, ICON_FOOD_TYPE_MAP } from '../constants/icons';
+import { SHOPPING_ICONS, ICON_FOOD_TYPE_MAP, iconMatchesCategory } from '../constants/icons';
 import { useAppTheme } from '../theme/useTheme';
 import { FoodType } from '../types';
 
@@ -13,33 +13,6 @@ interface Props {
   activeCategory?: string | null;
 }
 
-const CATEGORY_TO_ICONS: Record<string, string[] | 'ALL_FOOD' | 'ALL_NON_FOOD'> = {
-  'Electronics': ['television'],
-  'Home & DIY': ['hammer-wrench'],
-  'Clothing': ['hanger'],
-  'Pets': ['paw'],
-  'Gardening': ['flower'],
-  'Automotive': ['car'],
-  'Baby': ['baby-bottle-outline'],
-  'Party': ['party-popper'],
-  'Books & Media': ['book-open-variant'],
-  'Household': ['spray-bottle'],
-  'Sports': ['basketball'],
-  'Bakery': ['bread-slice-outline'],
-  'Beverages': ['cup'],
-  'Snacks': ['candy'],
-  'Pharmacy': ['pill'],
-  'Groceries': 'ALL_FOOD',
-  'Frozen': 'ALL_FOOD',
-  'Deli': 'ALL_FOOD',
-  'International': 'ALL_FOOD',
-  'General': 'ALL_NON_FOOD',
-  'Other': 'ALL_NON_FOOD',
-  'Office': 'ALL_NON_FOOD',
-  'Beauty': 'ALL_NON_FOOD',
-  'Travel': 'ALL_NON_FOOD',
-};
-
 export function IconPickerGrid({ selected, onSelect, activeFoodType, activeCategory }: Props) {
   const cyberpunkTheme = useAppTheme();
 
@@ -49,59 +22,39 @@ export function IconPickerGrid({ selected, onSelect, activeFoodType, activeCateg
   const isDimmed = (iconName: string) => {
     if (iconName === selected) return false;
 
-    const mappedType = ICON_FOOD_TYPE_MAP[iconName];
-    const isNonFoodIcon = mappedType === 'non_food' || !mappedType;
-    const isFoodIcon = !isNonFoodIcon;
+    // Check if the icon matches the derived category or food type
+    let matched = false;
 
-    let catMatch = false;
-    if (activeCategory && CATEGORY_TO_ICONS[activeCategory]) {
-      const mapping = CATEGORY_TO_ICONS[activeCategory];
-      if (mapping === 'ALL_FOOD') {
-        catMatch = isFoodIcon;
-      } else if (mapping === 'ALL_NON_FOOD') {
-        catMatch = isNonFoodIcon;
-      } else if (Array.isArray(mapping)) {
-        catMatch = mapping.includes(iconName);
-      }
+    if (activeCategory && iconMatchesCategory(iconName, activeCategory)) {
+      matched = true;
     }
 
-    let ftMatch = false;
-    if (activeFoodType && mappedType === activeFoodType) {
-      ftMatch = true;
+    if (activeFoodType && ICON_FOOD_TYPE_MAP[iconName] === activeFoodType) {
+      matched = true;
     }
 
-    if (activeCategory) {
-      const mapping = CATEGORY_TO_ICONS[activeCategory];
-      if (mapping === 'ALL_FOOD') {
-        if (!activeFoodType || activeFoodType === 'non_food') {
-          return !isFoodIcon;
-        } else {
-          // Both active category (general food) and specific food type are selected.
-          // In this case, highlight the specific food type.
-          return !ftMatch;
-        }
-      } else if (mapping === 'ALL_NON_FOOD') {
-        return !isNonFoodIcon;
-      } else if (mapping) {
-        // Specific category (Array)
-        return !catMatch;
-      } else {
-         // Fallback for unknown categories not in mapping
-         if (!activeFoodType || activeFoodType === 'non_food') {
-            return false; // Don't dim anything if we don't know the category and there's no specific food type
-         } else {
-            return !ftMatch;
-         }
-      }
-    } else {
-      if (!activeFoodType || activeFoodType === 'non_food') {
-        return !isNonFoodIcon;
-      } else if (activeFoodType) {
-        return !ftMatch;
-      }
+    // Special behavior if 'Groceries' ('ALL_FOOD') is active, but we have a more specific activeFoodType
+    if (activeCategory && iconMatchesCategory(iconName, activeCategory) && activeFoodType && activeFoodType !== 'non_food') {
+       // If both a broad category (like Groceries which matches ALL food) and a specific food type are set,
+       // only highlight the specific food type to avoid highlighting everything.
+       // E.g., if Groceries AND Fruit are active, dim non-fruits even though Groceries matches them.
+       // However, the `iconMatchesCategory` helper simplifies this: if it matches the broad category,
+       // but we want to restrict it, we can just enforce the ftMatch.
+       const isNonFoodIcon = ICON_FOOD_TYPE_MAP[iconName] === 'non_food' || !ICON_FOOD_TYPE_MAP[iconName];
+       const isFoodIcon = !isNonFoodIcon;
+
+       if (isFoodIcon) {
+         return ICON_FOOD_TYPE_MAP[iconName] !== activeFoodType;
+       }
     }
 
-    return false;
+    // If no specific category or food type is active (which shouldn't happen with derived props, but just in case)
+    if (!activeCategory && (!activeFoodType || activeFoodType === 'non_food')) {
+      const isNonFoodIcon = ICON_FOOD_TYPE_MAP[iconName] === 'non_food' || !ICON_FOOD_TYPE_MAP[iconName];
+      return !isNonFoodIcon;
+    }
+
+    return !matched;
   };
 
   const renderIconList = (icons: typeof SHOPPING_ICONS) => {
