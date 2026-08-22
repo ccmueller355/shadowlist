@@ -1,4 +1,7 @@
 // ─── [ NEURAL DECK v4.6 $ AI::GENERATED ] ───
+import { FoodType } from '../types';
+import { FOOD_TYPE_TO_CATEGORY } from './foodTypes';
+
 export const SHOPPING_ICONS = [
   // Produce / Fresh
   { name: 'carrot', label: 'Vegetable' },
@@ -95,6 +98,56 @@ export const ICON_FOOD_TYPE_MAP: Record<string, string> = {
   'basketball': 'non_food',
   'spray-bottle': 'non_food',
 };
+
+export const CATEGORY_TO_ICONS: Record<string, string[] | 'ALL_FOOD' | 'ALL_NON_FOOD'> = {
+  'Electronics': ['television'],
+  'Home & DIY': ['hammer-wrench'],
+  'Clothing': ['hanger'],
+  'Pets': ['paw'],
+  'Gardening': ['flower'],
+  'Automotive': ['car'],
+  'Baby': ['baby-bottle-outline'],
+  'Party': ['party-popper'],
+  'Books & Media': ['book-open-variant'],
+  'Household': ['spray-bottle'],
+  'Sports': ['basketball'],
+  'Bakery': ['bread-slice-outline'],
+  'Beverages': ['cup'],
+  'Snacks': ['candy'],
+  'Pharmacy': ['pill'],
+  'Groceries': 'ALL_FOOD',
+  'Frozen': 'ALL_FOOD',
+  'Deli': 'ALL_FOOD',
+  'International': 'ALL_FOOD',
+  'General': 'ALL_NON_FOOD',
+  'Other': 'ALL_NON_FOOD',
+  'Office': 'ALL_NON_FOOD',
+  'Beauty': 'ALL_NON_FOOD',
+  'Travel': 'ALL_NON_FOOD',
+};
+
+export function getCategoryForIcon(iconName: string): string | null {
+  for (const [cat, mapping] of Object.entries(CATEGORY_TO_ICONS)) {
+    if (Array.isArray(mapping) && mapping.includes(iconName)) return cat;
+  }
+  const ft = ICON_FOOD_TYPE_MAP[iconName];
+  if (ft && ft !== 'non_food') {
+    return FOOD_TYPE_TO_CATEGORY[ft as FoodType] || null;
+  }
+  return null;
+}
+
+export function iconMatchesCategory(iconName: string, category: string): boolean {
+  const mapping = CATEGORY_TO_ICONS[category];
+  const ft = ICON_FOOD_TYPE_MAP[iconName];
+
+  if (mapping === 'ALL_FOOD') return !!ft && ft !== 'non_food';
+  if (mapping === 'ALL_NON_FOOD') return !ft || ft === 'non_food';
+  if (Array.isArray(mapping) && mapping.includes(iconName)) return true;
+  if (ft && FOOD_TYPE_TO_CATEGORY[ft as FoodType] === category) return true;
+
+  return false;
+}
 
 export const CATEGORIES = [
   'Groceries',

@@ -1,3 +1,8 @@
+## v0.19.5 — 2026-08-21
+
+### Changed
+- Improved UX when editing or adding items: picking an icon now highlights the matching food type and category (and vice versa) without altering the user's explicit selections.
+
 ## v0.19.3 — 2026-08-14
 
 ### Changed
