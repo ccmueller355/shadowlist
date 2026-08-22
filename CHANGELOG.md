@@ -1,3 +1,8 @@
+## v0.19.6 — 2026-08-22
+
+### Changed
+- Consolidated Dependabot updates for React and test utilities.
+
 ## v0.19.5 — 2026-08-21
 
 ### Changed
