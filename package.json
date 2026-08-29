@@ -14,7 +14,7 @@
     "expo-font": "~57.0.1",
     "expo-splash-screen": "~57.0.7",
     "expo-status-bar": "~57.0.1",
-    "mermaid": "^11.15.0",
+    "mermaid": "^11.17.2",
     "react": "19.2.3",
     "react-native": "0.86.2",
     "react-native-draggable-flatlist": "^4.0.3",
