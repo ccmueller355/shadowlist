@@ -1,3 +1,8 @@
+## v0.19.7 — 2026-08-25
+
+### Changed
+- Consolidated Dependabot updates for React (19.2.8) and Jest.
+
 ## v0.19.6 — 2026-08-22
 
 ### Changed
