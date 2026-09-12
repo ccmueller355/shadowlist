@@ -133,10 +133,10 @@ export async function loadAllData(): Promise<{
 }
 
 export async function clearAllData(): Promise<void> {
-  await AsyncStorage.multiRemove([
-    KEYS.lists,
-    KEYS.items,
-    KEYS.settings,
-    KEYS.schemaVersion,
+  await Promise.all([
+    AsyncStorage.removeItem(KEYS.lists),
+    AsyncStorage.removeItem(KEYS.items),
+    AsyncStorage.removeItem(KEYS.settings),
+    AsyncStorage.removeItem(KEYS.schemaVersion),
   ]);
 }
