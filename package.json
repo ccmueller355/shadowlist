@@ -1,6 +1,6 @@
 {
   "name": "shadowlist",
-  "version": "0.19.7",
+  "version": "0.19.8",
   "main": "index.ts",
   "dependencies": {
     "@expo/vector-icons": "^15.0.2",
@@ -8,8 +8,8 @@
     "@react-navigation/native": "^7.3.16",
     "@react-navigation/native-stack": "^7.0.0",
     "@types/react": "~19.2.14",
-    "babel-preset-expo": "^57.0.8",
-    "expo": "~57.0.22",
+    "babel-preset-expo": "^57.0.12",
+    "expo": "~57.0.24",
     "expo-dev-client": "~57.0.19",
     "expo-font": "~57.0.1",
     "expo-splash-screen": "~57.0.9",
@@ -21,11 +21,11 @@
     "react-native-gesture-handler": "~2.32.0",
     "react-native-paper": "^5.13.0",
     "react-native-reanimated": "4.5.1",
-    "react-native-safe-area-context": "~5.7.0",
+    "react-native-safe-area-context": "~5.9.1",
     "react-native-screens": "~4.26.0",
     "react-native-toast-message": "^2.3.3",
     "react-native-worklets": "0.10.1",
-    "typescript": "~6.0.3",
+    "typescript": "~7.0.2",
     "vitepress": "^1.6.4",
     "vitepress-plugin-mermaid": "^2.0.17",
     "vue": "^3.5.41",
@@ -42,7 +42,7 @@
     "jest-expo": "~57.0.5",
     "react-test-renderer": "19.2.3",
     "test-renderer": "^1.2.0",
-    "typescript": "~6.0.3"
+    "typescript": "~7.0.2"
   },
   "scripts": {
     "start": "expo start",
@@ -77,6 +77,14 @@
         "lines": 70,
         "statements": 70
       }
+    }
+  },
+  "expo": {
+    "install": {
+      "exclude": [
+        "typescript",
+        "react-native-safe-area-context"
+      ]
     }
   }
 }
