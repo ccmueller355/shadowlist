@@ -4,7 +4,14 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    ignore:
+      - dependency-name: "@babel/core"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "babel-preset-expo"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@react-native/jest-preset"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
+
