@@ -1,3 +1,18 @@
+## v0.19.9 — 2026-09-26
+
+### Changed
+- Consolidated Dependabot updates:
+  - Bumped `react-native-safe-area-context` to `~5.10.0` (#107).
+  - Bumped `vue` to `^3.5.43` for documentation tooling (#107).
+  - Bumped `expo` to `~57.0.25` aligning with Expo SDK 57 patch requirements and achieving 18/18 `expo-doctor` diagnostic checks (#114).
+  - Bumped `@react-navigation/native` to `^7.4.1` and `@react-navigation/native-stack` to `^7.19.2` (#115).
+- Configured Dependabot ignore rules in `.github/dependabot.yml` for incompatible major updates (`@babel/core` v8, `babel-preset-expo` v58, and `@react-native/jest-preset`) (#108).
+
+## v0.19.8 — 2026-08-25
+
+### Changed
+- Consolidated compatible Dependabot updates (#101).
+
 ## v0.19.7 — 2026-08-25
 
 ### Changed
