@@ -10,6 +10,8 @@ updates:
       - dependency-name: "babel-preset-expo"
         update-types: ["version-update:semver-major"]
       - dependency-name: "@react-native/jest-preset"
+      - dependency-name: "react-native-screens"
+        update-types: ["version-update:semver-minor", "version-update:semver-major"]
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
