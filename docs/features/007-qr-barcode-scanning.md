@@ -62,14 +62,21 @@ As a runner navigating the aisles:
 - Clean dismissal via close button, abort button, or Android hardware back navigation.
 
 ### 3. Barcode Lookup Utility (`src/utils/barcodeLookup.ts`)
-- Queries Open Food Facts v0 REST API endpoint (`https://world.openfoodfacts.org/api/v0/product/{barcode}.json`).
+- Multi-source resolution chain:
+  1. Open Food Facts World REST API (`https://world.openfoodfacts.org/api/v0/product/{barcode}.json`).
+  2. Open Food Facts DE REST API (`https://de.openfoodfacts.org/api/v0/product/{barcode}.json`).
+  3. Open GTIN DB (`https://opengtindb.org/` EAN database) with HTML entity decoding.
+  4. Curated EU / German retail fallback catalog for common retail items (e.g. Landliebe Milch, Haribo, Nutella, Ritter Sport).
 - Includes custom `User-Agent: ShadowList - Mobile - Version 0.19.9`.
-- Handles localized names (`product_name`, `product_name_en`, `generic_name`) and brand metadata.
-- Graceful offline and failure handling returning structured `{ productName, brand, error }` payloads.
+- Integrates with local food resolution engine (`src/utils/foodLookup.ts`):
+  - Automatically derives `foodType` and `category` (via `FOOD_TYPE_TO_CATEGORY`, e.g. dairy -> 'Groceries').
+  - Supports both full product name and canonical clean name (`preferCleanName`), while preserving brand and category metadata.
+- Graceful offline and failure handling returning structured `{ productName, brand, cleanName, fullName, foodType, icon, category, source, error }` payloads.
 
-### 4. Input Integration (`src/components/AddItemBar.tsx`)
+### 4. Input & Screen Integration (`src/components/AddItemBar.tsx` & `src/screens/ListDetailScreen.tsx`)
 - Dynamic scan icon (`barcode-scan`) displayed when the search/add input field is empty.
 - Automatically hides scan icon and displays clear button (`close-circle`) when user types text.
+- Prefills resolved product name in `AddItemBar` and passes resolved category and foodType to `ListDetailScreen`.
 - Displays immediate toast notifications (`react-native-toast-message`) indicating lookup progress, success, or offline fallbacks.
 
 ### 5. Internationalization (`src/i18n/en.ts`, `src/i18n/de.ts`)

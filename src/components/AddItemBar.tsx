@@ -14,18 +14,37 @@ import { debounce } from '../utils/debounce';
 import { useTranslation } from '../i18n/useTranslation';
 import { useAppTheme } from '../theme/useTheme';
 import { BarcodeScannerModal } from './BarcodeScannerModal';
-import { lookupBarcode } from '../utils/barcodeLookup';
+import { lookupBarcode, BarcodeLookupResult } from '../utils/barcodeLookup';
+import { FoodType } from '../types';
 import Toast from 'react-native-toast-message';
+
+export interface AddItemPrefill {
+  foodType?: FoodType;
+  icon?: string | null;
+  category?: string | null;
+  brand?: string | null;
+  cleanName?: string | null;
+}
 
 interface Props {
   listId: string;
   recentBought: ShoppingItem[];
-  onAddItem: (description: string) => void;
+  onAddItem: (description: string, prefill?: AddItemPrefill) => void;
   onReAddItem: (itemId: string) => void;
   onSearchChange: (query: string) => void;
+  onScanItem?: (result: BarcodeLookupResult) => void;
+  preferCleanName?: boolean;
 }
 
-export function AddItemBar({ listId, recentBought, onAddItem, onReAddItem, onSearchChange }: Props) {
+export function AddItemBar({
+  listId,
+  recentBought,
+  onAddItem,
+  onReAddItem,
+  onSearchChange,
+  onScanItem,
+  preferCleanName = false,
+}: Props) {
   const { t: tr } = useTranslation();
   const cyberpunkTheme = useAppTheme();
   const inputRef = useRef<TextInput>(null);
@@ -34,6 +53,7 @@ export function AddItemBar({ listId, recentBought, onAddItem, onReAddItem, onSea
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [focused, setFocused] = useState(false);
   const [scannerOpen, setScannerOpen] = useState(false);
+  const [scannedPrefill, setScannedPrefill] = useState<AddItemPrefill | null>(null);
 
   const debouncedSuggest = useMemo(
     () =>
@@ -71,6 +91,7 @@ export function AddItemBar({ listId, recentBought, onAddItem, onReAddItem, onSea
     setText('');
     setSuggestions([]);
     setShowSuggestions(false);
+    setScannedPrefill(null);
     debouncedSuggest.cancel();
     debouncedSearch.cancel();
     onSearchChange('');
@@ -86,12 +107,24 @@ export function AddItemBar({ listId, recentBought, onAddItem, onReAddItem, onSea
       });
 
       try {
-        const result = await lookupBarcode(barcode);
+        const result = preferCleanName
+          ? await lookupBarcode(barcode, { preferCleanName: true })
+          : await lookupBarcode(barcode);
         if (result.productName) {
-          const itemText = result.brand
-            ? `${result.brand} ${result.productName}`
-            : result.productName;
+          const itemText =
+            result.brand && !result.productName.toLowerCase().startsWith(result.brand.toLowerCase())
+              ? `${result.brand} ${result.productName}`
+              : result.productName;
           handleChange(itemText);
+          const prefill: AddItemPrefill = {
+            foodType: result.foodType,
+            icon: result.icon,
+            category: result.category,
+            brand: result.brand,
+            cleanName: result.cleanName,
+          };
+          setScannedPrefill(prefill);
+          onScanItem?.(result);
           Toast.show({
             type: 'success',
             text1: tr('scanner.found', { name: itemText }),
@@ -99,6 +132,7 @@ export function AddItemBar({ listId, recentBought, onAddItem, onReAddItem, onSea
           });
         } else {
           handleChange(barcode);
+          setScannedPrefill(null);
           Toast.show({
             type: 'info',
             text1: tr('scanner.notFound'),
@@ -107,6 +141,7 @@ export function AddItemBar({ listId, recentBought, onAddItem, onReAddItem, onSea
         }
       } catch {
         handleChange(barcode);
+        setScannedPrefill(null);
         Toast.show({
           type: 'error',
           text1: tr('scanner.error'),
@@ -114,13 +149,18 @@ export function AddItemBar({ listId, recentBought, onAddItem, onReAddItem, onSea
         });
       }
     },
-    [handleChange, tr]
+    [handleChange, tr, preferCleanName, onScanItem]
   );
 
   const handleSubmit = () => {
     const trimmed = text.trim();
     if (!trimmed) return;
-    onAddItem(trimmed);
+    if (scannedPrefill) {
+      onAddItem(trimmed, scannedPrefill);
+    } else {
+      onAddItem(trimmed);
+    }
+    setScannedPrefill(null);
     clearInput();
   };
 

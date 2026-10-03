@@ -1,5 +1,5 @@
 // ─── [ NEURAL DECK v4.6 $ AI::GENERATED ] ───
-import { lookupBarcode } from '../utils/barcodeLookup';
+import { lookupBarcode, parseOpenGtinDbResponse, EU_BARCODE_FALLBACKS } from '../utils/barcodeLookup';
 
 describe('barcodeLookup', () => {
   const originalFetch = global.fetch;
@@ -192,5 +192,122 @@ describe('barcodeLookup', () => {
         }),
       })
     );
+  });
+
+  // ── EU / German Barcode Lookup & Local Category Resolution Tests ───────
+
+  it('resolves test barcode 4008452027466 with EU product info and local dairy category', async () => {
+    // When Open Food Facts returns not found (status 0)
+    (global.fetch as jest.Mock).mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ status: 0 }),
+    });
+
+    const result = await lookupBarcode('4008452027466');
+    expect(result.error).toBeUndefined();
+    expect(result.productName).toBe('Landliebe Haltbare fettarme Milch 1.5% 1L');
+    expect(result.brand).toBe('Landliebe');
+    expect(result.cleanName).toBe('Milch');
+    expect(result.foodType).toBe('dairy');
+    expect(result.category).toBe('Groceries');
+    expect(result.icon).toBeTruthy();
+  });
+
+  it('resolves test barcode 4008452027442 with EU product info and local dairy category', async () => {
+    (global.fetch as jest.Mock).mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ status: 0 }),
+    });
+
+    const result = await lookupBarcode('4008452027442');
+    expect(result.error).toBeUndefined();
+    expect(result.productName).toBe('Landliebe Haltbare fettarme Milch 1.5% 1L');
+    expect(result.brand).toBe('Landliebe');
+    expect(result.cleanName).toBe('Milch');
+    expect(result.foodType).toBe('dairy');
+    expect(result.category).toBe('Groceries');
+  });
+
+  it('supports preferCleanName option for concise product naming', async () => {
+    (global.fetch as jest.Mock).mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ status: 0 }),
+    });
+
+    const result = await lookupBarcode('4008452027466', { preferCleanName: true });
+    expect(result.error).toBeUndefined();
+    expect(result.productName).toBe('Milch');
+    expect(result.fullName).toBe('Landliebe Haltbare fettarme Milch 1.5% 1L');
+    expect(result.brand).toBe('Landliebe');
+    expect(result.foodType).toBe('dairy');
+    expect(result.category).toBe('Groceries');
+  });
+
+  it('falls back to Open Food Facts DE when world endpoint returns not found', async () => {
+    (global.fetch as jest.Mock)
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ status: 0 }),
+      })
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          status: 1,
+          product: {
+            product_name_de: 'Bio Vollmilch 3.8%',
+            brands: 'Berchtesgadener Land',
+          },
+        }),
+      });
+
+    const result = await lookupBarcode('4040404040404');
+    expect(result.error).toBeUndefined();
+    expect(result.productName).toBe('Bio Vollmilch 3.8%');
+    expect(result.brand).toBe('Berchtesgadener Land');
+    expect(result.cleanName).toBe('Milch');
+    expect(result.foodType).toBe('dairy');
+    expect(result.category).toBe('Groceries');
+  });
+
+  it('falls back to Open GTIN DB when Open Food Facts endpoints fail', async () => {
+    (global.fetch as jest.Mock)
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ status: 0 }),
+      })
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ status: 0 }),
+      })
+      .mockResolvedValueOnce({
+        ok: true,
+        text: async () =>
+          'error=0\n---\nname=Nat&uuml;rliches Mineralwasser\ndetailname=Bad Vilbeler RIED Quelle\nvendor=H. Kroner GmbH & CO. KG\n',
+      });
+
+    const result = await lookupBarcode('4001234567890');
+    expect(result.error).toBeUndefined();
+    expect(result.productName).toBe('Bad Vilbeler RIED Quelle');
+    expect(result.brand).toBe('H. Kroner GmbH & CO. KG');
+    expect(result.cleanName).toBe('Wasser');
+    expect(result.foodType).toBe('beverage');
+    expect(result.category).toBe('Beverages');
+  });
+
+  it('correctly parses Open GTIN DB response with HTML entities', () => {
+    const raw =
+      'error=0\n---\nname=K&auml;se Sp&auml;tzle\ndetailname=Original K&auml;sesp&auml;tzle 400g\nvendor=B&uuml;rger GmbH\n';
+    const parsed = parseOpenGtinDbResponse(raw);
+    expect(parsed).toEqual({
+      productName: 'Original Käsespätzle 400g',
+      brand: 'Bürger GmbH',
+      genericName: 'Käse Spätzle',
+    });
+  });
+
+  it('returns null from parseOpenGtinDbResponse on error code', () => {
+    const raw = 'error=1\n---\n';
+    const parsed = parseOpenGtinDbResponse(raw);
+    expect(parsed).toBeNull();
   });
 });
