@@ -1,7 +1,8 @@
 // ─── [ NEURAL DECK v4.6 $ AI::GENERATED ] ───
 import './component-test-setup';
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react-native';
+import { render, screen, fireEvent, act } from '@testing-library/react-native';
+import Toast from 'react-native-toast-message';
 import { AddItemBar } from '../components/AddItemBar';
 import { ItemRow } from '../components/ItemRow';
 import { SuggestionDialog } from '../components/SuggestionDialog';
@@ -79,6 +80,102 @@ describe('AddItemBar', () => {
     const input = screen.getByPlaceholderText('Search or add item...');
     expect(input.props.autoComplete).toBe('off');
     expect(input.props.autoCorrect).toBe(false);
+  });
+
+  it('renders barcode scan button when input is empty', () => {
+    render(<AddItemBar {...defaultProps} />);
+    expect(screen.getByTestId('barcode-scan-button')).toBeTruthy();
+    expect(screen.getByText('[icon:barcode-scan]')).toBeTruthy();
+  });
+
+  it('hides barcode scan button and shows clear button when input is non-empty', () => {
+    render(<AddItemBar {...defaultProps} />);
+    const input = screen.getByPlaceholderText('Search or add item...');
+    fireEvent.changeText(input, 'Cyberpunk Item');
+    expect(screen.queryByTestId('barcode-scan-button')).toBeNull();
+    expect(screen.getByTestId('clear-input-button')).toBeTruthy();
+  });
+
+  it('opens barcode scanner modal when scan button is pressed', () => {
+    render(<AddItemBar {...defaultProps} />);
+    fireEvent.press(screen.getByTestId('barcode-scan-button'));
+    expect(screen.getByTestId('camera-view')).toBeTruthy();
+    expect(screen.getByText('Barcode Scanner')).toBeTruthy();
+  });
+
+  it('handles barcode scan with brand and product name', async () => {
+    const mockLookup = jest.spyOn(require('../utils/barcodeLookup'), 'lookupBarcode')
+      .mockResolvedValueOnce({ brand: 'Oatly', productName: 'Oat Milk Barista' });
+
+    render(<AddItemBar {...defaultProps} />);
+    const input = screen.getByPlaceholderText('Search or add item...');
+
+    fireEvent.press(screen.getByTestId('barcode-scan-button'));
+    const cameraView = screen.getByTestId('camera-view');
+
+    await act(async () => {
+      cameraView.props.onBarcodeScanned({ data: '7394376616037', type: 'ean13' });
+    });
+
+    expect(mockLookup).toHaveBeenCalledWith('7394376616037');
+    expect(input.props.value).toBe('Oatly Oat Milk Barista');
+    expect(Toast.show).toHaveBeenCalledWith(
+      expect.objectContaining({
+        type: 'success',
+        text1: 'Found: Oatly Oat Milk Barista',
+      })
+    );
+    mockLookup.mockRestore();
+  });
+
+  it('handles barcode scan with product name only (no brand)', async () => {
+    const mockLookup = jest.spyOn(require('../utils/barcodeLookup'), 'lookupBarcode')
+      .mockResolvedValueOnce({ brand: null, productName: 'Sourdough Bread' });
+
+    render(<AddItemBar {...defaultProps} />);
+    const input = screen.getByPlaceholderText('Search or add item...');
+
+    fireEvent.press(screen.getByTestId('barcode-scan-button'));
+    const cameraView = screen.getByTestId('camera-view');
+
+    await act(async () => {
+      cameraView.props.onBarcodeScanned({ data: '12345678', type: 'ean8' });
+    });
+
+    expect(mockLookup).toHaveBeenCalledWith('12345678');
+    expect(input.props.value).toBe('Sourdough Bread');
+    expect(Toast.show).toHaveBeenCalledWith(
+      expect.objectContaining({
+        type: 'success',
+        text1: 'Found: Sourdough Bread',
+      })
+    );
+    mockLookup.mockRestore();
+  });
+
+  it('handles barcode scan when product is not found', async () => {
+    const mockLookup = jest.spyOn(require('../utils/barcodeLookup'), 'lookupBarcode')
+      .mockResolvedValueOnce({ brand: null, productName: null, error: 'Product not found' });
+
+    render(<AddItemBar {...defaultProps} />);
+    const input = screen.getByPlaceholderText('Search or add item...');
+
+    fireEvent.press(screen.getByTestId('barcode-scan-button'));
+    const cameraView = screen.getByTestId('camera-view');
+
+    await act(async () => {
+      cameraView.props.onBarcodeScanned({ data: '99999999', type: 'ean8' });
+    });
+
+    expect(mockLookup).toHaveBeenCalledWith('99999999');
+    expect(input.props.value).toBe('99999999');
+    expect(Toast.show).toHaveBeenCalledWith(
+      expect.objectContaining({
+        type: 'info',
+        text1: 'Product not found',
+      })
+    );
+    mockLookup.mockRestore();
   });
 });
 
