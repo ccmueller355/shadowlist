@@ -13,6 +13,9 @@ import { ShoppingItem } from '../types';
 import { debounce } from '../utils/debounce';
 import { useTranslation } from '../i18n/useTranslation';
 import { useAppTheme } from '../theme/useTheme';
+import { BarcodeScannerModal } from './BarcodeScannerModal';
+import { lookupBarcode } from '../utils/barcodeLookup';
+import Toast from 'react-native-toast-message';
 
 interface Props {
   listId: string;
@@ -30,6 +33,7 @@ export function AddItemBar({ listId, recentBought, onAddItem, onReAddItem, onSea
   const [suggestions, setSuggestions] = useState<ShoppingItem[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [focused, setFocused] = useState(false);
+  const [scannerOpen, setScannerOpen] = useState(false);
 
   const debouncedSuggest = useMemo(
     () =>
@@ -71,6 +75,47 @@ export function AddItemBar({ listId, recentBought, onAddItem, onReAddItem, onSea
     debouncedSearch.cancel();
     onSearchChange('');
   }, [onSearchChange, debouncedSuggest, debouncedSearch]);
+
+  const handleScanBarcode = useCallback(
+    async (barcode: string) => {
+      setScannerOpen(false);
+      Toast.show({
+        type: 'info',
+        text1: tr('scanner.lookingUp'),
+        position: 'bottom',
+      });
+
+      try {
+        const result = await lookupBarcode(barcode);
+        if (result.productName) {
+          const itemText = result.brand
+            ? `${result.brand} ${result.productName}`
+            : result.productName;
+          handleChange(itemText);
+          Toast.show({
+            type: 'success',
+            text1: tr('scanner.found', { name: itemText }),
+            position: 'bottom',
+          });
+        } else {
+          handleChange(barcode);
+          Toast.show({
+            type: 'info',
+            text1: tr('scanner.notFound'),
+            position: 'bottom',
+          });
+        }
+      } catch {
+        handleChange(barcode);
+        Toast.show({
+          type: 'error',
+          text1: tr('scanner.error'),
+          position: 'bottom',
+        });
+      }
+    },
+    [handleChange, tr]
+  );
 
   const handleSubmit = () => {
     const trimmed = text.trim();
@@ -115,10 +160,26 @@ export function AddItemBar({ listId, recentBought, onAddItem, onReAddItem, onSea
           }}
         />
         {showFilterBadge ? (
-          <TouchableOpacity onPress={clearInput} style={styles.clearButton}>
+          <TouchableOpacity
+            testID="clear-input-button"
+            accessibilityLabel="Clear input"
+            accessibilityRole="button"
+            onPress={clearInput}
+            style={styles.clearButton}
+          >
             <MaterialCommunityIcons name="close-circle" size={20} color={cyberpunkTheme.colors.textSecondary} />
           </TouchableOpacity>
-        ) : null}
+        ) : (
+          <TouchableOpacity
+            testID="barcode-scan-button"
+            accessibilityLabel="Scan barcode"
+            accessibilityRole="button"
+            onPress={() => setScannerOpen(true)}
+            style={styles.scanButton}
+          >
+            <MaterialCommunityIcons name="barcode-scan" size={20} color={cyberpunkTheme.colors.primary} />
+          </TouchableOpacity>
+        )}
         <TouchableOpacity onPress={handleSubmit} style={styles.addButton}>
           <MaterialCommunityIcons name="plus" size={22} color="#0a0a0a" />
         </TouchableOpacity>
@@ -147,6 +208,13 @@ export function AddItemBar({ listId, recentBought, onAddItem, onReAddItem, onSea
           ))}
         </View>
       )}
+
+      {/* Barcode / QR Scanner Modal */}
+      <BarcodeScannerModal
+        visible={scannerOpen}
+        onClose={() => setScannerOpen(false)}
+        onScan={handleScanBarcode}
+      />
     </View>
   );
 }
@@ -175,6 +243,11 @@ const styles = StyleSheet.create({
   },
   clearButton: {
     padding: 2,
+  },
+  scanButton: {
+    padding: 4,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   addButton: {
     width: 34,

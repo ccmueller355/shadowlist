@@ -35,6 +35,11 @@ describe('i18n', () => {
     // General
     'general.save', 'general.cancel', 'general.delete',
     'general.addItemPlaceholder', 'general.emptyListMessage',
+    // Scanner
+    'scanner.title', 'scanner.scanning', 'scanner.permissionTitle',
+    'scanner.permissionMessage', 'scanner.grantPermission', 'scanner.close',
+    'scanner.torchOn', 'scanner.torchOff', 'scanner.lookingUp',
+    'scanner.notFound', 'scanner.found', 'scanner.error',
     // Categories
     'category.Groceries', 'category.Beverages', 'category.Frozen',
     'category.Bakery', 'category.Deli', 'category.International', 'category.Snacks',
