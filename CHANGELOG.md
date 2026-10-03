@@ -1,3 +1,13 @@
+## v0.19.10 — 2026-10-03
+
+### Changed
+- Consolidated Dependabot updates:
+  - Bumped `expo` to `~57.0.26` to satisfy dynamic `expo-doctor` diagnostic requirements (#121).
+  - Bumped `@react-navigation/native` to `^7.5.0` (#122).
+  - Bumped `react-native-toast-message` to `^2.5.2` (#120).
+  - Bumped `test-renderer` to `^1.3.0` (#119).
+- Configured Dependabot ignore rules in `.github/dependabot.yml` for `react-native-screens` (pinned to `~4.26.0` by Expo SDK 57) (#118).
+
 ## v0.19.9 — 2026-09-26
 
 ### Changed
