@@ -21,7 +21,8 @@ import DraggableFlatList, {
 } from 'react-native-draggable-flatlist';
 import { useStore } from '../store/useStore';
 import { FoodType, ShoppingItem } from '../types';
-import { AddItemBar } from '../components/AddItemBar';
+import { AddItemBar, AddItemPrefill } from '../components/AddItemBar';
+import { BarcodeLookupResult } from '../utils/barcodeLookup';
 import { ItemRow } from '../components/ItemRow';
 import { EditModal } from '../components/EditModal';
 import { SuggestionDialog } from '../components/SuggestionDialog';
@@ -278,8 +279,22 @@ export function ListDetailScreen({ route, navigation }: Props) {
 
   // Handlers
   // Type + Enter: dedup active items, re-add from bought, or create new
+  const handleScanItem = useCallback((result: BarcodeLookupResult) => {
+    if (result.productName) {
+      if (result.foodType && result.foodType !== 'non_food') {
+        setAddItemFoodType(result.foodType);
+        setAddItemIcon(result.icon ?? undefined);
+        setAddItemCategory(
+          result.category !== undefined
+            ? result.category
+            : (FOOD_TYPE_TO_CATEGORY[result.foodType] ?? null)
+        );
+      }
+    }
+  }, []);
+
   const handleAddItem = useCallback(
-    (description: string) => {
+    (description: string, prefill?: AddItemPrefill) => {
       const lowerDesc = description.toLowerCase();
       // 1. Already in active list? Skip
       const inActive = activeItems.find(
@@ -306,15 +321,25 @@ export function ListDetailScreen({ route, navigation }: Props) {
         return;
       }
       // 3. New item — resolve name + open EditModal for food type selection
-      const resolution = resolveName(description, settings.lang, foodNameIndex);
-      if (resolution.source !== 'none') {
-        setAddItemFoodType(resolution.foodType);
-        setAddItemIcon(resolution.icon ?? undefined);
-        setAddItemCategory(resolution.foodType ? FOOD_TYPE_TO_CATEGORY[resolution.foodType] : null);
+      if (prefill?.foodType && prefill.foodType !== 'non_food') {
+        setAddItemFoodType(prefill.foodType);
+        setAddItemIcon(prefill.icon ?? undefined);
+        setAddItemCategory(
+          prefill.category !== undefined
+            ? prefill.category
+            : (FOOD_TYPE_TO_CATEGORY[prefill.foodType] ?? null)
+        );
       } else {
-        setAddItemFoodType(undefined);
-        setAddItemIcon(undefined);
-        setAddItemCategory(undefined);
+        const resolution = resolveName(description, settings.lang, foodNameIndex);
+        if (resolution.source !== 'none' && resolution.foodType !== 'non_food') {
+          setAddItemFoodType(resolution.foodType);
+          setAddItemIcon(resolution.icon ?? undefined);
+          setAddItemCategory(resolution.foodType ? FOOD_TYPE_TO_CATEGORY[resolution.foodType] : null);
+        } else {
+          setAddItemFoodType(undefined);
+          setAddItemIcon(undefined);
+          setAddItemCategory(undefined);
+        }
       }
       setAddItemDescription(description);
       setEditItem(null);
@@ -449,6 +474,7 @@ export function ListDetailScreen({ route, navigation }: Props) {
           onAddItem={handleAddItem}
           onReAddItem={handleReAddItem}
           onSearchChange={setSearch}
+          onScanItem={handleScanItem}
         />
       </View>
 

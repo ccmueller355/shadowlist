@@ -37,7 +37,13 @@
     },
     "plugins": [
       "expo-splash-screen",
-      "expo-font"
+      "expo-font",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow ShadowList to access your camera to scan barcodes."
+        }
+      ]
     ]
   }
 }

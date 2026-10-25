@@ -22,6 +22,33 @@ jest.mock('react-native-safe-area-context', () => ({
   SafeAreaProvider: ({ children }: any) => require('react').createElement('View', null, children),
 }));
 
+// Mock expo-camera
+jest.mock('expo-camera', () => {
+  const React = require('react');
+  const { View, Text } = require('react-native');
+  const CameraView = React.forwardRef(({ children, ...props }: any, ref: any) =>
+    React.createElement(
+      View,
+      { testID: 'camera-view', ref, ...props },
+      React.createElement(Text, null, '[CameraView]'),
+      children
+    )
+  );
+  return {
+    CameraView,
+    useCameraPermissions: jest.fn(() => [
+      { granted: true, status: 'granted', canAskAgain: true },
+      jest.fn().mockResolvedValue({ granted: true, status: 'granted', canAskAgain: true }),
+    ]),
+  };
+});
+
+// Mock react-native-toast-message
+jest.mock('react-native-toast-message', () => ({
+  show: jest.fn(),
+  hide: jest.fn(),
+}));
+
 // Mock AsyncStorage
 jest.mock('@react-native-async-storage/async-storage', () => ({
   setItem: jest.fn(() => Promise.resolve()),

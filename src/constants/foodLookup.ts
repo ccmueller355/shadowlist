@@ -216,7 +216,7 @@ export interface ResolutionResult {
 
 // --- Name resolver ---------------------------------------------------------
 
-type FoodNameIndex = Map<string, { foodType: FoodType; icon: string }>;
+export type FoodNameIndex = Map<string, { foodType: FoodType; icon: string }>;
 
 function matchExact(
   normalized: string,
@@ -293,6 +293,34 @@ export function resolveName(
   const fallbackRegexResult = matchRegex(normalized, fallbackRegex);
   if (fallbackRegexResult) {
     return { ...fallbackRegexResult, source: 'cross_lang' };
+  }
+
+  // Layer 4b — Sub-word / retail compound extraction (e.g. "Landliebe Haltbare fettarme Milch 1.5% (1L)")
+  const tokens = normalized
+    .replace(/\(.*?\)/g, ' ')
+    .replace(/\[.*?\]/g, ' ')
+    .replace(/\b\d+([.,]\d+)?\s*(g|kg|ml|l|liter|cl|oz|lb|%)\b/gi, ' ')
+    .replace(/[^\p{L}\s]/gu, ' ')
+    .trim()
+    .split(/\s+/)
+    .filter((w) => w.length > 2);
+
+  if (tokens.length > 1) {
+    for (let i = tokens.length - 1; i >= 0; i--) {
+      const word = tokens[i];
+      const wordLearned = foodNameIndex.get(word);
+      if (wordLearned) {
+        return { foodType: wordLearned.foodType, icon: wordLearned.icon, source: 'learned' };
+      }
+      const wordExact = matchExact(word, primaryLookup);
+      if (wordExact) return wordExact;
+      const wordRegex = matchRegex(word, primaryRegex);
+      if (wordRegex) return wordRegex;
+      const wordFallbackExact = matchExact(word, fallbackLookup);
+      if (wordFallbackExact) return { ...wordFallbackExact, source: 'cross_lang' };
+      const wordFallbackRegex = matchRegex(word, fallbackRegex);
+      if (wordFallbackRegex) return { ...wordFallbackRegex, source: 'cross_lang' };
+    }
   }
 
   // Layer 5 — No match

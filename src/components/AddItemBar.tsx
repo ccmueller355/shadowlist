@@ -13,16 +13,38 @@ import { ShoppingItem } from '../types';
 import { debounce } from '../utils/debounce';
 import { useTranslation } from '../i18n/useTranslation';
 import { useAppTheme } from '../theme/useTheme';
+import { BarcodeScannerModal } from './BarcodeScannerModal';
+import { lookupBarcode, BarcodeLookupResult } from '../utils/barcodeLookup';
+import { FoodType } from '../types';
+import Toast from 'react-native-toast-message';
+
+export interface AddItemPrefill {
+  foodType?: FoodType;
+  icon?: string | null;
+  category?: string | null;
+  brand?: string | null;
+  cleanName?: string | null;
+}
 
 interface Props {
   listId: string;
   recentBought: ShoppingItem[];
-  onAddItem: (description: string) => void;
+  onAddItem: (description: string, prefill?: AddItemPrefill) => void;
   onReAddItem: (itemId: string) => void;
   onSearchChange: (query: string) => void;
+  onScanItem?: (result: BarcodeLookupResult) => void;
+  preferCleanName?: boolean;
 }
 
-export function AddItemBar({ listId, recentBought, onAddItem, onReAddItem, onSearchChange }: Props) {
+export function AddItemBar({
+  listId,
+  recentBought,
+  onAddItem,
+  onReAddItem,
+  onSearchChange,
+  onScanItem,
+  preferCleanName = false,
+}: Props) {
   const { t: tr } = useTranslation();
   const cyberpunkTheme = useAppTheme();
   const inputRef = useRef<TextInput>(null);
@@ -30,6 +52,8 @@ export function AddItemBar({ listId, recentBought, onAddItem, onReAddItem, onSea
   const [suggestions, setSuggestions] = useState<ShoppingItem[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [focused, setFocused] = useState(false);
+  const [scannerOpen, setScannerOpen] = useState(false);
+  const [scannedPrefill, setScannedPrefill] = useState<AddItemPrefill | null>(null);
 
   const debouncedSuggest = useMemo(
     () =>
@@ -67,15 +91,76 @@ export function AddItemBar({ listId, recentBought, onAddItem, onReAddItem, onSea
     setText('');
     setSuggestions([]);
     setShowSuggestions(false);
+    setScannedPrefill(null);
     debouncedSuggest.cancel();
     debouncedSearch.cancel();
     onSearchChange('');
   }, [onSearchChange, debouncedSuggest, debouncedSearch]);
 
+  const handleScanBarcode = useCallback(
+    async (barcode: string) => {
+      setScannerOpen(false);
+      Toast.show({
+        type: 'info',
+        text1: tr('scanner.lookingUp'),
+        position: 'bottom',
+      });
+
+      try {
+        const result = preferCleanName
+          ? await lookupBarcode(barcode, { preferCleanName: true })
+          : await lookupBarcode(barcode);
+        if (result.productName) {
+          const itemText =
+            result.brand && !result.productName.toLowerCase().startsWith(result.brand.toLowerCase())
+              ? `${result.brand} ${result.productName}`
+              : result.productName;
+          handleChange(itemText);
+          const prefill: AddItemPrefill = {
+            foodType: result.foodType,
+            icon: result.icon,
+            category: result.category,
+            brand: result.brand,
+            cleanName: result.cleanName,
+          };
+          setScannedPrefill(prefill);
+          onScanItem?.(result);
+          Toast.show({
+            type: 'success',
+            text1: tr('scanner.found', { name: itemText }),
+            position: 'bottom',
+          });
+        } else {
+          handleChange(barcode);
+          setScannedPrefill(null);
+          Toast.show({
+            type: 'info',
+            text1: tr('scanner.notFound'),
+            position: 'bottom',
+          });
+        }
+      } catch {
+        handleChange(barcode);
+        setScannedPrefill(null);
+        Toast.show({
+          type: 'error',
+          text1: tr('scanner.error'),
+          position: 'bottom',
+        });
+      }
+    },
+    [handleChange, tr, preferCleanName, onScanItem]
+  );
+
   const handleSubmit = () => {
     const trimmed = text.trim();
     if (!trimmed) return;
-    onAddItem(trimmed);
+    if (scannedPrefill) {
+      onAddItem(trimmed, scannedPrefill);
+    } else {
+      onAddItem(trimmed);
+    }
+    setScannedPrefill(null);
     clearInput();
   };
 
@@ -115,10 +200,26 @@ export function AddItemBar({ listId, recentBought, onAddItem, onReAddItem, onSea
           }}
         />
         {showFilterBadge ? (
-          <TouchableOpacity onPress={clearInput} style={styles.clearButton}>
+          <TouchableOpacity
+            testID="clear-input-button"
+            accessibilityLabel="Clear input"
+            accessibilityRole="button"
+            onPress={clearInput}
+            style={styles.clearButton}
+          >
             <MaterialCommunityIcons name="close-circle" size={20} color={cyberpunkTheme.colors.textSecondary} />
           </TouchableOpacity>
-        ) : null}
+        ) : (
+          <TouchableOpacity
+            testID="barcode-scan-button"
+            accessibilityLabel="Scan barcode"
+            accessibilityRole="button"
+            onPress={() => setScannerOpen(true)}
+            style={styles.scanButton}
+          >
+            <MaterialCommunityIcons name="barcode-scan" size={20} color={cyberpunkTheme.colors.primary} />
+          </TouchableOpacity>
+        )}
         <TouchableOpacity onPress={handleSubmit} style={styles.addButton}>
           <MaterialCommunityIcons name="plus" size={22} color="#0a0a0a" />
         </TouchableOpacity>
@@ -147,6 +248,13 @@ export function AddItemBar({ listId, recentBought, onAddItem, onReAddItem, onSea
           ))}
         </View>
       )}
+
+      {/* Barcode / QR Scanner Modal */}
+      <BarcodeScannerModal
+        visible={scannerOpen}
+        onClose={() => setScannerOpen(false)}
+        onScan={handleScanBarcode}
+      />
     </View>
   );
 }
@@ -175,6 +283,11 @@ const styles = StyleSheet.create({
   },
   clearButton: {
     padding: 2,
+  },
+  scanButton: {
+    padding: 4,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   addButton: {
     width: 34,
