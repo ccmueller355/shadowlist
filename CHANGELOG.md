@@ -1,3 +1,16 @@
+## v0.19.12 — 2026-10-25
+
+### Added
+- QR and Barcode scanner (`expo-camera`) with Open Food Facts and EU Barcode DB multi-source lookup and local category resolution (#7, #124).
+
+### Changed
+- Consolidated Dependabot patch updates:
+  - Bumped `zustand` to `^5.0.16` (#143).
+  - Bumped `test-renderer` to `^1.3.1` (#145).
+  - Bumped `vue` to `^3.5.44` (#146).
+  - Bumped `@react-navigation/native` to `^7.5.1` (#147).
+- Frozen Expo SDK 57 locked dependencies and incompatible major updates (`@testing-library/react-native` v14) in `.github/dependabot.yml` (#142, #144).
+
 ## v0.19.11 — 2026-10-25
 
 ### Changed
