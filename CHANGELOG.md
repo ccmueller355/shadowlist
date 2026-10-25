@@ -1,3 +1,15 @@
+## v0.19.11 — 2026-10-25
+
+### Changed
+- Consolidated Dependabot updates:
+  - Bumped `expo` to `~57.0.31`, `expo-dev-client` to `~57.0.20`, `expo-splash-screen` to `~57.0.10`, and `jest-expo` to `~57.0.6` to satisfy dynamic `expo-doctor` diagnostic requirements (21/21 checks).
+  - Bumped `react-native-safe-area-context` to `^5.10.1` (#125).
+  - Bumped `@react-navigation/native-stack` to `^7.20.0` (#126).
+  - Bumped `jest` to `^30.5.2` and `@types/jest` to `^30.0.0` (#127).
+  - Bumped `mermaid` to `^12.0.0` (#129).
+  - Bumped GitHub Actions `gradle/actions` to v6 (#132), `actions/upload-artifact` to v7 (#133), and `actions/setup-java` to v6 (#134).
+- Configured Dependabot ignore rules in `.github/dependabot.yml` for `react-native-reanimated` (pinned to `4.5.1` by Expo SDK 57 / `react-native-worklets@0.10.1`) (#128).
+
 ## v0.19.10 — 2026-10-03
 
 ### Changed
