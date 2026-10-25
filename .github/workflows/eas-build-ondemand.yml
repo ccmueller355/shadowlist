@@ -35,19 +35,19 @@ jobs:
         run: |
           echo "pr_number=$PR_NUMBER" >> $GITHUB_OUTPUT
 
-          if [[ "$LABEL_NAME" == "build:preview" ]] || [[ "$COMMENT_BODY" == *"/build-preview"* ]]; then
+          if [[ "$LABEL_NAME" == "build:preview" || "$LABEL_NAME" == "build_preview" ]] || [[ "$COMMENT_BODY" == *"/build-preview"* ]]; then
              echo "build_preview=true" >> $GITHUB_OUTPUT
           fi
 
-          if [[ "$LABEL_NAME" == "build:dev" ]] || [[ "$COMMENT_BODY" == *"/build-dev"* ]]; then
+          if [[ "$LABEL_NAME" == "build:dev" || "$LABEL_NAME" == "build_dev" ]] || [[ "$COMMENT_BODY" == *"/build-dev"* ]]; then
              echo "build_dev=true" >> $GITHUB_OUTPUT
           fi
 
-          if [[ "$LABEL_NAME" == "build:production" ]] || [[ "$COMMENT_BODY" == *"/build-production"* ]]; then
+          if [[ "$LABEL_NAME" == "build:production" || "$LABEL_NAME" == "build_production" || "$LABEL_NAME" == "build_prod" ]] || [[ "$COMMENT_BODY" == *"/build-production"* ]]; then
              echo "build_prod=true" >> $GITHUB_OUTPUT
           fi
 
-          if [[ "$LABEL_NAME" == "eas:update" ]] || [[ "$COMMENT_BODY" == *"/eas-update"* ]]; then
+          if [[ "$LABEL_NAME" == "eas:update" || "$LABEL_NAME" == "eas_update" ]] || [[ "$COMMENT_BODY" == *"/eas-update"* ]]; then
              echo "eas_update=true" >> $GITHUB_OUTPUT
           fi
 
