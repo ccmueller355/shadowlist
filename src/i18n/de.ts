@@ -59,6 +59,10 @@ export const de = {
       de: 'Deutsch',
     },
     clearAllData: 'Alle Daten löschen',
+    backup: {
+      export: 'Backup exportieren',
+      import: 'Backup importieren',
+    },
   },
   edit: {
     title: 'Artikel bearbeiten',

@@ -1,4 +1,6 @@
 // ─── [ NEURAL DECK v4.6 $ AI::GENERATED ] ───
+export * from './backup';
+
 export interface ShoppingList {
   id: string;
   name: string;

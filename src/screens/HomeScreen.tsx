@@ -42,6 +42,8 @@ export function HomeScreen({ navigation }: Props) {
   const setLang = useStore((s) => s.setLang);
   const clearAll = useStore((s) => s.clearAll);
   const generateExtremeData = useStore((s) => s.generateExtremeData);
+  const exportData = useStore((s) => s.exportData);
+  const importData = useStore((s) => s.importData);
   const reorderLists = useStore((s) => s.reorderLists);
 
   const [showNewListInput, setShowNewListInput] = useState(false);
@@ -189,6 +191,8 @@ export function HomeScreen({ navigation }: Props) {
         onClearAll={clearAll}
         onGenerateTestData={generateTestData}
         onGenerateExtremeData={generateExtremeData}
+        onExportBackup={exportData}
+        onImportBackup={importData}
         onClose={() => setShowSettings(false)}
       />
     </KeyboardAvoidingView>
