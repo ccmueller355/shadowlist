@@ -1,3 +1,9 @@
+## v0.19.13 — 2026-10-26
+
+### Added
+- Full JSON Backup Export and Import with schema versioning (`v2`), automatic schema migration on import, and **Replace All Data** vs. **Merge with Existing** modes (#136, #149).
+- Direct file system `.json` export and import (`expo-file-system`, `expo-document-picker`, `expo-sharing`) — save backups directly to a device folder on Android or share as a `.json` file attachment, and pick `.json` backup files from device storage on import (#150).
+
 ## v0.19.12 — 2026-10-25
 
 ### Added
