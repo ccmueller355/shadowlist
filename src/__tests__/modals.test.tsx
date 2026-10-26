@@ -146,6 +146,8 @@ describe('SettingsModal', () => {
     onDietChange: jest.fn(),
     onLangChange: jest.fn(),
     onClearAll: jest.fn(),
+    onExportBackup: jest.fn(() => Promise.resolve('{"app":"shadowlist"}')),
+    onImportBackup: jest.fn(() => Promise.resolve()),
     onClose: jest.fn(),
   };
 
@@ -208,5 +210,45 @@ describe('SettingsModal', () => {
   it('renders clear all data button', () => {
     render(<SettingsModal {...defaultProps} />);
     expect(screen.getByLabelText('Clear All Data')).toBeTruthy();
+  });
+
+  it('exports backup to file via share sheet', async () => {
+    const Sharing = require('expo-sharing');
+    const fs = require('expo-file-system');
+    const onExportBackup = jest.fn(() => Promise.resolve('{"app":"shadowlist","schemaVersion":2}'));
+    render(<SettingsModal {...defaultProps} onExportBackup={onExportBackup} />);
+
+    fireEvent.press(screen.getByLabelText('Export Backup'));
+    // Wait for async export handler
+    await new Promise((r) => setTimeout(r, 10));
+
+    expect(onExportBackup).toHaveBeenCalled();
+    expect(fs.__mockWrite).toHaveBeenCalledWith('{"app":"shadowlist","schemaVersion":2}');
+    expect(Sharing.shareAsync).toHaveBeenCalled();
+  });
+
+  it('imports backup from picked file and prompts for import mode', async () => {
+    const DocumentPicker = require('expo-document-picker');
+    const fs = require('expo-file-system');
+    const { Alert } = require('react-native');
+    fs.__mockText.mockResolvedValueOnce('{"app":"shadowlist","schemaVersion":2}');
+    const onImportBackup = jest.fn(() => Promise.resolve());
+
+    render(<SettingsModal {...defaultProps} onImportBackup={onImportBackup} />);
+
+    fireEvent.press(screen.getByLabelText('Import Backup'));
+    await new Promise((r) => setTimeout(r, 10));
+
+    expect(DocumentPicker.getDocumentAsync).toHaveBeenCalled();
+    expect(Alert.alert).toHaveBeenCalledWith(
+      'Import Mode',
+      'Choose how to import the backup:',
+      expect.any(Array)
+    );
+
+    // Simulate pressing 'Replace All Data'
+    const buttons = (Alert.alert as jest.Mock).mock.calls[0][2];
+    await buttons[0].onPress();
+    expect(onImportBackup).toHaveBeenCalledWith('{"app":"shadowlist","schemaVersion":2}', 'replace');
   });
 });

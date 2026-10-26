@@ -49,6 +49,58 @@ jest.mock('react-native-toast-message', () => ({
   hide: jest.fn(),
 }));
 
+// Mock expo-file-system
+jest.mock('expo-file-system', () => {
+  const mockWrite = jest.fn();
+  const mockText = jest.fn(() => Promise.resolve('{}'));
+  const mockCreate = jest.fn();
+  class MockFile {
+    uri: string;
+    exists = false;
+    constructor(...parts: any[]) {
+      this.uri = parts.map((p) => (typeof p === 'string' ? p : p?.uri || '')).join('/');
+    }
+    create = mockCreate;
+    write = mockWrite;
+    text = mockText;
+  }
+  class MockDirectory {
+    uri: string;
+    constructor(...parts: any[]) {
+      this.uri = parts.map((p) => (typeof p === 'string' ? p : p?.uri || '')).join('/');
+    }
+    createFile = jest.fn((name: string) => new MockFile(this.uri, name));
+    static pickDirectoryAsync = jest.fn(() => Promise.resolve(new MockDirectory('content://picked-dir')));
+  }
+  return {
+    File: MockFile,
+    Directory: MockDirectory,
+    Paths: {
+      cache: new MockDirectory('file:///cache'),
+      document: new MockDirectory('file:///document'),
+    },
+    __mockWrite: mockWrite,
+    __mockText: mockText,
+    __mockCreate: mockCreate,
+  };
+});
+
+// Mock expo-sharing
+jest.mock('expo-sharing', () => ({
+  isAvailableAsync: jest.fn(() => Promise.resolve(true)),
+  shareAsync: jest.fn(() => Promise.resolve()),
+}));
+
+// Mock expo-document-picker
+jest.mock('expo-document-picker', () => ({
+  getDocumentAsync: jest.fn(() =>
+    Promise.resolve({
+      canceled: false,
+      assets: [{ uri: 'file:///cache/picked-backup.json', name: 'picked-backup.json' }],
+    })
+  ),
+}));
+
 // Mock AsyncStorage
 jest.mock('@react-native-async-storage/async-storage', () => ({
   setItem: jest.fn(() => Promise.resolve()),

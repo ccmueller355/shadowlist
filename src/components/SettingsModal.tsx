@@ -10,9 +10,11 @@ import {
   Alert,
   BackHandler,
   ScrollView,
-  Share,
-  Clipboard,
+  Platform,
 } from 'react-native';
+import { File, Directory, Paths } from 'expo-file-system';
+import * as Sharing from 'expo-sharing';
+import * as DocumentPicker from 'expo-document-picker';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { ThemeName, AppLang, DietId } from '../types';
 import { useAppTheme } from '../theme/useTheme';
@@ -91,145 +93,174 @@ export function SettingsModal({
   const exportBackupHandler = async () => {
     try {
       const jsonString = await onExportBackup();
-      
-      // Ask user whether to Share or Copy to clipboard
-      Alert.alert(
-        'Export Backup',
-        'Choose how to export the backup:',
-        [
-          {
-            text: 'Copy to Clipboard',
-            onPress: async () => {
-              await Clipboard.setString(jsonString);
-              Toast.show({
-                type: 'success',
-                text1: 'Backup copied to clipboard',
-                position: 'bottom'
-              });
-            }
-          },
-          {
-            text: 'Share',
-            onPress: async () => {
-              try {
-                const result = await Share.share({
-                  title: 'ShadowList Backup',
-                  message: jsonString,
-                });
-                
-                if (result.action === Share.sharedAction) {
+      const dateStr = new Date().toISOString().slice(0, 10);
+      const fileName = `shadowlist-backup-${dateStr}.json`;
+
+      const shareFile = async () => {
+        const file = new File(Paths.cache, fileName);
+        if (!file.exists) {
+          file.create({ overwrite: true });
+        }
+        file.write(jsonString);
+        const canShare = await Sharing.isAvailableAsync();
+        if (!canShare) {
+          throw new Error('File sharing is not available on this device');
+        }
+        await Sharing.shareAsync(file.uri, {
+          mimeType: 'application/json',
+          dialogTitle: 'Export ShadowList Backup',
+          UTI: 'public.json',
+        });
+        Toast.show({
+          type: 'success',
+          text1: 'Backup exported',
+          position: 'bottom',
+        });
+      };
+
+      if (Platform.OS === 'android') {
+        Alert.alert(
+          'Export Backup',
+          'Choose how to save the backup file:',
+          [
+            {
+              text: 'Save to Folder',
+              onPress: async () => {
+                try {
+                  const dir = await Directory.pickDirectoryAsync();
+                  const file = dir.createFile(fileName, 'application/json');
+                  file.write(jsonString);
                   Toast.show({
                     type: 'success',
-                    text1: 'Backup shared',
-                    position: 'bottom'
+                    text1: 'Backup saved to folder',
+                    text2: fileName,
+                    position: 'bottom',
+                  });
+                } catch (err: unknown) {
+                  const msg = err instanceof Error ? err.message : String(err);
+                  if (msg.toLowerCase().includes('cancel')) return;
+                  Toast.show({
+                    type: 'error',
+                    text1: 'Failed to save backup file',
+                    text2: msg,
+                    position: 'bottom',
                   });
                 }
-              } catch (shareError: unknown) {
-                // Fallback to clipboard if sharing fails
-                await Clipboard.setString(jsonString);
-                Toast.show({
-                  type: 'success',
-                  text1: 'Backup copied to clipboard (share failed)',
-                  position: 'bottom'
-                });
-              }
-            }
-          },
-          { text: 'Cancel', style: 'cancel' }
-        ]
-      );
+              },
+            },
+            {
+              text: 'Share File',
+              onPress: async () => {
+                try {
+                  await shareFile();
+                } catch (err: unknown) {
+                  Toast.show({
+                    type: 'error',
+                    text1: 'Failed to share backup file',
+                    text2: err instanceof Error ? err.message : String(err),
+                    position: 'bottom',
+                  });
+                }
+              },
+            },
+            { text: 'Cancel', style: 'cancel' },
+          ]
+        );
+      } else {
+        await shareFile();
+      }
     } catch (error: unknown) {
       Toast.show({
         type: 'error',
         text1: 'Failed to export backup',
         text2: error instanceof Error ? error.message : String(error),
-        position: 'bottom'
+        position: 'bottom',
       });
     }
   };
 
   const importBackupHandler = async () => {
-    // Ask user whether to import from Clipboard
-    Alert.alert(
-      'Import Backup',
-      'Choose import method:',
-      [
-        {
-          text: 'From Clipboard',
-          onPress: async () => {
-            try {
-              const jsonString = await Clipboard.getString();
-              if (!jsonString.trim()) {
+    try {
+      const result = await DocumentPicker.getDocumentAsync({
+        type: ['application/json', 'text/plain', '*/*'],
+        copyToCacheDirectory: true,
+      });
+
+      if (result.canceled || !result.assets || result.assets.length === 0) {
+        return;
+      }
+
+      const asset = result.assets[0];
+      const file = new File(asset.uri);
+      const jsonString = await file.text();
+
+      if (!jsonString.trim()) {
+        Toast.show({
+          type: 'error',
+          text1: 'Selected file is empty',
+          position: 'bottom',
+        });
+        return;
+      }
+
+      // Ask for mode: replace or merge
+      Alert.alert(
+        'Import Mode',
+        'Choose how to import the backup:',
+        [
+          {
+            text: 'Replace All Data',
+            onPress: async () => {
+              try {
+                await onImportBackup(jsonString, 'replace');
+                Toast.show({
+                  type: 'success',
+                  text1: 'Backup imported (replaced all data)',
+                  position: 'bottom',
+                });
+                onClose();
+              } catch (error: unknown) {
                 Toast.show({
                   type: 'error',
-                  text1: 'Clipboard is empty',
-                  position: 'bottom'
+                  text1: 'Failed to import backup',
+                  text2: error instanceof Error ? error.message : String(error),
+                  position: 'bottom',
                 });
-                return;
               }
-              
-              // Ask for mode: replace or merge
-              Alert.alert(
-                'Import Mode',
-                'Choose how to import the backup:',
-                [
-                  {
-                    text: 'Replace All Data',
-                    onPress: async () => {
-                      try {
-                        await onImportBackup(jsonString, 'replace');
-                        Toast.show({
-                          type: 'success',
-                          text1: 'Backup imported (replaced all data)',
-                          position: 'bottom'
-                        });
-                        onClose(); // Close modal after successful import
-                      } catch (error: unknown) {
-                        Toast.show({
-                          type: 'error',
-                          text1: 'Failed to import backup',
-                          text2: error instanceof Error ? error.message : String(error),
-                          position: 'bottom'
-                        });
-                      }
-                    }
-                  },
-                  {
-                    text: 'Merge with Existing',
-                    onPress: async () => {
-                      try {
-                        await onImportBackup(jsonString, 'merge');
-                        Toast.show({
-                          type: 'success',
-                          text1: 'Backup imported (merged with existing)',
-                          position: 'bottom'
-                        });
-                        onClose(); // Close modal after successful import
-                      } catch (error: unknown) {
-                        Toast.show({
-                          type: 'error',
-                          text1: 'Failed to import backup',
-                          text2: error instanceof Error ? error.message : String(error),
-                          position: 'bottom'
-                        });
-                      }
-                    }
-                  },
-                  { text: 'Cancel', style: 'cancel' }
-                ]
-              );
-            } catch (error: unknown) {
-              Toast.show({
-                type: 'error',
-                text1: 'Failed to read from clipboard',
-                text2: error instanceof Error ? error.message : String(error),
-                position: 'bottom'
-              });
-            }
-          }
-        }
-      ]
-    );
+            },
+          },
+          {
+            text: 'Merge with Existing',
+            onPress: async () => {
+              try {
+                await onImportBackup(jsonString, 'merge');
+                Toast.show({
+                  type: 'success',
+                  text1: 'Backup imported (merged with existing)',
+                  position: 'bottom',
+                });
+                onClose();
+              } catch (error: unknown) {
+                Toast.show({
+                  type: 'error',
+                  text1: 'Failed to import backup',
+                  text2: error instanceof Error ? error.message : String(error),
+                  position: 'bottom',
+                });
+              }
+            },
+          },
+          { text: 'Cancel', style: 'cancel' },
+        ]
+      );
+    } catch (error: unknown) {
+      Toast.show({
+        type: 'error',
+        text1: 'Failed to read backup file',
+        text2: error instanceof Error ? error.message : String(error),
+        position: 'bottom',
+      });
+    }
   };
 
   const themeEntries = Object.entries(themes) as [ThemeName, typeof themes.fixer][];
@@ -375,32 +406,29 @@ export function SettingsModal({
             <View style={[styles.divider, { backgroundColor: t.colors.border }]} />
 
             {/* Backup section */}
-            <View style={[styles.divider, { backgroundColor: t.colors.border }]} />
             <Text style={[styles.sectionLabel, { color: t.colors.textSecondary }]}>BACKUP</Text>
-            <View style={styles.row}>
+            <TouchableOpacity
+              style={styles.row}
+              onPress={exportBackupHandler}
+              accessibilityLabel={tr('settings.backup.export')}
+            >
               <View style={styles.rowLeft}>
                 <MaterialCommunityIcons name="folder-download-outline" size={22} color={t.colors.primary} />
                 <Text style={[styles.rowLabel, { color: t.colors.textPrimary }]}>{tr('settings.backup.export')}</Text>
               </View>
-              <TouchableOpacity
-                onPress={exportBackupHandler}
-                accessibilityLabel={tr('settings.backup.export')}
-              >
-                <MaterialCommunityIcons name="chevron-right" size={22} color={t.colors.primary} />
-              </TouchableOpacity>
-            </View>
-            <View style={styles.row}>
+              <MaterialCommunityIcons name="chevron-right" size={22} color={t.colors.primary} />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.row}
+              onPress={importBackupHandler}
+              accessibilityLabel={tr('settings.backup.import')}
+            >
               <View style={styles.rowLeft}>
                 <MaterialCommunityIcons name="folder-upload-outline" size={22} color={t.colors.primary} />
                 <Text style={[styles.rowLabel, { color: t.colors.textPrimary }]}>{tr('settings.backup.import')}</Text>
               </View>
-              <TouchableOpacity
-                onPress={importBackupHandler}
-                accessibilityLabel={tr('settings.backup.import')}
-              >
-                <MaterialCommunityIcons name="chevron-right" size={22} color={t.colors.primary} />
-              </TouchableOpacity>
-            </View>
+              <MaterialCommunityIcons name="chevron-right" size={22} color={t.colors.primary} />
+            </TouchableOpacity>
 
             <View style={[styles.divider, { backgroundColor: t.colors.border }]} />
 
