@@ -59,6 +59,10 @@ export const en = {
       de: 'Deutsch',
     },
     clearAllData: 'Clear All Data',
+    backup: {
+      export: 'Export Backup',
+      import: 'Import Backup',
+    },
   },
   edit: {
     title: 'Edit Item',

@@ -1,8 +1,8 @@
 // ─── [ NEURAL DECK v4.6 $ AI::GENERATED ] ───
 import { create } from 'zustand';
 import { InteractionManager } from 'react-native';
-import { ShoppingList, ShoppingItem, AppSettings, NewItemParams, AppLang, DietId, FoodType } from '../types';
-import { runMigrations, loadAllData, saveLists, saveItems, saveSettings, clearAllData } from '../storage/asyncStorage';
+import { ShoppingList, ShoppingItem, AppSettings, NewItemParams, AppLang, DietId, FoodType, BackupImportMode } from '../types';
+import { runMigrations, loadAllData, saveLists, saveItems, saveSettings, clearAllData, exportAllData, importAllData } from '../storage/asyncStorage';
 import { generateId } from '../utils/uuid';
 import { getDemoData } from '../constants/demoData';
 import { generateTestLists } from '../constants/testData';
@@ -44,6 +44,10 @@ interface ShoppingState {
   generateTestData: () => number;
   generateExtremeData: (totalItems?: number) => number;
   clearAll: () => void;
+
+  // Backup / Restore
+  exportData: () => Promise<string>;
+  importData: (jsonString: string, mode?: BackupImportMode) => Promise<void>;
 }
 
 const DEFAULT_SETTINGS: AppSettings = {
@@ -308,5 +312,27 @@ export const useStore = create<ShoppingState>((set, get) => ({
   clearAll: async () => {
     set({ lists: [], items: [], settings: DEFAULT_SETTINGS });
     await clearAllData();
+  },
+
+  exportData: async () => {
+    const backup = await exportAllData();
+    return JSON.stringify(backup, null, 2);
+  },
+
+  importData: async (jsonString: string, mode: BackupImportMode = 'replace') => {
+    let payload: unknown;
+    try {
+      payload = JSON.parse(jsonString);
+    } catch (e) {
+      throw new Error('Invalid JSON string format');
+    }
+    await importAllData(payload, mode);
+    const updatedData = await loadAllData();
+    set({
+      lists: updatedData.lists,
+      items: updatedData.items,
+      settings: updatedData.settings,
+    });
+    get().rebuildNameIndex();
   },
 }));
