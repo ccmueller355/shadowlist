@@ -1,3 +1,16 @@
+## v0.19.14 — 2026-11-11
+
+### Changed
+- Consolidated Dependabot patch updates:
+  - Bumped `mermaid` to `^12.3.0` (#152).
+  - Bumped `react-native-safe-area-context` to `^5.11.1` (#153).
+  - Bumped `react-native-paper` to `^5.15.4` (#154).
+- Aligned Expo SDK 57 patch releases required by `expo-doctor`:
+  - Bumped `expo` to `~57.0.32`.
+  - Bumped `expo-dev-client` to `~57.0.21`.
+  - Bumped `expo-sharing` to `~57.0.25`.
+  - Bumped `expo-splash-screen` to `~57.0.11`.
+
 ## v0.19.13 — 2026-10-26
 
 ### Added
