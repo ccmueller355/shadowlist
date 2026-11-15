@@ -66,29 +66,22 @@ Items to resolve before the first public release. Requires research — exact re
 
 ### 🏷️ About section in Settings
 
-- [ ] Add tappable "About" entry below "Clear All Data" — shows version, MIT license, GitHub link, open-source acknowledgements
-- [ ] Keep existing footer version string or replace with expanded About view
+- [x] Add tappable "About" entry below "Clear All Data" — shows version, MIT license, GitHub link, open-source acknowledgements
+- [x] Keep existing footer version string or replace with expanded About view
 
 ### 📝 EditModal layout — name/qualifier should be top
 
-- [ ] Move **Description** and **Qualifier** fields above the Icon picker in EditModal
-- [ ] Current order: Icon → Description → Qualifier → Category → Food Type (forces scroll to reach the name)
-- [ ] Target order: Description → Qualifier → Food Type → Category → Icon (most-edited fields on top)
+- [x] Move **Description** and **Qualifier** fields above the Icon picker in EditModal
+- [x] Current order: Icon → Description → Qualifier → Category → Food Type (forces scroll to reach the name)
+- [x] Target order: Description → Qualifier → Food Type → Category → Icon (most-edited fields on top)
 - [ ] Alternatively: keep icon picker collapsible or smaller (single row, not grid)
 
 ### 🗑️ Icon set cleanup
 
-- [ ] Audit all 54 icons for duplicates and dead entries
-  - `car` + `oil` → keep `car` only (auto covers both)
-  - `cake` + `balloon` → duplicate party vibes, keep one
-  - `screwdriver` + `wrench` + `hammer` → DIY overlap, trim to 2
-  - `tshirt-crew` + `hanger` + `shoe-sneaker` + `sunglasses` → clothing overload, trim to 2
-  - `flower` + `tree` + `sprinkler` → gardening, keep `flower` only
-  - `bike` + `dumbbell` + `campfire` → sports, keep `dumbbell` only
-  - `broom` + `soap` + `toilet-paper` + `spray-bottle` + `silverware` + `pot` → household, trim to 3
-- [ ] Check which icons fail to render (??? icons — possible broken MaterialCommunityIcons names)
-- [ ] Target: ~40 clean icons, no duplicates, every icon renders
-- [ ] Update demo data to use remaining icons
+- [x] Audit all 54 icons for duplicates and dead entries (already trimmed to 30 curated icons in `SHOPPING_ICONS`)
+- [x] Check which icons fail to render (verified all 30 `SHOPPING_ICONS`, 25 `demoData`, and 51 `testData` icons against `MaterialCommunityIcons.json`; fixed broken `'garlic'` → `'carrot'` in `foodLookup.ts`)
+- [x] Target: ~40 clean icons, no duplicates, every icon renders (30 clean icons)
+- [x] Update demo data to use remaining icons
 - [ ] Propose final set as a table before cutting
 
 ### 🚨 Diet warnings hardcoded English

@@ -251,4 +251,21 @@ describe('SettingsModal', () => {
     await buttons[0].onPress();
     expect(onImportBackup).toHaveBeenCalledWith('{"app":"shadowlist","schemaVersion":2}', 'replace');
   });
+
+  it('expands About section with license, acknowledgements, and GitHub link', () => {
+    const { Linking } = require('react-native');
+    const openURLSpy = jest.spyOn(Linking, 'openURL').mockResolvedValueOnce(true);
+
+    render(<SettingsModal {...defaultProps} />);
+
+    expect(screen.queryByText('License: MIT')).toBeNull();
+    fireEvent.press(screen.getByLabelText('About'));
+
+    expect(screen.getByText('License: MIT')).toBeTruthy();
+    expect(screen.getByText('Open-Source Acknowledgements')).toBeTruthy();
+
+    fireEvent.press(screen.getByLabelText('Source on GitHub'));
+    expect(openURLSpy).toHaveBeenCalledWith('https://github.com/ccmueller355/shadowlist');
+    openURLSpy.mockRestore();
+  });
 });
