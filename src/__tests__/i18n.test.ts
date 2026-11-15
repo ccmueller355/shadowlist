@@ -30,8 +30,11 @@ describe('i18n', () => {
     'edit.amount', 'edit.amountPlaceholder', 'edit.category', 'edit.categoryNone',
     'edit.foodType.label', 'edit.foodType.none',
     // Warnings
-    'warning.incompatible', 'warning.suggestion', 'warning.addAnyway',
+    'warning.incompatible', 'warning.incompatibleDetailed', 'warning.badgeAccessibility',
+    'warning.countSingle', 'warning.countPlural', 'warning.suggestion', 'warning.addAnyway',
     'warning.unchecked',
+    // List sections
+    'list.toShop', 'list.recentlyBought',
     // General
     'general.save', 'general.cancel', 'general.delete',
     'general.addItemPlaceholder', 'general.emptyListMessage',

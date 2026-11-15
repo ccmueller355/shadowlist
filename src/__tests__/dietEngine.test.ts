@@ -29,12 +29,11 @@ describe('dietEngine', () => {
       });
     });
 
-    it('returns warning message when incompatible', () => {
+    it('returns structured warning when incompatible', () => {
       const keto = DIET_PROFILES.find((d) => d.id === 'keto')!;
       const result = checkItem(keto, 'grain');
       expect(result.compatible).toBe(false);
-      expect(result.warnings).toBeDefined();
-      expect(result.warnings!.length).toBeGreaterThan(0);
+      expect(result.warnings).toEqual([{ foodType: 'grain', dietId: 'keto' }]);
     });
 
     it('returns no warnings when compatible', () => {

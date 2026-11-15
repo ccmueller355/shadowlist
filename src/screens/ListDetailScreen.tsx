@@ -30,7 +30,7 @@ import { EmptyPlaceholder } from '../components/EmptyPlaceholder';
 import { checkItem, CheckResult } from '../utils/dietEngine';
 import { DIET_PROFILES } from '../constants/diets';
 import { resolveName } from '../constants/foodLookup';
-import { FOOD_TYPE_TO_CATEGORY, FOOD_TYPE_SORT_ORDER } from '../constants/foodTypes';
+import { FOOD_TYPES, FOOD_TYPE_TO_CATEGORY, FOOD_TYPE_SORT_ORDER } from '../constants/foodTypes';
 import { useTranslation } from '../i18n/useTranslation';
 import { useAppTheme } from '../theme/useTheme';
 import { useThemeStyles } from '../theme/useThemeStyles';
@@ -67,7 +67,7 @@ const ToShopSection = memo(function ToShopSection({
     <>
       <View style={[{ backgroundColor: cyberpunkTheme.colors.surface, borderTopWidth: 1, borderTopColor: cyberpunkTheme.colors.border }]}>
       <Text style={[styles.sectionHeader, { color: cyberpunkTheme.colors.sectionHeader }]}>
-        TO SHOP
+        {tr('list.toShop')}
         <Text style={[styles.sectionCount, { color: cyberpunkTheme.colors.textSecondary }]}> ({items.length} of {total})</Text>
       </Text>
       </View>
@@ -101,6 +101,7 @@ const BoughtSection = memo(function BoughtSection({
   handleLongPress,
   moveToShop,
   updateItem,
+  tr,
   cyberpunkTheme,
 }: {
   items: ShoppingItem[];
@@ -108,13 +109,14 @@ const BoughtSection = memo(function BoughtSection({
   handleLongPress: (item: ShoppingItem) => void;
   moveToShop: (id: string) => void;
   updateItem: (id: string, updates: Partial<ShoppingItem>) => void;
+  tr: (key: any) => string;
   cyberpunkTheme: any;
 }) {
   return (
     <>
       <View style={[styles.divider, { backgroundColor: cyberpunkTheme.colors.surface, borderTopWidth: 1, borderTopColor: cyberpunkTheme.colors.border }]}>
       <Text style={[styles.sectionHeader, { color: cyberpunkTheme.colors.sectionHeader }]}>
-        RECENTLY BOUGHT
+        {tr('list.recentlyBought')}
         <Text style={[styles.sectionCount, { color: cyberpunkTheme.colors.textSecondary }]}> ({items.length})</Text>
       </Text>
       </View>
@@ -314,8 +316,14 @@ export function ListDetailScreen({ route, navigation }: Props) {
         // Show diet warning for re-added item if applicable
         if (activeDiet && inBought.foodType && inBought.foodType !== 'non_food') {
           const result = checkItem(activeDiet, inBought.foodType);
-          if (!result.compatible) {
-            Toast.show({ type: 'info', text1: `⚠ "${description}" — ${result.warnings?.[0] ?? 'diet warning'}`, position: 'bottom' });
+          if (!result.compatible && result.warnings?.[0]) {
+            const w = result.warnings[0];
+            const ftInfo = FOOD_TYPES.find((f) => f.id === w.foodType);
+            const ftLabel = ftInfo ? tr(ftInfo.labelKey as any) : w.foodType;
+            const detail = tr('warning.incompatibleDetailed')
+              .replace('{foodType}', ftLabel)
+              .replace('{diet}', tr(activeDiet.nameKey as any));
+            Toast.show({ type: 'info', text1: `⚠ "${description}" — ${detail}`, position: 'bottom' });
           }
         }
         return;
@@ -461,7 +469,7 @@ export function ListDetailScreen({ route, navigation }: Props) {
           </Text>
           {dietWarnings.size > 0 && (
             <Text style={[styles.dietWarningsText, { color: cyberpunkTheme.colors.danger }]}>
-              {dietWarnings.size} warning{dietWarnings.size !== 1 ? 's' : ''}
+              {tr(dietWarnings.size === 1 ? 'warning.countSingle' : 'warning.countPlural').replace('{n}', String(dietWarnings.size))}
             </Text>
           )}
         </View>
@@ -516,6 +524,7 @@ export function ListDetailScreen({ route, navigation }: Props) {
               handleLongPress={handleLongPress}
               moveToShop={moveToShop}
               updateItem={updateItem}
+              tr={tr}
               cyberpunkTheme={cyberpunkTheme}
             />
           )}
@@ -571,7 +580,7 @@ export function ListDetailScreen({ route, navigation }: Props) {
             <>
               <View style={[{ backgroundColor: cyberpunkTheme.colors.surface, borderTopWidth: 1, borderTopColor: cyberpunkTheme.colors.border }]}>
               <Text style={[styles.sectionHeader, { color: cyberpunkTheme.colors.sectionHeader }]}>
-                TO SHOP
+                {tr('list.toShop')}
                 <Text style={[styles.sectionCount, { color: cyberpunkTheme.colors.textSecondary }]}> ({activeItems.length})</Text>
               </Text>
               </View>
@@ -586,7 +595,7 @@ export function ListDetailScreen({ route, navigation }: Props) {
                 <MaterialCommunityIcons name="check-circle-outline" size={16} color={cyberpunkTheme.colors.sectionHeader} />
                 <View style={[{ backgroundColor: cyberpunkTheme.colors.surface, borderTopWidth: 1, borderTopColor: cyberpunkTheme.colors.border }]}>
                 <Text style={[styles.sectionHeader, { color: cyberpunkTheme.colors.sectionHeader }]}>
-                  RECENTLY BOUGHT
+                  {tr('list.recentlyBought')}
                   <Text style={[styles.sectionCount, { color: cyberpunkTheme.colors.textSecondary }]}> ({displayBought.length} of {boughtItems.length})</Text>
                 </Text>
                 </View>
@@ -658,7 +667,7 @@ export function ListDetailScreen({ route, navigation }: Props) {
           {activeItems.length > 0 && (
             <View style={[{ backgroundColor: cyberpunkTheme.colors.surface, borderTopWidth: 1, borderTopColor: cyberpunkTheme.colors.border }]}>
               <Text style={[styles.sectionHeader, { color: cyberpunkTheme.colors.sectionHeader, paddingHorizontal: 8 }]}>
-                TO SHOP
+                {tr('list.toShop')}
                 <Text style={[styles.sectionCount, { color: cyberpunkTheme.colors.textSecondary }]}> ({activeItems.length})</Text>
               </Text>
             </View>
@@ -701,7 +710,7 @@ export function ListDetailScreen({ route, navigation }: Props) {
                   <MaterialCommunityIcons name="check-circle-outline" size={16} color={cyberpunkTheme.colors.sectionHeader} />
                   <View style={[{ backgroundColor: cyberpunkTheme.colors.surface, borderTopWidth: 1, borderTopColor: cyberpunkTheme.colors.border }]}>
                   <Text style={[styles.sectionHeader, { color: cyberpunkTheme.colors.sectionHeader }]}>
-                    RECENTLY BOUGHT
+                    {tr('list.recentlyBought')}
                     <Text style={[styles.sectionCount, { color: cyberpunkTheme.colors.textSecondary }]}> ({displayBought.length} of {boughtItems.length})</Text>
                   </Text>
                   </View>

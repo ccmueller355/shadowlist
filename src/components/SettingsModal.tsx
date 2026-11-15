@@ -408,7 +408,7 @@ export function SettingsModal({
             <View style={[styles.divider, { backgroundColor: t.colors.border }]} />
 
             {/* Backup section */}
-            <Text style={[styles.sectionLabel, { color: t.colors.textSecondary }]}>BACKUP</Text>
+            <Text style={[styles.sectionLabel, { color: t.colors.textSecondary }]}>{tr('settings.backup.label')}</Text>
             <TouchableOpacity
               style={styles.row}
               onPress={exportBackupHandler}
