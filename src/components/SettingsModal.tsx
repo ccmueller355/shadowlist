@@ -1,5 +1,5 @@
 // ─── [ NEURAL DECK v4.6 $ AI::GENERATED ] ───
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -11,6 +11,7 @@ import {
   BackHandler,
   ScrollView,
   Platform,
+  Linking,
 } from 'react-native';
 import { File, Directory, Paths } from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
@@ -63,6 +64,7 @@ export function SettingsModal({
 }: Props) {
   const t = useAppTheme();
   const { t: tr } = useTranslation();
+  const [aboutExpanded, setAboutExpanded] = useState(false);
 
   // Back button → close modal
   useEffect(() => {
@@ -476,6 +478,59 @@ export function SettingsModal({
               />
             </TouchableOpacity>
 
+            <View style={[styles.divider, { backgroundColor: t.colors.border }]} />
+
+            {/* About */}
+            <TouchableOpacity
+              style={styles.row}
+              onPress={() => setAboutExpanded((prev) => !prev)}
+              accessibilityLabel={tr('settings.about.title')}
+              accessibilityRole="button"
+              accessibilityState={{ expanded: aboutExpanded }}
+            >
+              <View style={styles.rowLeft}>
+                <MaterialCommunityIcons
+                  name="information-outline"
+                  size={22}
+                  color={t.colors.primary}
+                />
+                <Text style={[styles.rowLabel, { color: t.colors.textPrimary }]}>{tr('settings.about.title')}</Text>
+              </View>
+              <MaterialCommunityIcons
+                name={aboutExpanded ? 'chevron-down' : 'chevron-right'}
+                size={22}
+                color={t.colors.primary}
+              />
+            </TouchableOpacity>
+
+            {aboutExpanded && (
+              <View style={[styles.aboutCard, { borderColor: t.colors.border, backgroundColor: t.colors.background }]}>
+                <Text style={[styles.aboutText, { color: t.colors.textPrimary }]}>
+                  {tr('settings.about.version')}: {Constants.expoConfig?.version ?? '0.0.0'}
+                </Text>
+                <Text style={[styles.aboutText, { color: t.colors.textSecondary }]}>
+                  {tr('settings.about.license')}
+                </Text>
+                <Text style={[styles.aboutSectionTitle, { color: t.colors.textSecondary }]}>
+                  {tr('settings.about.ossLabel')}
+                </Text>
+                <Text style={[styles.aboutText, { color: t.colors.textSecondary }]}>
+                  React Native, Expo, Zustand, React Navigation, React Native Paper, MaterialCommunityIcons
+                </Text>
+                <TouchableOpacity
+                  style={styles.aboutLinkRow}
+                  onPress={() => Linking.openURL('https://github.com/ccmueller355/shadowlist')}
+                  accessibilityLabel={tr('settings.about.sourceCode')}
+                  accessibilityRole="link"
+                >
+                  <Text style={[styles.aboutLinkText, { color: t.colors.primary }]}>
+                    {tr('settings.about.sourceCode')}
+                  </Text>
+                  <MaterialCommunityIcons name="open-in-new" size={16} color={t.colors.primary} />
+                </TouchableOpacity>
+              </View>
+            )}
+
             {__DEV__ && onGenerateTestData && (
               <>
                 <View style={[styles.divider, { backgroundColor: t.colors.border }]} />
@@ -672,6 +727,34 @@ const styles = StyleSheet.create({
   langText: {
     fontFamily: 'monospace',
     fontSize: 14,
+    fontWeight: '600',
+  },
+  aboutCard: {
+    marginTop: 8,
+    padding: 12,
+    borderRadius: 8,
+    borderWidth: 1,
+    gap: 6,
+  },
+  aboutSectionTitle: {
+    fontFamily: 'monospace',
+    fontSize: 11,
+    fontWeight: 'bold',
+    marginTop: 4,
+  },
+  aboutText: {
+    fontFamily: 'monospace',
+    fontSize: 12,
+  },
+  aboutLinkRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    marginTop: 4,
+  },
+  aboutLinkText: {
+    fontFamily: 'monospace',
+    fontSize: 12,
     fontWeight: '600',
   },
   footer: {

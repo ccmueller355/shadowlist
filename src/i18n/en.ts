@@ -63,6 +63,13 @@ export const en = {
       export: 'Export Backup',
       import: 'Import Backup',
     },
+    about: {
+      title: 'About',
+      version: 'Version',
+      license: 'License: MIT',
+      sourceCode: 'Source on GitHub',
+      ossLabel: 'Open-Source Acknowledgements',
+    },
   },
   edit: {
     title: 'Edit Item',
