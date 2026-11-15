@@ -76,12 +76,12 @@ export function SettingsModal({
 
   const handleClearAll = () => {
     Alert.alert(
-      'Clear All Data',
-      'This will permanently delete all lists and items. Are you sure?',
+      tr('settings.clearAllConfirmTitle'),
+      tr('settings.clearAllConfirmMessage'),
       [
-        { text: 'Cancel', style: 'cancel' },
+        { text: tr('general.cancel'), style: 'cancel' },
         {
-          text: 'Delete All',
+          text: tr('settings.deleteAll'),
           style: 'destructive',
           onPress: () => {
             onClearAll();
@@ -110,23 +110,23 @@ export function SettingsModal({
         }
         await Sharing.shareAsync(file.uri, {
           mimeType: 'application/json',
-          dialogTitle: 'Export ShadowList Backup',
+          dialogTitle: tr('settings.backup.exportDialogTitle'),
           UTI: 'public.json',
         });
         Toast.show({
           type: 'success',
-          text1: 'Backup exported',
+          text1: tr('settings.backup.exported'),
           position: 'bottom',
         });
       };
 
       if (Platform.OS === 'android') {
         Alert.alert(
-          'Export Backup',
-          'Choose how to save the backup file:',
+          tr('settings.backup.export'),
+          tr('settings.backup.exportPrompt'),
           [
             {
-              text: 'Save to Folder',
+              text: tr('settings.backup.saveToFolder'),
               onPress: async () => {
                 try {
                   const dir = await Directory.pickDirectoryAsync();
@@ -134,7 +134,7 @@ export function SettingsModal({
                   file.write(jsonString);
                   Toast.show({
                     type: 'success',
-                    text1: 'Backup saved to folder',
+                    text1: tr('settings.backup.savedToFolder'),
                     text2: fileName,
                     position: 'bottom',
                   });
@@ -143,7 +143,7 @@ export function SettingsModal({
                   if (msg.toLowerCase().includes('cancel')) return;
                   Toast.show({
                     type: 'error',
-                    text1: 'Failed to save backup file',
+                    text1: tr('settings.backup.saveFailed'),
                     text2: msg,
                     position: 'bottom',
                   });
@@ -151,21 +151,21 @@ export function SettingsModal({
               },
             },
             {
-              text: 'Share File',
+              text: tr('settings.backup.shareFile'),
               onPress: async () => {
                 try {
                   await shareFile();
                 } catch (err: unknown) {
                   Toast.show({
                     type: 'error',
-                    text1: 'Failed to share backup file',
+                    text1: tr('settings.backup.shareFailed'),
                     text2: err instanceof Error ? err.message : String(err),
                     position: 'bottom',
                   });
                 }
               },
             },
-            { text: 'Cancel', style: 'cancel' },
+            { text: tr('general.cancel'), style: 'cancel' },
           ]
         );
       } else {
@@ -174,7 +174,7 @@ export function SettingsModal({
     } catch (error: unknown) {
       Toast.show({
         type: 'error',
-        text1: 'Failed to export backup',
+        text1: tr('settings.backup.exportFailed'),
         text2: error instanceof Error ? error.message : String(error),
         position: 'bottom',
       });
@@ -199,7 +199,7 @@ export function SettingsModal({
       if (!jsonString.trim()) {
         Toast.show({
           type: 'error',
-          text1: 'Selected file is empty',
+          text1: tr('settings.backup.emptyFile'),
           position: 'bottom',
         });
         return;
@@ -207,24 +207,24 @@ export function SettingsModal({
 
       // Ask for mode: replace or merge
       Alert.alert(
-        'Import Mode',
-        'Choose how to import the backup:',
+        tr('settings.backup.importModeTitle'),
+        tr('settings.backup.importModePrompt'),
         [
           {
-            text: 'Replace All Data',
+            text: tr('settings.backup.replaceAll'),
             onPress: async () => {
               try {
                 await onImportBackup(jsonString, 'replace');
                 Toast.show({
                   type: 'success',
-                  text1: 'Backup imported (replaced all data)',
+                  text1: tr('settings.backup.importedReplaced'),
                   position: 'bottom',
                 });
                 onClose();
               } catch (error: unknown) {
                 Toast.show({
                   type: 'error',
-                  text1: 'Failed to import backup',
+                  text1: tr('settings.backup.importFailed'),
                   text2: error instanceof Error ? error.message : String(error),
                   position: 'bottom',
                 });
@@ -232,33 +232,33 @@ export function SettingsModal({
             },
           },
           {
-            text: 'Merge with Existing',
+            text: tr('settings.backup.mergeExisting'),
             onPress: async () => {
               try {
                 await onImportBackup(jsonString, 'merge');
                 Toast.show({
                   type: 'success',
-                  text1: 'Backup imported (merged with existing)',
+                  text1: tr('settings.backup.importedMerged'),
                   position: 'bottom',
                 });
                 onClose();
               } catch (error: unknown) {
                 Toast.show({
                   type: 'error',
-                  text1: 'Failed to import backup',
+                  text1: tr('settings.backup.importFailed'),
                   text2: error instanceof Error ? error.message : String(error),
                   position: 'bottom',
                 });
               }
             },
           },
-          { text: 'Cancel', style: 'cancel' },
+          { text: tr('general.cancel'), style: 'cancel' },
         ]
       );
     } catch (error: unknown) {
       Toast.show({
         type: 'error',
-        text1: 'Failed to read backup file',
+        text1: tr('settings.backup.readFailed'),
         text2: error instanceof Error ? error.message : String(error),
         position: 'bottom',
       });

@@ -53,12 +53,18 @@ const navigation = { navigate: mockNavigate, goBack: mockGoBack, addListener: je
 
 describe('HomeScreen', () => {
   beforeEach(() => {
+    jest.useFakeTimers();
     useStore.setState({
       lists: [],
       items: [],
       settings: { theme: 'fixer', sortByCategory: false, defaultIcon: 'cart', activeDiet: null, lang: 'en' },
       hydrated: true,
     });
+  });
+
+  afterEach(() => {
+    jest.clearAllTimers();
+    jest.useRealTimers();
   });
 
   it('renders header title', () => {

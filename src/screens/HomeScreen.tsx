@@ -21,12 +21,14 @@ import { CyberpunkCard } from '../components/CyberpunkCard';
 import { SettingsModal } from '../components/SettingsModal';
 import { generateId } from '../utils/uuid';
 import { useAppTheme } from '../theme/useTheme';
+import { useTranslation } from '../i18n/useTranslation';
 import Toast from 'react-native-toast-message';
 
 type Props = NativeStackScreenProps<any, 'Home'>;
 
 export function HomeScreen({ navigation }: Props) {
   const cyberpunkTheme = useAppTheme();
+  const { t: tr } = useTranslation();
   const insets = useSafeAreaInsets();
   const lists = useStore((s) => s.lists);
   const items = useStore((s) => s.items);
@@ -57,18 +59,18 @@ export function HomeScreen({ navigation }: Props) {
     addList(name);
     setNewListName('');
     setShowNewListInput(false);
-    Toast.show({ type: 'success', text1: `Created "${name}"`, position: 'bottom' });
+    Toast.show({ type: 'success', text1: tr('list.created', { name }), position: 'bottom' });
   };
 
   const handleDeleteList = (id: string, name: string) => {
-    Alert.alert('Delete List', `Delete "${name}" and all its items?`, [
-      { text: 'Cancel', style: 'cancel' },
+    Alert.alert(tr('list.deleteListTitle'), tr('list.deleteListMessage', { name }), [
+      { text: tr('general.cancel'), style: 'cancel' },
       {
-        text: 'Delete',
+        text: tr('general.delete'),
         style: 'destructive',
         onPress: () => {
           deleteList(id);
-          Toast.show({ type: 'info', text1: `Deleted "${name}"`, position: 'bottom' });
+          Toast.show({ type: 'info', text1: tr('list.deletedList', { name }), position: 'bottom' });
         },
       },
     ]);
@@ -84,9 +86,10 @@ export function HomeScreen({ navigation }: Props) {
     if (hydrated && lists.length === 0) {
       addList('Weekly Groceries');
       // Also add demo data for testing
-      setTimeout(() => {
+      const timer = setTimeout(() => {
         addDemoData();
       }, 100);
+      return () => clearTimeout(timer);
     }
   }, [hydrated]);
 
