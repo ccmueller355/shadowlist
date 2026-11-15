@@ -228,7 +228,7 @@ export function AddItemBar({
       {/* Auto-suggest dropdown */}
       {showSuggestions && suggestions.length > 0 && (
         <View style={[styles.suggestionsContainer, { backgroundColor: cyberpunkTheme.colors.surface, borderColor: cyberpunkTheme.colors.border }]}>
-          <Text style={[styles.recentLabel, { color: cyberpunkTheme.colors.textSecondary }]}>RECENTLY BOUGHT</Text>
+          <Text style={[styles.recentLabel, { color: cyberpunkTheme.colors.textSecondary }]}>{tr('list.recentlyBought')}</Text>
           {suggestions.map((item) => (
             <TouchableOpacity
               key={item.id}

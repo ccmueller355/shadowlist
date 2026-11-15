@@ -60,6 +60,7 @@ export const en = {
     },
     clearAllData: 'Clear All Data',
     backup: {
+      label: 'BACKUP',
       export: 'Export Backup',
       import: 'Import Backup',
     },
@@ -80,9 +81,17 @@ export const en = {
   },
   warning: {
     incompatible: 'This item is not compatible with {diet}.',
+    incompatibleDetailed: '{foodType} is not compatible with {diet}.',
+    badgeAccessibility: 'Diet warning: item may not be compatible with active diet',
+    countSingle: '{n} warning',
+    countPlural: '{n} warnings',
     suggestion: 'Try {alternative} instead?',
     addAnyway: 'Add anyway',
     unchecked: 'Unchecked',
+  },
+  list: {
+    toShop: 'TO SHOP',
+    recentlyBought: 'RECENTLY BOUGHT',
   },
   general: {
     save: 'Save',

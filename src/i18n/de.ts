@@ -60,6 +60,7 @@ export const de = {
     },
     clearAllData: 'Alle Daten löschen',
     backup: {
+      label: 'DATENSICHERUNG',
       export: 'Backup exportieren',
       import: 'Backup importieren',
     },
@@ -80,9 +81,17 @@ export const de = {
   },
   warning: {
     incompatible: 'Dieser Artikel ist nicht kompatibel mit {diet}.',
+    incompatibleDetailed: '{foodType} ist nicht kompatibel mit {diet}.',
+    badgeAccessibility: 'Ernährungshinweis: Artikel ist möglicherweise nicht mit der aktiven Diät kompatibel',
+    countSingle: '{n} Warnung',
+    countPlural: '{n} Warnungen',
     suggestion: '{alternative} stattdessen versuchen?',
     addAnyway: 'Trotzdem hinzufügen',
     unchecked: 'Nicht geprüft',
+  },
+  list: {
+    toShop: 'EINKAUFEN',
+    recentlyBought: 'ZULETZT GEKAUFT',
   },
   general: {
     save: 'Speichern',

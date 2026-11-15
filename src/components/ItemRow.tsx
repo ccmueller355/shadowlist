@@ -137,7 +137,7 @@ function ItemRowComponent({
         <TouchableOpacity
           onPress={onDietWarningPress}
           style={styles.warningBadge}
-          accessibilityLabel="Diet warning: item may not be compatible with active diet"
+          accessibilityLabel={tr('warning.badgeAccessibility')}
           hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
         >
           <MaterialCommunityIcons name="alert-circle" size={20} color={cyberpunkTheme.colors.danger} />
