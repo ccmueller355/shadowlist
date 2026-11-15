@@ -131,7 +131,7 @@ Items to resolve before the first public release. Requires research — exact re
 ### 🔒 Dependency & Supply Chain
 
 - [ ] **Dependency audit** — lock all `^` ranges, audit 20+ npm packages for network calls or known issues. F-Droid requirement.
-- [ ] **Package.json license field** — add `"license": "MIT"` to `package.json` (currently missing, shows as UNLICENSED in scans)
+- [x] **Package.json license field** — add `"license": "MIT"` to `package.json` (currently missing, shows as UNLICENSED in scans)
 - [ ] **OSS license scan** — run `npx license-checker --summary` to verify all dependencies are FOSS-compatible. No GPL/AGPL viral licenses in the F-Droid build. ✅ Already validated: 980+ packages clean, only flagged items were our own package.json (missing field) and a dual-licensed transitive dep (BSD-3-Clause OR GPL-2.0, safe).
 - [ ] **Snippet / source code scan** — run `scancode --license --copyright --classify --only-findings src/` to detect any copied snippets or third-party code in our own source. ✅ Already validated: 11 source files scanned, zero findings. Clean.
 - [ ] **Tool decision**: **scancode-toolkit** (CLI, best-in-class detection, 6,000+ license DB, 7s scan time). Not Fossology (too heavy for solo dev). Not Black Duck (enterprise only).

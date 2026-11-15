@@ -1,6 +1,7 @@
 {
   "name": "shadowlist",
   "version": "0.19.15",
+  "license": "MIT",
   "main": "index.ts",
   "dependencies": {
     "@expo/vector-icons": "^15.0.2",

@@ -303,7 +303,7 @@ export function ListDetailScreen({ route, navigation }: Props) {
         (i) => i.description.toLowerCase() === lowerDesc
       );
       if (inActive) {
-        Toast.show({ type: 'info', text1: `"${description}" already in list`, position: 'bottom' });
+        Toast.show({ type: 'info', text1: tr('list.alreadyInList', { name: description }), position: 'bottom' });
         return;
       }
       // 2. In bought items? Re-add from bought
@@ -312,7 +312,7 @@ export function ListDetailScreen({ route, navigation }: Props) {
       );
       if (inBought) {
         moveToShop(inBought.id);
-        Toast.show({ type: 'success', text1: `Re-added "${description}"`, position: 'bottom' });
+        Toast.show({ type: 'success', text1: tr('list.reAdded', { name: description }), position: 'bottom' });
         // Show diet warning for re-added item if applicable
         if (activeDiet && inBought.foodType && inBought.foodType !== 'non_food') {
           const result = checkItem(activeDiet, inBought.foodType);
@@ -362,11 +362,11 @@ export function ListDetailScreen({ route, navigation }: Props) {
       const item = items.find((i) => i.id === itemId);
       if (item) {
         if (!item.purchased) {
-          Toast.show({ type: 'info', text1: `"${item.description}" already in list`, position: 'bottom' });
+          Toast.show({ type: 'info', text1: tr('list.alreadyInList', { name: item.description }), position: 'bottom' });
           return;
         }
         moveToShop(itemId);
-        Toast.show({ type: 'success', text1: `Re-added "${item.description}"`, position: 'bottom' });
+        Toast.show({ type: 'success', text1: tr('list.reAdded', { name: item.description }), position: 'bottom' });
       }
     },
     [items, moveToShop]
@@ -379,7 +379,7 @@ export function ListDetailScreen({ route, navigation }: Props) {
 
   const handleSaveEdit = (id: string, updates: Partial<ShoppingItem>) => {
     updateItem(id, updates);
-    Toast.show({ type: 'success', text1: 'Item updated', position: 'bottom' });
+    Toast.show({ type: 'success', text1: tr('list.itemUpdated'), position: 'bottom' });
   };
 
   const handleAddNewItem = (params: { listId: string; description: string; qualifier: string; icon: string; category: string | null; foodType: FoodType }) => {
@@ -394,19 +394,20 @@ export function ListDetailScreen({ route, navigation }: Props) {
     if (params.foodType) {
       updateItem(newItem.id, { foodType: params.foodType });
     }
-    Toast.show({ type: 'success', text1: `Added "${params.description}"`, position: 'bottom' });
+    Toast.show({ type: 'success', text1: tr('list.itemAdded', { name: params.description }), position: 'bottom' });
   };
 
   const handleDeleteItem = (id: string) => {
     const item = items.find((i) => i.id === id);
-    Alert.alert('Delete Item', `Delete "${item?.description || 'this item'}"?`, [
-      { text: 'Cancel', style: 'cancel' },
+    const name = item?.description || tr('list.thisItem');
+    Alert.alert(tr('list.deleteItemTitle'), tr('list.deleteItemMessage', { name }), [
+      { text: tr('general.cancel'), style: 'cancel' },
       {
-        text: 'Delete',
+        text: tr('general.delete'),
         style: 'destructive',
         onPress: () => {
           deleteItem(id);
-          Toast.show({ type: 'info', text1: 'Item deleted', position: 'bottom' });
+          Toast.show({ type: 'info', text1: tr('list.itemDeleted'), position: 'bottom' });
         },
       },
     ]);
@@ -799,7 +800,7 @@ export function ListDetailScreen({ route, navigation }: Props) {
         onAcceptSuggestion={(label) => {
           if (warningItem) {
             addItem({ listId, description: label });
-            Toast.show({ type: 'success', text1: `Added "${label}"`, position: 'bottom' });
+            Toast.show({ type: 'success', text1: tr('list.itemAdded', { name: label }), position: 'bottom' });
           }
           setWarningItem(null);
         }}
