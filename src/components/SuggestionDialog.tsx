@@ -38,11 +38,11 @@ export function SuggestionDialog({
         <View style={[styles.container, { backgroundColor: t.colors.surface }]}>
           <View style={styles.header}>
             <MaterialCommunityIcons name="alert-circle" size={28} color={t.colors.danger} />
-            <Text style={[styles.title, { color: t.colors.textPrimary }]}>Diet Warning</Text>
+            <Text style={[styles.title, { color: t.colors.textPrimary }]}>{tr('warning.title')}</Text>
           </View>
 
           <Text style={[styles.message, { color: t.colors.textSecondary }]}>
-            {itemName} is not compatible with {dietName}.
+            {tr('warning.incompatibleDetailed', { foodType: itemName, diet: dietName })}
           </Text>
 
           {suggestions.length > 0 && (
@@ -50,7 +50,7 @@ export function SuggestionDialog({
               <Text style={[styles.suggestionHeader, { color: t.colors.textPrimary }]}>
                 {suggestions.length === 1
                   ? tr('warning.suggestion').replace('{alternative}', suggestions[0].label)
-                  : 'Try one of these instead?'}
+                  : tr('warning.suggestionMultiple')}
               </Text>
               {suggestions.map((s, i) => (
                 <TouchableOpacity
