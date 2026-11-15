@@ -1,6 +1,6 @@
 {
   "name": "shadowlist",
-  "version": "0.19.14",
+  "version": "0.19.15",
   "main": "index.ts",
   "dependencies": {
     "@expo/vector-icons": "^15.0.2",
@@ -9,13 +9,13 @@
     "@react-navigation/native-stack": "^7.20.0",
     "@types/react": "~19.2.14",
     "babel-preset-expo": "^57.0.12",
-    "expo": "~57.0.32",
+    "expo": "~57.0.33",
     "expo-camera": "~57.0.6",
     "expo-dev-client": "~57.0.21",
     "expo-document-picker": "~57.0.3",
     "expo-file-system": "~57.0.7",
     "expo-font": "~57.0.1",
-    "expo-sharing": "~57.0.25",
+    "expo-sharing": "~57.0.26",
     "expo-splash-screen": "~57.0.11",
     "expo-status-bar": "~57.0.1",
     "mermaid": "^12.3.0",
@@ -32,11 +32,11 @@
     "typescript": "~7.0.2",
     "vitepress": "^1.6.4",
     "vitepress-plugin-mermaid": "^2.0.17",
-    "vue": "^3.5.44",
-    "zustand": "^5.0.16"
+    "vue": "^3.5.45",
+    "zustand": "^5.1.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.29.0",
+    "@babel/core": "^7.29.13",
     "@react-native/jest-preset": "^0.86.2",
     "@testing-library/jest-native": "^5.4.3",
     "@testing-library/react-native": "^13.3.3",

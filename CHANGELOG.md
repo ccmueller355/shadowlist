@@ -1,3 +1,14 @@
+## v0.19.15 — 2026-11-15
+
+### Changed
+- Consolidated Dependabot updates:
+  - Bumped `zustand` to `^5.1.0` (#156).
+  - Bumped `@babel/core` to `^7.29.13` (#157).
+  - Bumped `vue` to `^3.5.45` (#158).
+- Aligned Expo SDK 57 patch releases:
+  - Bumped `expo` to `~57.0.33`.
+  - Bumped `expo-sharing` to `~57.0.26`.
+
 ## v0.19.14 — 2026-11-11
 
 ### Changed
