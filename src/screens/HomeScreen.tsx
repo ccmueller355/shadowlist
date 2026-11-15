@@ -125,7 +125,7 @@ export function HomeScreen({ navigation }: Props) {
             <TextInput
               ref={inputRef}
               style={[styles.newListInput, { color: cyberpunkTheme.colors.textPrimary, borderColor: cyberpunkTheme.colors.border }]}
-              placeholder="List name..."
+              placeholder={tr('list.namePlaceholder')}
               placeholderTextColor={cyberpunkTheme.colors.textSecondary}
               value={newListName}
               onChangeText={setNewListName}
@@ -133,7 +133,7 @@ export function HomeScreen({ navigation }: Props) {
               autoFocus
             />
             <TouchableOpacity onPress={handleCreateList} style={[styles.createButton, { backgroundColor: cyberpunkTheme.colors.primary }]}>
-              <Text style={[styles.createButtonText, { color: cyberpunkTheme.colors.background }]}>Create</Text>
+              <Text style={[styles.createButtonText, { color: cyberpunkTheme.colors.background }]}>{tr('list.createButton')}</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => { setShowNewListInput(false); setNewListName(''); }}>
               <MaterialCommunityIcons name="close" size={22} color={cyberpunkTheme.colors.textSecondary} />
@@ -163,7 +163,7 @@ export function HomeScreen({ navigation }: Props) {
         onDragEnd={({ data }) => reorderLists(data.map((l) => l.id))}
         ListEmptyComponent={
           <EmptyPlaceholder
-            message="Create your first shopping list"
+            message={tr('list.emptyHome')}
             icon="clipboard-plus-outline"
           />
         }

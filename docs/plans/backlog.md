@@ -86,10 +86,10 @@ Items to resolve before the first public release. Requires research — exact re
 
 ### 🚨 Diet warnings hardcoded English
 
-- [ ] `dietEngine.ts` — return structured data (`{ foodType, dietId }`) instead of formatted warning strings
-- [ ] `ListDetailScreen.tsx` — format diet warnings via `tr()` with `{foodType}` and `{diet}` interpolation
-- [ ] `ItemRow.tsx` — warning badge accessibility label should be localized
-- [ ] Add i18n keys: `warning.incompatibleDetailed` (e.g. "Meat is not compatible with Vegetarian")
+- [x] `dietEngine.ts` — return structured data (`{ foodType, dietId }`) instead of formatted warning strings
+- [x] `ListDetailScreen.tsx` — format diet warnings via `tr()` with `{foodType}` and `{diet}` interpolation
+- [x] `ItemRow.tsx` — warning badge accessibility label should be localized
+- [x] Add i18n keys: `warning.incompatibleDetailed` (e.g. "Meat is not compatible with Vegetarian")
 
 ### 🥩 Demo data food types
 
@@ -99,7 +99,7 @@ Items to resolve before the first public release. Requires research — exact re
 
 ### 🌐 Full i18n coverage
 
-- [ ] Internationalize all remaining hardcoded UI strings in:
+- [x] Internationalize all remaining hardcoded UI strings in:
   - SettingsModal: title, section labels, row labels, alert buttons
   - EditModal: title, field labels, category "None", button text
   - ItemRow: qualifier placeholder
@@ -107,8 +107,8 @@ Items to resolve before the first public release. Requires research — exact re
   - HomeScreen: empty state, create button
   - SuggestionDialog: title
   - ListDetailScreen: section headers ("TO SHOP", "RECENTLY BOUGHT")
-- [ ] Add ~15 new i18n keys to `en.ts` and `de.ts`
-- [ ] Verify no hardcoded English strings remain in the UI source files
+- [x] Add ~15 new i18n keys to `en.ts` and `de.ts`
+- [x] Verify no hardcoded English strings remain in the UI source files
 
 ---
 
