@@ -258,10 +258,10 @@ describe('SettingsModal', () => {
 
     render(<SettingsModal {...defaultProps} />);
 
-    expect(screen.queryByText('License: MIT')).toBeNull();
+    expect(screen.queryByText('Aethelred Cybernetics · MIT License')).toBeNull();
     fireEvent.press(screen.getByLabelText('About'));
 
-    expect(screen.getByText('License: MIT')).toBeTruthy();
+    expect(screen.getByText('Aethelred Cybernetics · MIT License')).toBeTruthy();
     expect(screen.getByText('Open-Source Acknowledgements')).toBeTruthy();
 
     fireEvent.press(screen.getByLabelText('Source on GitHub'));
