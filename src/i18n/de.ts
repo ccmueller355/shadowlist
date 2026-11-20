@@ -88,7 +88,7 @@ export const de = {
     about: {
       title: 'Über',
       version: 'Version',
-      license: 'Lizenz: MIT',
+      license: 'Aethelred Cybernetics · MIT-Lizenz',
       sourceCode: 'Quellcode auf GitHub',
       ossLabel: 'Open-Source-Danksagungen',
     },

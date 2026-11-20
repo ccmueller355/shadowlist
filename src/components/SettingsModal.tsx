@@ -612,7 +612,7 @@ export function SettingsModal({
               </>
             )}
 
-            <Text style={[styles.footer, { color: t.colors.textSecondary }]}>ShadowList v{Constants.expoConfig?.version ?? '0.0.0'}</Text>
+            <Text style={[styles.footer, { color: t.colors.textSecondary }]}>ShadowList v{Constants.expoConfig?.version ?? '0.0.0'} · Aethelred Cybernetics</Text>
           </View>
         </ScrollView>
       </View>
