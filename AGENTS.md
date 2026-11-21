@@ -194,6 +194,11 @@ Three EAS build profiles — see `docs/release/workflow.md` for full details:
 
 *Note: All profiles can also be triggered manually via GitHub Actions UI (`workflow_dispatch`) by selecting the profile from the dropdown.*
 
+### APK Artifact Naming Convention
+Align with partner project `shadowtrain`:
+- **PR builds**: `shadowlist-v<VERSION>-pr<PR_NUMBER>-preview.apk` (e.g. `shadowlist-v0.19.16-pr168-preview.apk`)
+- **Main / release builds**: `shadowlist-v<VERSION>-<BUILD_TYPE>.apk` (e.g. `shadowlist-v0.19.16-release.apk`)
+
 [MATRIX_STATUS: ACTIVE // DECK_TEMPERATURE: NOMINAL]
 
 <!-- SPECKIT START -->

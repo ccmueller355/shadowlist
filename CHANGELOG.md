@@ -8,6 +8,7 @@
 - Completed EN/DE internationalization across diet warnings, list/settings labels, toasts, alerts, HomeScreen, and SuggestionDialog (#161, #162, #163).
 - Added `"license": "MIT"` to `package.json` and updated `README.md` clone URL (#162).
 - Displayed `Aethelred Cybernetics` branding in Settings About and footer (#164).
+- Standardized CI Android APK artifact naming to `shadowlist-v<VERSION>[-pr<PR>]-<preview|release>.apk` (aligned with `shadowtrain`).
 - Consolidated Dependabot updates:
   - Bumped `@react-navigation/native` to `^7.5.2` (#165).
   - Bumped `react-native-paper` to `^5.15.5` (#166).
