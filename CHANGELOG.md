@@ -8,6 +8,10 @@
 - Completed EN/DE internationalization across diet warnings, list/settings labels, toasts, alerts, HomeScreen, and SuggestionDialog (#161, #162, #163).
 - Added `"license": "MIT"` to `package.json` and updated `README.md` clone URL (#162).
 - Displayed `Aethelred Cybernetics` branding in Settings About and footer (#164).
+- Consolidated Dependabot updates:
+  - Bumped `@react-navigation/native` to `^7.5.2` (#165).
+  - Bumped `react-native-paper` to `^5.15.5` (#166).
+  - Bumped `@react-navigation/native-stack` to `^7.21.1` (#167).
 
 ### Fixed
 - Replaced broken garlic icon and stabilized HomeScreen test timer (#160, #162).
