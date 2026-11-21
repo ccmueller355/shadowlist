@@ -39,7 +39,7 @@ Keep your grocery runs clean and your deck cooler. Three hand-crafted themes, dr
 ### Install
 
 ```bash
-git clone https://github.com/ccmueller/shadowlist.git
+git clone https://github.com/ccmueller355/shadowlist.git
 cd shadowlist
 npm install
 ```

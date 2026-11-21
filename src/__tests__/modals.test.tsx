@@ -252,9 +252,9 @@ describe('SettingsModal', () => {
     expect(onImportBackup).toHaveBeenCalledWith('{"app":"shadowlist","schemaVersion":2}', 'replace');
   });
 
-  it('expands About section with license, acknowledgements, and GitHub link', () => {
+  it('expands About section with license, acknowledgements, docs, and GitHub link', () => {
     const { Linking } = require('react-native');
-    const openURLSpy = jest.spyOn(Linking, 'openURL').mockResolvedValueOnce(true);
+    const openURLSpy = jest.spyOn(Linking, 'openURL').mockResolvedValue(true);
 
     render(<SettingsModal {...defaultProps} />);
 
@@ -263,6 +263,9 @@ describe('SettingsModal', () => {
 
     expect(screen.getByText('Aethelred Cybernetics · MIT License')).toBeTruthy();
     expect(screen.getByText('Open-Source Acknowledgements')).toBeTruthy();
+
+    fireEvent.press(screen.getByLabelText('Documentation'));
+    expect(openURLSpy).toHaveBeenCalledWith('https://ccmueller355.github.io/shadowlist/');
 
     fireEvent.press(screen.getByLabelText('Source on GitHub'));
     expect(openURLSpy).toHaveBeenCalledWith('https://github.com/ccmueller355/shadowlist');

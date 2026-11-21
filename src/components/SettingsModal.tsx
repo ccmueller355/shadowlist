@@ -519,6 +519,17 @@ export function SettingsModal({
                 </Text>
                 <TouchableOpacity
                   style={styles.aboutLinkRow}
+                  onPress={() => Linking.openURL('https://ccmueller355.github.io/shadowlist/')}
+                  accessibilityLabel={tr('settings.about.documentation')}
+                  accessibilityRole="link"
+                >
+                  <Text style={[styles.aboutLinkText, { color: t.colors.primary }]}>
+                    {tr('settings.about.documentation')}
+                  </Text>
+                  <MaterialCommunityIcons name="open-in-new" size={16} color={t.colors.primary} />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.aboutLinkRow}
                   onPress={() => Linking.openURL('https://github.com/ccmueller355/shadowlist')}
                   accessibilityLabel={tr('settings.about.sourceCode')}
                   accessibilityRole="link"
