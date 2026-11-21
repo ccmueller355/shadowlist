@@ -89,6 +89,7 @@ export const de = {
       title: 'Über',
       version: 'Version',
       license: 'Aethelred Cybernetics · MIT-Lizenz',
+      documentation: 'Dokumentation',
       sourceCode: 'Quellcode auf GitHub',
       ossLabel: 'Open-Source-Danksagungen',
     },

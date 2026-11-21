@@ -515,8 +515,19 @@ export function SettingsModal({
                   {tr('settings.about.ossLabel')}
                 </Text>
                 <Text style={[styles.aboutText, { color: t.colors.textSecondary }]}>
-                  React Native, Expo, Zustand, React Navigation, React Native Paper, MaterialCommunityIcons
+                  React Native, Expo, Zustand, AsyncStorage, React Navigation, React Native Paper, MaterialCommunityIcons, react-native-draggable-flatlist, react-native-reanimated, react-native-gesture-handler, react-native-toast-message, Open Food Facts (ODbL)
                 </Text>
+                <TouchableOpacity
+                  style={styles.aboutLinkRow}
+                  onPress={() => Linking.openURL('https://ccmueller355.github.io/shadowlist/')}
+                  accessibilityLabel={tr('settings.about.documentation')}
+                  accessibilityRole="link"
+                >
+                  <Text style={[styles.aboutLinkText, { color: t.colors.primary }]}>
+                    {tr('settings.about.documentation')}
+                  </Text>
+                  <MaterialCommunityIcons name="open-in-new" size={16} color={t.colors.primary} />
+                </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.aboutLinkRow}
                   onPress={() => Linking.openURL('https://github.com/ccmueller355/shadowlist')}

@@ -94,7 +94,7 @@ The two free snippet scanners on the market are scancode-toolkit and Fossology. 
 - Pre-release checklist: run `scancode --license --copyright --classify --only-findings src/` before tagging
 - Pre-release checklist: run `npx license-checker --summary` for dependency compliance
 - Initial scans validated: 980+ dependencies clean (MIT/ISC/BSD/Apache), 11 source files zero findings
-- Only flagged item: `package.json` missing `"license": "MIT"` field (self-inflicted, one-line fix)
+- Only flagged item: `package.json` missing `"license": "MIT"` field (resolved in PR #162)
 - SBOM generation via `@cyclonedx/cyclonedx-npm` flagged for future automation
 
 ## DD-8: No separate food name cache — items ARE the cache
