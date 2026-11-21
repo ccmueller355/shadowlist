@@ -515,7 +515,7 @@ export function SettingsModal({
                   {tr('settings.about.ossLabel')}
                 </Text>
                 <Text style={[styles.aboutText, { color: t.colors.textSecondary }]}>
-                  React Native, Expo, Zustand, React Navigation, React Native Paper, MaterialCommunityIcons
+                  React Native, Expo, Zustand, AsyncStorage, React Navigation, React Native Paper, MaterialCommunityIcons, react-native-draggable-flatlist, react-native-reanimated, react-native-gesture-handler, react-native-toast-message, Open Food Facts (ODbL)
                 </Text>
                 <TouchableOpacity
                   style={styles.aboutLinkRow}

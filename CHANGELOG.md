@@ -1,3 +1,17 @@
+## v0.19.16 — 2026-11-21
+
+### Added
+- Settings **About** section with app version, Aethelred Cybernetics · MIT License info, Open-Source Acknowledgements (including Open Food Facts), GitHub Pages documentation link, and GitHub source link (#160, #164).
+- VitePress documentation site footer with MIT License and copyright notice.
+
+### Changed
+- Completed EN/DE internationalization across diet warnings, list/settings labels, toasts, alerts, HomeScreen, and SuggestionDialog (#161, #162, #163).
+- Added `"license": "MIT"` to `package.json` and updated `README.md` clone URL (#162).
+- Displayed `Aethelred Cybernetics` branding in Settings About and footer (#164).
+
+### Fixed
+- Replaced broken garlic icon and stabilized HomeScreen test timer (#160, #162).
+
 ## v0.19.15 — 2026-11-15
 
 ### Changed
